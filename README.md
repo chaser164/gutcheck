@@ -10,7 +10,7 @@ api/v1/users/<int:userid>/
 - DELETE will delete the specified user 
     - page is only accessible to ADMIN users, so REQUIRES TOKEN AUTHORIZATION.
     - prevents self-deletion.
-    - CONSIDER: allow any user to delete themself?
+    - CONSIDER (NOT IMPLEMENTED YET): allow any user to delete themself (and thus log themself out)? Probably should do this...
 
 api/v1/users/me/
 - GET will return a user's own info.
@@ -67,6 +67,8 @@ api/v1/posts/bywebsite/
 - POST will list out all the websites matching the URL provided in the body
     - A little awkward to use post here. Doing this because the parameter (a URL) is too complex to include in a get request endpoint
     - REQUIRES TOKEN AUTHORIZATION.
+- DELETE removes all post associted with the website
+    - ADMIN access only, so REQUIRES TOKEN AUTHORIZATION.
 
 
 
