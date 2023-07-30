@@ -1,3 +1,5 @@
+What happens at each endpoint:
+
 api/v1/users/
 - GET will return a list of all users and their info 
     - page is only accessible to ADMIN users, so REQUIRES TOKEN AUTHORIZATION.
