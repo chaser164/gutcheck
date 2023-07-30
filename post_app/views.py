@@ -2,6 +2,7 @@ import random
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.core.exceptions import ValidationError
 from rest_framework.status import (
     HTTP_201_CREATED,
     HTTP_404_NOT_FOUND,
@@ -21,21 +22,54 @@ class All_posts(APIView):
     # The alternative: using "if request.user.is_authenticated: ..." for manually deciding which logic require authentication
 
     def get(self, request):
-        allSerializedPosts = PostSerializer(Post.objects.all(), many=True).data
-        return Response(allSerializedPosts)
+        allSerializedPosts = PostSerializer(Post.objects.all(), many=True)
+        return Response({"all posts": allSerializedPosts.data})
     
     def post(self, request):
         # Check if the request body appears valid
         if 'text' in request.data and request.data['text'] and 'website' in request.data and request.data['website']:
             new_post = Post(text = request.data['text'], website=request.data['website'], user = request.user)
             # Ensure the fields are valid before saving into the database
-            new_post.full_clean()
+            try:
+                new_post.full_clean()
+            except ValidationError as error:
+                return Response({"validation error": error}, status=HTTP_400_BAD_REQUEST)
             new_post.save()
             return Response(PostSerializer(new_post).data, status=HTTP_201_CREATED)
         else:
             return Response({"message": "Invalid request body"}, status=HTTP_400_BAD_REQUEST)
-                   
+
+class Posts_by_website(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    # It is unideal to use POST here. I'm doing this because I need to send a body because of the complex parameter (a URL) and get requests don't typically send a body
+    def post(self, request):
+        if 'website' in request.data and request.data['website']:
+            posts = Post.objects.filter(website = request.data['website'])
+            serializedPosts = PostSerializer(posts, many=True)
+            return Response({"website posts": serializedPosts.data})
+        else:
+            return Response({"message": "Invalid request body"}, status=HTTP_400_BAD_REQUEST)
         
+    def delete(self, request):
+        # Ensure valid body
+        if ('website' in request.data and request.data['website']):
+            # If the user is a non-admin, they don't have this power
+            if not (request.user.is_staff and request.user.is_superuser):
+                return Response({"message": "Admin access only"}, status=HTTP_401_UNAUTHORIZED)
+            # Delete all posts
+            posts = Post.objects.filter(website = request.data['website'])
+            # No posts located here case
+            if len(posts.all()) == 0:
+                return Response({"message": "No posts to delete here"}, status=HTTP_404_NOT_FOUND)
+            for post in posts.all():
+                post.delete()
+            return Response(status=HTTP_204_NO_CONTENT)
+        else:
+            return Response({"message": "Invalid request body"}, status=HTTP_400_BAD_REQUEST)
+
+
 class A_post(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]

@@ -63,6 +63,11 @@ api/v1/posts/<int:postid>/<str:vote>/
     - The only accepted strings are 'upvote', 'downvote', and 'abstain'.
     - REQUIRES TOKEN AUTHORIZATION.
 
+api/v1/posts/bywebsite/
+- POST will list out all the websites matching the URL provided in the body
+    - A little awkward to use post here. Doing this because the parameter (a URL) is too complex to include in a get request endpoint
+    - REQUIRES TOKEN AUTHORIZATION.
+
 
 
 Good to know...
