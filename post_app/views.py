@@ -27,7 +27,7 @@ class All_posts(APIView):
     def post(self, request):
         # Check if the request body appears valid
         if 'text' in request.data and request.data['text'] and 'website' in request.data and request.data['website']:
-            new_post = Post(string = request.data['text'], website=request.data['website'], user = request.user)
+            new_post = Post(text = request.data['text'], website=request.data['website'], user = request.user)
             # Ensure the fields are valid before saving into the database
             new_post.full_clean()
             new_post.save()
@@ -40,10 +40,16 @@ class A_post(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, postid):
+    def get(self, request, postid, vote=None):
+        if vote is not None:
+            # The intended endpoint must have been PUT
+            return Response({"detail": "Method \"GET\" not allowed."}, status=HTTP_404_NOT_FOUND)
         return Response(PostSerializer(get_object_or_404(Post, id = postid)).data)
     
-    def delete(self, request, postid):
+    def delete(self, request, postid, vote=None):
+        if vote is not None:
+            # The intended endpoint must have been PUT
+            return Response({"detail": "Method \"DELETE\" not allowed."}, status=HTTP_404_NOT_FOUND)
         post = get_object_or_404(Post, id = postid)
         # If the user is deleting their own post or an admin account is logged in...
         if post.user == request.user or (request.user.is_staff and request.user.is_superuser):
@@ -51,7 +57,26 @@ class A_post(APIView):
             return Response({"message": "Deleted successfully"}, status=HTTP_204_NO_CONTENT)
         else:
             return Response({"message": "Cannot delete others' posts"}, status=HTTP_401_UNAUTHORIZED)
-
+        
+    def put(self, request, postid, vote=None):
+        if vote is None:
+            # The intended endpoint must have been GET or DELETE
+            return Response({"detail": "Method \"PUT\" not allowed."}, status=HTTP_404_NOT_FOUND)
+        post = get_object_or_404(Post, id = postid)
+        if vote == 'upvote':
+            post.downvoters.remove(request.user)
+            post.upvoters.add(request.user)
+            return Response({"message": "Upvoted successfully"}, status=HTTP_204_NO_CONTENT)
+        elif vote == 'downvote':
+            post.upvoters.remove(request.user)
+            post.downvoters.add(request.user)
+            return Response({"message": "Downvoted successfully"}, status=HTTP_204_NO_CONTENT)
+        elif vote == 'abstain':
+            post.downvoters.remove(request.user)
+            post.upvoters.remove(request.user)
+            return Response({"message": "Abstained successfully"}, status=HTTP_204_NO_CONTENT)
+        else:
+            return Response({"message": "Invalid URL"}, status=HTTP_404_NOT_FOUND)
         
     
         

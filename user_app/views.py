@@ -106,7 +106,11 @@ class A_user(APIView):
     def get(self, request, userid=None):
         if userid is not None:
             user = get_object_or_404(User, id = userid)
-            return Response(UserSerializer(user).data)
+            # If the user is viewing themself or an admin is accessing the endpoint...
+            if userid == request.user.id or (request.user.is_staff and request.user.is_superuser):
+                return Response(UserSerializer(user).data)
+            else:
+                return Response({"message": "Admin access only"}, status=HTTP_401_UNAUTHORIZED)
         else:
             # Accessing your own info with "me" endpoint
             return Response(UserSerializer(request.user).data)
@@ -125,10 +129,9 @@ class A_user(APIView):
         else:
             return Response({"message": "Admin access only"}, status=HTTP_401_UNAUTHORIZED)
         
-
 class Validation(APIView):
     # just do objects.get ...
-    def get(self, request, validation_key):
+    def put(self, request, validation_key):
         try: 
             user = User.objects.get(validation_info = User.hash(validation_key))
             user.validation_info = 'validated'
