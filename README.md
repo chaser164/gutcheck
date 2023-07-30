@@ -10,6 +10,7 @@ api/v1/users/<int:userid>/
 - DELETE will delete the specified user 
     - page is only accessible to ADMIN users, so REQUIRES TOKEN AUTHORIZATION.
     - prevents self-deletion.
+    - CONSIDER: allow any user to delete themself?
 
 api/v1/users/me/
 - GET will return a user's own info.
@@ -65,6 +66,6 @@ api/v1/posts/<int:postid>/<str:vote>/
 
 
 Good to know...
-Pythonanywhere has a persistent environment, so db.sqlite3 won't get blown out:
+Pythonanywhere has a persistent environment, so db.sqlite3 won't get blown out
 (from https://www.pythonanywhere.com/forums/topic/1847/)
 

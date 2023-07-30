@@ -11,7 +11,7 @@ class Post(models.Model):
     upvoters = models.ManyToManyField(User, related_name='upvoted_posts')
     downvoters = models.ManyToManyField(User, related_name='downvoted_posts')
 
-    # Only allow a user to post about a website once
+    # Only allow a user to post about a particular website once
     def clean(self):
         websites = [post.website for post in self.user.posts.all()]
         if self.website in websites:
