@@ -6,12 +6,12 @@ import os
 from email.message import EmailMessage
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from rest_framework.authtoken.models import Token
 # Create your models here.
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     validation_info = models.CharField(blank=True, max_length=300)
+    # The related names for the upvoters and downvoters M2M fields (defined in Post model) are upvoted_posts and downvoted_posts, respectively
     USERNAME_FIELD="email"
     REQUIRED_FIELDS=[]
 
