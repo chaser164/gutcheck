@@ -76,3 +76,32 @@ Good to know...
 Pythonanywhere has a persistent environment, so db.sqlite3 won't get blown out
 (from https://www.pythonanywhere.com/forums/topic/1847/)
 
+
+------------------------------------------------------------------------------
+
+How the frontend login/signup works:
+- On a new page/refresh, if an activated user's token is currently stored in an HTTPOnlyCookie, log this user in automatically
+- Sign up 
+    - Logs in a user to a deactivated account and displays a message to check email
+    - Sends sign up email
+    - After validation, upon page refresh OR inputting details into Log In page, user will be signed in
+    - User cannot log out until cookie expiration as a deactivated user
+    - possible errors:
+        - Email already in use for another account
+        - Improper email format (for those that edit HTML)
+        - Network error
+        - There is a catchall system to display rarer errors
+- Log in
+    - Logging in an activated user takes them to their account's homepage
+    - possible errors:
+        - No matching user credentials
+        - Network error
+        - There is a catchall system to display rarer errors 
+- Back button sets user to null and clears errors and tries logging out any user
+
+
+THINGS TO CONSIDER:
+- should the back button be able to logout unvalidated users? 
+- when deactivated users refresh, should the page open with check email message?
+- Consider logging out without a network connection...
+

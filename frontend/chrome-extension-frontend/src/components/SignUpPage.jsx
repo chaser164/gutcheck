@@ -23,7 +23,7 @@ export default function SignUpPage() {
                     // Either email already in use for another account OR invalid email format message
                     setLoginError(err.response.data.message)
                 } else {
-                    // Network error message
+                    // Likely network error message
                     setLoginError(err.message)
                 }
                 return

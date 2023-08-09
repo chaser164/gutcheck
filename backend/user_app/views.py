@@ -39,8 +39,13 @@ class Sign_up(APIView):
 
         # Validate email
         user.send_validation_email()
-
-        return Response({"message": "Check email to activate your account."})
+        token, _ = Token.objects.get_or_create(user=user)
+        life_time = datetime.now() + timedelta(days=7)
+        format_life_time = http_date(life_time.timestamp())
+        response = Response({"user": user.email})
+        response.set_cookie(key="token", value=token.key, httponly=True, secure=True, samesite='None', expires=format_life_time)
+        return response
+        # Response({"user": user.email})
     
 class Log_in(APIView):
 
