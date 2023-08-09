@@ -1,3 +1,9 @@
+# BACKEND
+env/
+.env
+db.sqlite3
+
+#FRONTEND
 # Logs
 logs
 *.log
@@ -22,3 +28,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
