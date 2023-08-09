@@ -28,7 +28,7 @@ function App() {
   checkActiveUser()
   }, []);
 
-  // Whenever the frontend prompts user to verify email, check for verification and automatically login
+  // Whenever the frontend prompts user to verify email, check for verification and automatically login if verified
   useEffect(() => {
     async function loginAPIPost() {
       try {

@@ -18,13 +18,13 @@ export default function SignUpPage() {
                 setLoginError(checkEmailMessages['initial'])
             } 
             catch (err) {
+                // console.log(err)
                 if (err.message.includes('400')) {
-                    console.log(err)
                     // Either email already in use for another account OR invalid email format message
                     setLoginError(err.response.data.message)
                 } else {
                     // Network error message
-                    setLoginError('Network error')
+                    setLoginError(err.message)
                 }
                 return
             } 

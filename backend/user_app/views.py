@@ -38,15 +38,9 @@ class Sign_up(APIView):
             return Response({"message": "Improper email format"}, status=HTTP_400_BAD_REQUEST)
 
         # Validate email
-        # Should a response be returned?
         user.send_validation_email()
-        token, _ = Token.objects.get_or_create(user=user)
-        life_time = datetime.now() + timedelta(days=7)
-        format_life_time = http_date(life_time.timestamp())
-        response = Response({"message": "Check email to activate your account."})
-        response.set_cookie(key="token", value=token.key, httponly=True, secure=True, samesite='None', expires=format_life_time)
-        # Don't give a token on signup...
-        return response
+
+        return Response({"message": "Check email to activate your account."})
     
 class Log_in(APIView):
 

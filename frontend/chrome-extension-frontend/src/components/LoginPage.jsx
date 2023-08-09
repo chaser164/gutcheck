@@ -17,13 +17,13 @@ export default function SignUpPage() {
                 setUser(response.data.user)
             } 
             catch (err) {
-                console.log(err)
+                // console.log(err)
                 if (err.message.includes('404')) {
                     // No matching user credentials message
                     setLoginError('No matching user credentials')
                 } else {
-                    // Network error message
-                    setLoginError('Network error')
+                    // Likely a Network error message
+                    setLoginError(err.message)
                 }
                 return
             } 

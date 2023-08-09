@@ -6,7 +6,6 @@ from user_app.models import User
 class HttpOnlyTokenAuthentication(TokenAuthentication):
     def get_auth_token_from_cookie(self, request):
         # Extract the token from the 'auth_token' HttpOnly cookie
-        print(f"cookie: {request.COOKIES.get('token')}")
         return request.COOKIES.get('token')
 
     def authenticate(self, request):

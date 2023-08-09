@@ -19,11 +19,12 @@ export default function LoggedOutHomePage() {
                 setHasLoaded(true)
             } 
             catch (err) {
-                if (err.response.data.detail == checkEmailMessages['subsequent']) {
-                    setLoginError(checkEmailMessages['subsequent'])
+                // If a response came back, show the response (common errors here are no token given, unvalidated email)
+                if (err.response) {
+                    setLoginError(err.response.data.detail)
                 } else {
-                    // In case there is some weird error that isn't email related
-                    setLoginError('Unknown Login Error')
+                    //Otherwise show the request message (likely a newtork error)
+                    setLoginError(err.message)
                 }
             }
         }
