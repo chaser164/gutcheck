@@ -18,7 +18,6 @@ export default function SignUpPage() {
                     "password": password,
                     });
                 setWasClicked(true) // To display message to check email
-                setUser(email)
             } 
             catch (err) {
                 if (err.message.includes('400')) {

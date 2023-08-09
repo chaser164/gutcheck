@@ -1,4 +1,5 @@
 #user_app.views
+from datetime import datetime, timedelta
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate
 from rest_framework.views import APIView
@@ -10,9 +11,11 @@ from rest_framework.status import (
     HTTP_401_UNAUTHORIZED,
     HTTP_400_BAD_REQUEST,
 )
+from django.utils.http import http_date
 from rest_framework.authtoken.models import Token
-from rest_framework.authentication import TokenAuthentication
+# from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from utilities import HttpOnlyTokenAuthentication
 
 from .models import User
 from .serializers import UserSerializer
@@ -35,33 +38,43 @@ class Sign_up(APIView):
             return Response({"message": "Improper email format"}, status=HTTP_400_BAD_REQUEST)
 
         # Validate email
+        # Should a response be returned?
         user.send_validation_email()
+        token, _ = Token.objects.get_or_create(user=user)
+        life_time = datetime.now() + timedelta(days=7)
+        format_life_time = http_date(life_time.timestamp())
+        response = Response({"message": "Check email to activate your account."})
+        response.set_cookie(key="token", value=token.key, httponly=True, secure=True, samesite='None', expires=format_life_time)
         # Don't give a token on signup...
-        return Response(
-            {"admin_email": user.email, "message": "Check email to activate your account."}, status=HTTP_201_CREATED
-        )
+        return response
     
 class Log_in(APIView):
 
     def post(self, request):
         email = request.data.get("email")
         password = request.data.get("password")
-        user = authenticate(username=email, password=password, valitation_info='validated')
+        user = authenticate(username=email, password=password)
         if user:
-            if not user.validation_info == 'validated':
-                return Response({"message": "Unvalidated email address"}, status=HTTP_401_UNAUTHORIZED)
-            token, created = Token.objects.get_or_create(user=user)
-            return Response({"token": token.key, "user": user.email})
+            # if not user.validation_info == 'validated':
+            #     return Response({"message": "Unvalidated email address"}, status=HTTP_401_UNAUTHORIZED)
+            token, _ = Token.objects.get_or_create(user=user)
+            life_time = datetime.now() + timedelta(days=7)
+            format_life_time = http_date(life_time.timestamp())
+            response = Response({"user": user.email})
+            response.set_cookie(key="token", value=token.key, httponly=True, secure=True, samesite='None', expires=format_life_time)
+            return response
         else:
             return Response({"message": "No user matching credentials"}, status=HTTP_404_NOT_FOUND)
 
 class Log_out(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyTokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
         request.user.auth_token.delete()
-        return Response(status=HTTP_204_NO_CONTENT)
+        response = Response(status=HTTP_204_NO_CONTENT)
+        response.delete_cookie("token")
+        return response
 
 class Admin_sign_up(APIView):
     # MAKE THIS A MORE SECURE PAGE...(some key that changes every day)
@@ -89,7 +102,7 @@ class Admin_sign_up(APIView):
         )
 
 class All_users(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyTokenAuthentication]
     permission_classes = [IsAuthenticated]
 
      # Only admins (users that are both staff and superusers) may view the master list of all users
@@ -100,7 +113,7 @@ class All_users(APIView):
             return Response({"message": "Admin access only"}, status=HTTP_401_UNAUTHORIZED)
         
 class A_user(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyTokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request, userid=None):

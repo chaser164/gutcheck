@@ -23,7 +23,7 @@ class All_posts(APIView):
 
     def get(self, request):
         allSerializedPosts = PostSerializer(Post.objects.all(), many=True)
-        return Response({"all posts": allSerializedPosts.data})
+        return Response({"posts": allSerializedPosts.data})
     
     def post(self, request):
         # Check if the request body appears valid
@@ -48,7 +48,7 @@ class Posts_by_website(APIView):
         if 'website' in request.data and request.data['website']:
             posts = Post.objects.filter(website = request.data['website'])
             serializedPosts = PostSerializer(posts, many=True)
-            return Response({"website posts": serializedPosts.data})
+            return Response({"posts": serializedPosts.data})
         else:
             return Response({"message": "Invalid request body"}, status=HTTP_400_BAD_REQUEST)
         

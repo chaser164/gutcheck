@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-)je--=2$&=dy%_x(zq3p-)c1-1r@_vbdi5fnbaycyhs%1lzba1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', 'http://localhost:5173']
 
 
 # Application definition
@@ -41,9 +41,12 @@ INSTALLED_APPS = [
     'post_app',
     'rest_framework',
     'rest_framework.authtoken',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -134,3 +137,14 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173", #development server
+]
+
+# Cookies settings:
+CORS_ALLOW_CREDENTIALS = True
+
+SESSION_COOKIE_SECURE = True
+
+SESSION_COOKIE_HTTPONLY = True
