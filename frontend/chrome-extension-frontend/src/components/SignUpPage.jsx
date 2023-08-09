@@ -3,10 +3,7 @@ import { api } from "../utilities.jsx";
 import UserContext from "../contexts/UserContext.jsx";
 
 export default function SignUpPage() {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [wasClicked, setWasClicked] = useState(false)
-    const { setUser, setLoginError } = useContext(UserContext)
+    const { setLoginError, checkEmailMessages, email, setEmail, password, setPassword } = useContext(UserContext)
     
     function signUpClicked(e) {
         e.preventDefault();
@@ -17,12 +14,14 @@ export default function SignUpPage() {
                     "email": email,
                     "password": password,
                     });
-                setWasClicked(true) // To display message to check email
+                // Display message to validate acconunt
+                setLoginError(checkEmailMessages['initial'])
             } 
             catch (err) {
                 if (err.message.includes('400')) {
-                    // Email already in use for another account message
-                    setLoginError('Email already in use')
+                    console.log(err)
+                    // Either email already in use for another account OR invalid email format message
+                    setLoginError(err.response.data.message)
                 } else {
                     // Network error message
                     setLoginError('Network error')
@@ -34,26 +33,20 @@ export default function SignUpPage() {
     }
 
     return (
-        <>
-            { !wasClicked ? 
-                <form onSubmit={(e) => signUpClicked(e)}>
-                    <h5>Sign Up</h5>
-                    <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    />
-                    <input type="submit" />
-                </form> 
-                :
-                <p>Check email!</p>
-            }
-        </>
+        <form onSubmit={(e) => signUpClicked(e)}>
+            <h5>Sign Up</h5>
+            <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            />
+            <input type="submit" />
+        </form> 
     )
     
 }

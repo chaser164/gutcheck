@@ -8,7 +8,7 @@ export default function LoggedOutHomePage() {
     // Deal with non-login-related errors:
     const [errorMessage, setErrorMessage] = useState("")
     const [hasLoaded, setHasLoaded] = useState(false)
-    const { setUser, setLoginError } = useContext(UserContext)
+    const { setUser, setLoginError, checkEmailMessages } = useContext(UserContext)
 
     useEffect(() => {
         async function getData() {
@@ -19,8 +19,8 @@ export default function LoggedOutHomePage() {
                 setHasLoaded(true)
             } 
             catch (err) {
-                if (err.response.data.detail == 'Unvalidated Email') {
-                    setLoginError('Unvalidated Email')
+                if (err.response.data.detail == checkEmailMessages['subsequent']) {
+                    setLoginError(checkEmailMessages['subsequent'])
                 } else {
                     // In case there is some weird error that isn't email related
                     setLoginError('Unknown Login Error')

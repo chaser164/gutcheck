@@ -3,10 +3,7 @@ import { api } from "../utilities.jsx";
 import UserContext from "../contexts/UserContext.jsx";
 
 export default function SignUpPage() {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [errorMessage, setErrorMessage] = useState(false)
-    const { setUser, loginError, setLoginError } = useContext(UserContext)
+    const { setUser, setLoginError, email, setEmail, password, setPassword } = useContext(UserContext)
     
     function loginClicked(e) {
         e.preventDefault();
