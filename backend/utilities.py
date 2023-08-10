@@ -8,6 +8,10 @@ class HttpOnlyTokenAuthentication(TokenAuthentication):
         # Extract the token from the 'auth_token' HttpOnly cookie
         return request.COOKIES.get('token')
 
+    @staticmethod
+    def checkValidated(user):
+        return
+
     def authenticate(self, request):
         # Get the token from the HttpOnly cookie
         auth_token = self.get_auth_token_from_cookie(request)
@@ -21,9 +25,15 @@ class HttpOnlyTokenAuthentication(TokenAuthentication):
             user = User.objects.get(auth_token=auth_token)
         except User.DoesNotExist:
             return None
-        
-        if user.validation_info != 'validated':
-            raise AuthenticationFailed('Unvalidated Email')
+    
+        self.checkValidated(user)
 
         # The original TokenAuthentication class handles token validation and user retrieval
         return self.authenticate_credentials(auth_token)
+    
+
+class HttpOnlyTokenAuthenticationEmailValidated(HttpOnlyTokenAuthentication):
+    @staticmethod
+    def checkValidated(user):
+        if user.validation_info != 'validated':
+            raise AuthenticationFailed('Unvalidated Email')

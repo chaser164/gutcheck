@@ -12,17 +12,16 @@ function App() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [hasCheckedUser, setHasCheckedUser] = useState(false)
-  const checkEmailMessages = {'initial': 'Check email to activate account!', 'subsequent': 'Unvalidated Email'}
   
   // On initial render, test to see if there is currently a logged-in user. If so, set user state to this user
   useEffect(() => {
     async function checkActiveUser() {
       try {
-          const response = await api.get(`users/me/`)
+          const response = await api.get(`users/status/`)
           setUser(response.data.email)
       } 
       catch (err) {
-        console.log('no activated user logged in')
+        console.error(err.message)
       }
       setHasCheckedUser(true)
   }
@@ -35,7 +34,6 @@ function App() {
         setUser, 
         loginError, 
         setLoginError, 
-        checkEmailMessages, 
         email,
         setEmail,
         password,

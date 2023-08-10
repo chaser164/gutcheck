@@ -2,19 +2,23 @@ What happens at each endpoint:
 
 api/v1/users/
 - GET will return a list of all users and their info 
-    - page is only accessible to ADMIN users, so REQUIRES TOKEN AUTHORIZATION.
+    - page is only accessible to ADMIN users, so REQUIRES TOKEN AUTHORIZATION PLUS VALIDATION.
 
 api/v1/users/<int:userid>/
 - GET will return the specified user and their info 
-    - page is only accessible to ADMIN users (unless viewing your own profile), so REQUIRES TOKEN AUTHORIZATION.
+    - page is only accessible to ADMIN users (unless viewing your own profile), so REQUIRES TOKEN AUTHORIZATION PLUS VALIDATION.
 - DELETE will delete the specified user 
-    - page is only accessible to ADMIN users, so REQUIRES TOKEN AUTHORIZATION.
+    - page is only accessible to ADMIN users, so REQUIRES TOKEN AUTHORIZATION PLUS VALIDATION.
     - prevents self-deletion.
     - CONSIDER (NOT IMPLEMENTED YET): allow any user to delete themself (and thus log themself out)? Probably should do this...
 
 api/v1/users/me/
-- GET will return a user's own info.
-    - REQUIRES TOKEN AUTHORIZATION. 
+- GET will return a user's own info (including posts).
+    - REQUIRES TOKEN AUTHORIZATION PLUS VALIDATION. 
+
+api/v1/users/status/
+- GET will return a user's email and validated status.
+    - REQUIRES TOKEN AUTHORIZATION.
 
 api/v1/users/validation/<str:validation_key>/
 - PUT will validate and activate the account associated with the given validation key.
@@ -80,28 +84,34 @@ Pythonanywhere has a persistent environment, so db.sqlite3 won't get blown out
 ------------------------------------------------------------------------------
 
 How the frontend login/signup works:
-- On a new page/refresh, if an activated user's token is currently stored in an HTTPOnlyCookie, log this user in automatically
+- On a new page/refresh, if a user's token is currently stored in an HTTPOnlyCookie, log this user in automatically
 - Sign up 
     - Logs in a user to a deactivated account and displays a message to check email
     - Sends sign up email
     - After validation, upon page refresh OR inputting details into Log In page, user will be signed in
-    - User cannot log out until cookie expiration as a deactivated user
+    - Refresh unvalidated email message page to see login message about unvalidated email
+    - Clicking back will log out of unvalidated account
     - possible errors:
         - Email already in use for another account
         - Improper email format (for those that edit HTML)
         - Network error
         - There is a catchall system to display rarer errors
 - Log in
-    - Logging in an activated user takes them to their account's homepage
+    - Logging in an activated user takes them to their account's homepage / with refreshing stays logged in
+    - Logging in a deactivated user takes them to deactivated email message / refreshing takes them back to this message
+    - Clicking back will log out of unvalidated account
     - possible errors:
         - No matching user credentials
         - Network error
         - There is a catchall system to display rarer errors 
-- Back button sets user to null and clears errors and tries logging out any user
+- Back button sets user to null and clears errors and logs user out if possible
 
 
 THINGS TO CONSIDER:
-- should the back button be able to logout unvalidated users? 
-- when deactivated users refresh, should the page open with check email message?
 - Consider logging out without a network connection...
+- Consider edge cases with no tokens sent in the request and things like that
+- Consider error handling in views that require auth/validation...auto logout? perhaps not that...
+- Disabling submit button and freezing textfields after clicked / adding a loading symbol
+- Adding a resend validation email button
+- Adding a forgot password option
 

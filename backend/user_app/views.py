@@ -15,7 +15,7 @@ from django.utils.http import http_date
 from rest_framework.authtoken.models import Token
 # from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from utilities import HttpOnlyTokenAuthentication
+from utilities import HttpOnlyTokenAuthentication, HttpOnlyTokenAuthenticationEmailValidated
 
 from .models import User
 from .serializers import UserSerializer
@@ -101,7 +101,7 @@ class Admin_sign_up(APIView):
         )
 
 class All_users(APIView):
-    authentication_classes = [HttpOnlyTokenAuthentication]
+    authentication_classes = [HttpOnlyTokenAuthenticationEmailValidated]
     permission_classes = [IsAuthenticated]
 
      # Only admins (users that are both staff and superusers) may view the master list of all users
@@ -112,7 +112,7 @@ class All_users(APIView):
             return Response({"message": "Admin access only"}, status=HTTP_401_UNAUTHORIZED)
         
 class A_user(APIView):
-    authentication_classes = [HttpOnlyTokenAuthentication]
+    authentication_classes = [HttpOnlyTokenAuthenticationEmailValidated]
     permission_classes = [IsAuthenticated]
 
     def get(self, request, userid=None):
@@ -140,6 +140,14 @@ class A_user(APIView):
                 return Response(status=HTTP_204_NO_CONTENT)
         else:
             return Response({"message": "Admin access only"}, status=HTTP_401_UNAUTHORIZED)
+        
+class User_status(APIView):
+    authentication_classes = [HttpOnlyTokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({"email": request.user.email, "is_validated": request.user.validation_info == 'validated'})
+
         
 class Validation(APIView):
     # just do objects.get ...

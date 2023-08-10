@@ -8,11 +8,12 @@ export default function LoggedOutHomePage() {
     // Deal with non-login-related errors:
     const [errorMessage, setErrorMessage] = useState("")
     const [hasLoaded, setHasLoaded] = useState(false)
-    const { setUser, setLoginError, checkEmailMessages } = useContext(UserContext)
+    const { setUser, setLoginError } = useContext(UserContext)
 
     useEffect(() => {
-        async function getData() {
+        async function checkStatus() {
             try {
+                // Accessing an endpoint requiring a validated email
                 const response = await api.get(`users/me/`);
                 console.log(response)
                 setInfo(response.data.email)
@@ -20,6 +21,7 @@ export default function LoggedOutHomePage() {
             } 
             catch (err) {
                 // If a response came back, show the response (common errors here are no token given, unvalidated email)
+                console.log(err)
                 if (err.response) {
                     setLoginError(err.response.data.detail)
                 } else {
@@ -28,7 +30,7 @@ export default function LoggedOutHomePage() {
                 }
             }
         }
-        getData()
+        checkStatus()
     }, []);
 
     function logout () {

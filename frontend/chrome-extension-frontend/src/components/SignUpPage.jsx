@@ -3,7 +3,7 @@ import { api } from "../utilities.jsx";
 import UserContext from "../contexts/UserContext.jsx";
 
 export default function SignUpPage() {
-    const { setLoginError, checkEmailMessages, email, setEmail, password, setPassword } = useContext(UserContext)
+    const { setLoginError, email, setEmail, password, setPassword } = useContext(UserContext)
     
     function signUpClicked(e) {
         e.preventDefault();
@@ -15,7 +15,7 @@ export default function SignUpPage() {
                     "password": password,
                     });
                 // Display message to validate acconunt
-                setLoginError(checkEmailMessages['initial'])
+                setLoginError('Check email to activate account!')
             } 
             catch (err) {
                 // console.log(err)
