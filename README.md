@@ -116,5 +116,6 @@ THINGS TO CONSIDER:
 - Adding a forgot password option
 - Adding validation auth to other views outside of user app
 - automatically add manifest.json to dist folder upon running "npm run build"
+- email frontend website
 - cleaning up console.logs
 
