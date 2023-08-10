@@ -20,9 +20,7 @@ function App() {
           const response = await api.get(`users/status/`)
           setUser(response.data.email)
       } 
-      catch (err) {
-        console.error(err.message)
-      }
+      catch (err) {}
       setHasCheckedUser(true)
   }
   checkActiveUser()
