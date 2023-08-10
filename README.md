@@ -114,4 +114,7 @@ THINGS TO CONSIDER:
 - Disabling submit button and freezing textfields after clicked / adding a loading symbol
 - Adding a resend validation email button
 - Adding a forgot password option
+- Adding validation auth to other views outside of user app
+- automatically add manifest.json to dist folder upon running "npm run build"
+- cleaning up console.logs
 
