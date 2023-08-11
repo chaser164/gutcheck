@@ -163,9 +163,12 @@ class Validation(APIView):
     def put(self, request, validation_key):
         try: 
             user = User.objects.get(validation_info = User.hash(validation_key))
-            user.validation_info = 'validated'
-            user.save()
-            return Response({"message": "Account activated"})
+            if not user.is_expired():
+                user.validation_info = 'validated'
+                user.save()
+                return Response({"message": "Account activated"})
+            else:
+                return Response({"message": "Expired link"})
         except:
             # User not found
             return Response({"message": "Invalid link"})
