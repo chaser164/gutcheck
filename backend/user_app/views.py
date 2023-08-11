@@ -54,8 +54,6 @@ class Log_in(APIView):
         password = request.data.get("password")
         user = authenticate(username=email, password=password)
         if user:
-            # if not user.validation_info == 'validated':
-            #     return Response({"message": "Unvalidated email address"}, status=HTTP_401_UNAUTHORIZED)
             token, _ = Token.objects.get_or_create(user=user)
             life_time = datetime.now() + timedelta(days=7)
             format_life_time = http_date(life_time.timestamp())
@@ -93,12 +91,14 @@ class Admin_sign_up(APIView):
             return Response({"message": "Improper email format"}, status=HTTP_400_BAD_REQUEST)
         admin_user.is_staff = True
         admin_user.is_superuser = True
-        # Validate email
+        # Validate email and create token
         admin_user.send_validation_email()
-        # Don't give a token on signup...
-        return Response(
-            {"admin_email": admin_user.email, "message": "Check email to activate your account."}, status=HTTP_201_CREATED
-        )
+        token, _ = Token.objects.get_or_create(user=admin_user)
+        life_time = datetime.now() + timedelta(days=7)
+        format_life_time = http_date(life_time.timestamp())
+        response = Response({"user": admin_user.email})
+        response.set_cookie(key="token", value=token.key, httponly=True, secure=True, samesite='None', expires=format_life_time)
+        return response
 
 class All_users(APIView):
     authentication_classes = [HttpOnlyTokenAuthenticationEmailValidated]
@@ -147,6 +147,15 @@ class User_status(APIView):
 
     def get(self, request):
         return Response({"email": request.user.email, "is_validated": request.user.validation_info == 'validated'})
+    
+class Resend_email(APIView):
+    authentication_classes = [HttpOnlyTokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        message = request.user.send_validation_email()
+        return Response({"message": message})
+
 
         
 class Validation(APIView):

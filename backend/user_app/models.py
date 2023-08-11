@@ -46,11 +46,11 @@ class User(AbstractUser):
                 server.starttls()
                 server.login(username, password)
                 server.send_message(msg)
-            print("Email sent successfully!")
+            return "Email sent successfully!"
             # Only save database upon successful email send
             self.save()
         except Exception as e:
-            print(f"Error: {e}")
+            return "Error sending email"
 
     @staticmethod
     def hash(input):
