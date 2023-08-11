@@ -8,6 +8,7 @@ export default function LoggedOutHomePage() {
     // Deal with non-login-related errors:
     const [errorMessage, setErrorMessage] = useState("")
     const [hasLoaded, setHasLoaded] = useState(false)
+    const [url, setUrl] = useState('')
     const { setUser, setLoginError } = useContext(UserContext)
 
     useEffect(() => {
@@ -31,6 +32,12 @@ export default function LoggedOutHomePage() {
             }
         }
         checkStatus()
+
+        // chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
+        //     let url = tabs[0].url;
+        //     setUrl(url)
+        // });
+
     }, []);
 
     function logout () {
@@ -54,6 +61,7 @@ export default function LoggedOutHomePage() {
                 <>
                     <p>logged in as: </p>
                     <p>{info}</p>
+                    <p>current url: {url}</p>
                     <button onClick={logout}>Logout</button>
                     {errorMessage !== '' && <p>{errorMessage}</p>}
                 </>

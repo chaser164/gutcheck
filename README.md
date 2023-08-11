@@ -23,6 +23,10 @@ api/v1/users/status/
 api/v1/users/validation/<str:validation_key>/
 - PUT will validate and activate the account associated with the given validation key.
 
+api/v1/users/resend/
+- POST will attempt to send a validation email to the user, automatically updating the account validation key of the user
+    - REQUIRES TOKEN AUTHORIZATION.
+
 api/v1/users/signup/
 - POST will sign up a user and send a validation email. 
     - Request body must contain a username and password field. 
@@ -106,16 +110,23 @@ How the frontend login/signup works:
         - There is a catchall system to display rarer errors 
 - Back button sets user to null and clears errors and logs user out if possible
 
+- Whenever the loginError has to do with email validation, display a button that will resend the validation email
+    - Disable the send email button until a response from the backend comes
+    - when this button is clicked, display a few messages depending on the backend response
+        - email sent successfully
+        - error sending email
+        - network error (if cannot connect to backend at all)
+        - there is a catchall system in place to display any other rarer errors
+
 
 THINGS TO CONSIDER:
 - Consider logging out without a network connection...
 - Consider edge cases with no tokens sent in the request and things like that
 - Consider error handling in views that require auth/validation...auto logout? perhaps not that...
-- Disabling submit button and freezing textfields after clicked / adding a loading symbol
-- Adding a resend validation email button
 - Adding a forgot password option
 - Adding validation auth to other views outside of user app
 - automatically add manifest.json to dist folder upon running "npm run build"
 - email frontend website
 - cleaning up console.logs
+- re-enter password in signup, possibly add validators for password strength
 

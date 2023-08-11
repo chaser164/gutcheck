@@ -4,8 +4,10 @@ import UserContext from "../contexts/UserContext.jsx";
 
 export default function SignUpPage() {
     const { setUser, setLoginError, email, setEmail, password, setPassword } = useContext(UserContext)
+    const [submitLoading, setSubmitLoading] = useState(false)
     
     function loginClicked(e) {
+        setSubmitLoading(true)
         e.preventDefault();
         // Trigger 'check email' page
         async function loginAPIPost() {
@@ -38,14 +40,16 @@ export default function SignUpPage() {
                 <input
                 type="email"
                 value={email}
+                disabled={submitLoading}
                 onChange={(e) => setEmail(e.target.value)}
                 />
                 <input
                 type="password"
                 value={password}
+                disabled={submitLoading}
                 onChange={(e) => setPassword(e.target.value)}
                 />
-                <input type="submit" />
+                <input type="submit" disabled={submitLoading} />
             </form> 
         
         </>

@@ -46,9 +46,9 @@ class User(AbstractUser):
                 server.starttls()
                 server.login(username, password)
                 server.send_message(msg)
+            self.save()
             return "Email sent successfully!"
             # Only save database upon successful email send
-            self.save()
         except Exception as e:
             return "Error sending email"
 
