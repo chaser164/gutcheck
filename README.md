@@ -129,4 +129,5 @@ THINGS TO CONSIDER:
 - email frontend website
 - cleaning up console.logs
 - re-enter password in signup, possibly add validators for password strength
+- force email validation tokens to expire!
 
