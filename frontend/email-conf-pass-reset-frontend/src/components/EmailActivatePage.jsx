@@ -9,7 +9,7 @@ export default function EmailActivationPage() {
     useEffect(() => {
         async function tryActivateEmail() {
             try {
-                const response = await api.put(`users/validation/${token}`);
+                const response = await api.put(`users/validation/${token}/`);
                 setMessage(response.data.message)
             } 
             catch (err) {

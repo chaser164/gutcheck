@@ -3,12 +3,15 @@ import { api } from "../utilities.jsx";
 import UserContext from "../contexts/UserContext.jsx";
 
 export default function SignUpPage() {
-    const { setUser, setLoginError, email, setEmail, password, setPassword } = useContext(UserContext)
+    const { email, setEmail, password, setPassword, setLoginError, setUser } = useContext(UserContext)
     const [submitLoading, setSubmitLoading] = useState(false)
+    // const [label, setLabel] = useState('Send Reset Email')
+    const [emailMessage, setEmailMessage] = useState('')
+    const [showPasswordReset, setShowPasswordReset] = useState(false)
     
     function loginClicked(e) {
         setSubmitLoading(true)
-        e.preventDefault();
+        e.preventDefault()
         // Trigger 'check email' page
         async function loginAPIPost() {
             try {
@@ -33,25 +36,59 @@ export default function SignUpPage() {
         loginAPIPost();
     }
 
+    function resetPassword(e) {
+        setSubmitLoading(true)
+        e.preventDefault()
+        setEmailMessage('')
+        async function resetEmailAPIPost() {
+            try {
+                const response = await api.post(`users/reset-email/`, {
+                    "email": email,
+                    });
+                setEmailMessage(response.data.message)
+            } 
+            catch (err) {
+                if (err.message.includes('404')) {
+                    setEmailMessage('Unregistered Email')
+                } 
+                else {
+                    // Likely network error
+                    setEmailMessage(err.message)
+                }
+            }
+            setSubmitLoading(false)
+            // setLabel("Resend Reset Email")
+        }
+        resetEmailAPIPost()
+    }
+
+    function switchView() {
+        setShowPasswordReset(prev => !prev)
+    }
+
     return (
         <>
-            <form onSubmit={(e) => loginClicked(e)}>
-                <h5>Log in</h5>
-                <input
-                type="email"
-                value={email}
-                disabled={submitLoading}
-                onChange={(e) => setEmail(e.target.value)}
-                />
-                <input
-                type="password"
-                value={password}
-                disabled={submitLoading}
-                onChange={(e) => setPassword(e.target.value)}
-                />
-                <input type="submit" disabled={submitLoading} />
-            </form> 
-        
+            <>
+                <form onSubmit={(e) => showPasswordReset ? resetPassword(e) : loginClicked(e)}>
+                    <h5>{showPasswordReset ? 'Enter email to reset password:' : 'Log in'}</h5>
+                    <input
+                    type="email"
+                    value={email}
+                    disabled={submitLoading}
+                    onChange={(e) => setEmail(e.target.value)}
+                    />
+                    { !showPasswordReset &&
+                        <input
+                        type="password"
+                        value={password}
+                        disabled={submitLoading}
+                        onChange={(e) => setPassword(e.target.value)}
+                        />
+                    }
+                    <input type="submit" disabled={submitLoading}  />
+                </form>
+                { !showPasswordReset && <button onClick={switchView}>Forgot Password?</button> }
+            </>
         </>
     )
     

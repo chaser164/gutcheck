@@ -31,22 +31,27 @@ export default function LoggedOutHomePage() {
             try {
                 const response = await api.post(`users/logout/`);
                 console.log('logout successful')
+                setLoginError('')
             } 
             catch (err) {
-                console.log(err)
-                console.log('logout error')
+                // Revoke access with a network error
+                if (err.message === 'Network Error') {
+                    setLoginError(err.message)
+                    return
+                }
+                setLoginError('')
+                console.log('no credentials to delete')
             } 
         }
 
         setDisplayEmailButton(false)
         setShowSignUp(false)
         setShowLogin(false)
-        logout()
         setUser(null)
-        setLoginError('')
+        logout()
     }
     
-    function resend() {
+    function resendEmailValidation() {
         setEmailSendButtonLoading(true)
         setResendMessage('')
         async function resendAPIPost() {
@@ -55,6 +60,11 @@ export default function LoggedOutHomePage() {
                 setResendMessage(response.data.message)
             } 
             catch (err) {
+                // Revoke access with a network error
+                if (err.message === 'Network Error') {
+                    setLoginError(err.message)
+                    return
+                }
                 setResendMessage(err.message)
             }
             setEmailSendButtonLoading(false)
@@ -82,7 +92,7 @@ export default function LoggedOutHomePage() {
             }
             { displayEmailButton && 
                 <>
-                    <button onClick={resend} disabled={emailSendButtonLoading}>resend validation email</button>
+                    <button onClick={resendEmailValidation} disabled={emailSendButtonLoading}>resend validation email</button>
                     { resendMessage !== '' && <p>{resendMessage}</p>}
                 </>
                 

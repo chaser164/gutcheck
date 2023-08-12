@@ -48,6 +48,15 @@ api/v1/users/admin-signup/
     - Response will be username and token.
     - UNPROTECTED ENDPOINT AT THE MOMENT FOR DEV PURPOSES; THIS MUST CHANGE IN THE FUTURE!!!
 
+api/v1/users/reset-email/
+- POST will send password reset email
+    - Request body must contain a registered email address
+    - No email sent if email is not registered
+
+api/v1/users/reset-password/<reset_token>/
+- PUT will reset password
+    - password must be in body of request
+
 -----------------------------------------------------------------------
 
 api/v1/posts/
@@ -121,13 +130,10 @@ How the frontend login/signup works:
 
 
 THINGS TO CONSIDER:
-- Consider logging out without a network connection...
 - Consider edge cases with no tokens sent in the request and things like that
 - Consider error handling in views that require auth/validation...auto logout? perhaps not that...
-- Adding a forgot password option
 - Adding validation auth to other views outside of user app
 - automatically add manifest.json to dist folder upon running "npm run build"
-- email frontend website
 - cleaning up console.logs
 - re-enter password in signup, possibly add validators for password strength
 

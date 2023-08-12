@@ -20,7 +20,12 @@ function App() {
           const response = await api.get(`users/status/`)
           setUser(response.data.email)
       } 
-      catch (err) {}
+      catch (err) {
+        // Revoke access with a network error
+          if (err.message === 'Network Error') {
+              setLoginError(err.message)
+          }
+      }
       setHasCheckedUser(true)
   }
   checkActiveUser()

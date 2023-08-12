@@ -6,7 +6,6 @@ import UserContext from "../contexts/UserContext.jsx";
 export default function LoggedOutHomePage() {
     const [info, setInfo] = useState("")
     // Deal with non-login-related errors:
-    const [errorMessage, setErrorMessage] = useState("")
     const [hasLoaded, setHasLoaded] = useState(false)
     const [url, setUrl] = useState('')
     const { setUser, setLoginError } = useContext(UserContext)
@@ -26,7 +25,7 @@ export default function LoggedOutHomePage() {
                 if (err.response) {
                     setLoginError(err.response.data.detail)
                 } else {
-                    //Otherwise show the request message (likely a newtork error)
+                    //Otherwise show the request message (likely a network error)
                     setLoginError(err.message)
                 }
             }
@@ -43,13 +42,13 @@ export default function LoggedOutHomePage() {
     function logout () {
         async function logoutAPIPost() {
             try {
-              const response = await api.post(`users/logout/`);
-            console.log(response)
-            setUser(null)
+                const response = await api.post(`users/logout/`);
+                console.log(response)
+                setUser(null)
             } 
             catch (err) {
-                setErrorMessage(err.message)
-                return
+                // Revoke access with any error
+                setLoginError(err.message)
             } 
         }
         logoutAPIPost();
@@ -63,7 +62,6 @@ export default function LoggedOutHomePage() {
                     <p>{info}</p>
                     <p>current url: {url}</p>
                     <button onClick={logout}>Logout</button>
-                    {errorMessage !== '' && <p>{errorMessage}</p>}
                 </>
             }
         </>
