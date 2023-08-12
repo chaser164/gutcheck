@@ -148,6 +148,7 @@ class User_status(APIView):
     def get(self, request):
         return Response({"email": request.user.email, "is_validated": request.user.validation_info == 'validated'})
     
+
 class Resend_email(APIView):
     authentication_classes = [HttpOnlyTokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -155,7 +156,6 @@ class Resend_email(APIView):
     def post(self, request):
         message = request.user.send_validation_email()
         return Response({"message": message})
-
 
         
 class Validation(APIView):
@@ -172,3 +172,26 @@ class Validation(APIView):
         except:
             # User not found
             return Response({"message": "Invalid link"})
+        
+
+class Send_password_email(APIView):
+    def post(self, request):
+        user = get_object_or_404(User, email=request.data['email'])
+        message = user.send_reset_email()
+        return Response({"message": message})
+    
+
+class Password_reset(APIView):
+    def put(self, request, reset_key):
+        try: 
+            user = User.objects.get(validation_info = User.hash(reset_key))
+            if not user.is_expired():
+                user.set_password(request.data['password'])
+                user.validation_info = 'validated'
+                user.save()
+                return Response({"message": "Password updated!"})
+            else:
+                return Response({"message": "Expired link, password not updated"})
+        except:
+            # User not found
+            return Response({"message": "Invalid link, password not updated"})

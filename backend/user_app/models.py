@@ -26,7 +26,7 @@ class User(AbstractUser):
             # Calculate the time difference
             time_difference = timezone.now() - self.token_timestamp
             # Users have a minute to use the token
-            if time_difference.total_seconds() <= 60:
+            if time_difference.total_seconds() <= 100:
                 return False
             else:
                 return True
@@ -44,7 +44,7 @@ class User(AbstractUser):
         self.token_timestamp = timezone.now()
 
         msg = MIMEMultipart()
-        msg['Subject'] = f'GutCheck Email Activation'
+        msg['Subject'] = 'GutCheck Email Activation'
         msg['From'] = 'creynders22@gmail.com'
         msg['To'] = 'chase.reynders@gmail.com'
 
@@ -61,7 +61,7 @@ class User(AbstractUser):
                     display: inline-block;
                     padding: 15px 30px;
                     background-color: #a8dcff;
-                    color: #fff;
+                    color: white;
                     text-decoration: none;
                     border: none;
                     border-radius: 8px;
@@ -112,12 +112,94 @@ class User(AbstractUser):
                 server.login(username, password)
                 server.send_message(msg)
             self.save()
-            sent = True
             return "Email sent successfully!"
             # Only save database upon successful email send
         except Exception as e:
             return "Error sending email"
         
+
+    def send_reset_email(self):
+            print('here!!!!')
+            # Make a validation key by hashing a UUID
+            validation_key = User.hash(uuid.uuid4())
+            # Store the hash of the validation key in the validation_info field
+            self.validation_info = User.hash(validation_key)
+            # Update timestamp of when the token was created
+            self.token_timestamp = timezone.now()
+
+            msg = MIMEMultipart()
+            msg['Subject'] = 'GutCheck Password Reset'
+            msg['From'] = 'creynders22@gmail.com'
+            msg['To'] = 'chase.reynders@gmail.com'
+
+            # HTML content for the email body
+            html_body = f"""
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>My Web Page</title>
+                <style>
+                    .big-blue-button {{
+                        display: inline-block;
+                        padding: 15px 30px;
+                        background-color: #a8dcff;
+                        color: white;
+                        text-decoration: none;
+                        border: none;
+                        border-radius: 8px;
+                        font-size: 18px;
+                        font-weight: bold;
+                    }}
+
+                    .big-blue-button:hover {{
+                        background-color: #7dc2f3;
+                    }}
+                </style>
+            </head>
+            <body>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td align="center">
+                            <h1>Hello from GutCheck!</h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center">
+                            <a href="http://localhost:5174/reset/{validation_key}/" class="big-blue-button">
+                                Click Here to Reset Password
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </body>
+            </html>
+            """
+            # Attach the HTML content to the email message
+            html_part = MIMEText(html_body, "html")
+            msg.attach(html_part)
+
+            # Send the message via our own SMTP server.
+            smtp_server = 'smtp.gmail.com'
+            smtp_port = 587
+
+            username = 'creynders22@gmail.com'
+            # app-specific password, per google's requirements (stored in .env file)
+            load_dotenv()
+            password = os.getenv('APP_PASSWORD')
+
+            try:
+                with smtplib.SMTP(smtp_server, smtp_port) as server:
+                    server.starttls()
+                    server.login(username, password)
+                    server.send_message(msg)
+                self.save()
+                return "Email sent successfully!"
+                # Only save database upon successful email send
+            except Exception as e:
+                return "Error sending email"
+            
 
     @staticmethod
     def hash(input):
