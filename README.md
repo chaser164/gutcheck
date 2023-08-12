@@ -126,7 +126,7 @@ How the frontend login/signup works:
         - error sending email
         - network error (if cannot connect to backend at all)
         - there is a catchall system in place to display any other rarer errors
-- Email activation links expire after 1 minute
+- Email activation links expire after 100 seconds
 
 
 THINGS TO CONSIDER:
