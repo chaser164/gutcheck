@@ -38,7 +38,10 @@ class Sign_up(APIView):
             return Response({"message": "Improper email format"}, status=HTTP_400_BAD_REQUEST)
 
         # Validate email
-        user.send_validation_email()
+        email_status = user.send_validation_email()
+        # In case of unsuccessful email send...
+        if 'successfully' not in email_status:
+            return Response({"message": 'Error sending email, try again'}, status=HTTP_400_BAD_REQUEST)
         token, _ = Token.objects.get_or_create(user=user)
         life_time = datetime.now() + timedelta(days=7)
         format_life_time = http_date(life_time.timestamp())

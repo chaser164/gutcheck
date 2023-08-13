@@ -3,7 +3,7 @@ import { api } from "../utilities.jsx";
 import UserContext from "../contexts/UserContext.jsx";
 
 export default function SignUpPage() {
-    const { setLoginError, email, setEmail, password, setPassword } = useContext(UserContext)
+    const { setErrorScreen, email, setEmail, password, setPassword } = useContext(UserContext)
     const [submitLoading, setSubmitLoading] = useState(false)
     
     function signUpClicked(e) {
@@ -17,16 +17,16 @@ export default function SignUpPage() {
                     "password": password,
                     });
                 // Display message to validate acconunt
-                setLoginError('Check email to activate account!')
+                setErrorScreen('Check email to activate account!')
             } 
             catch (err) {
                 // console.log(err)
                 if (err.message.includes('400')) {
                     // Either email already in use for another account OR invalid email format message
-                    setLoginError(err.response.data.message)
+                    setErrorScreen(err.response.data.message)
                 } else {
                     // Likely network error message
-                    setLoginError(err.message)
+                    setErrorScreen(err.message)
                 }
                 return
             } 

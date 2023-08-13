@@ -8,7 +8,7 @@ import UserContext from './contexts/UserContext.jsx'
 
 function App() {
   const [user, setUser] = useState(null)
-  const [loginError, setLoginError] = useState('')
+  const [errorScreen, setErrorScreen] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [hasCheckedUser, setHasCheckedUser] = useState(false)
@@ -23,7 +23,7 @@ function App() {
       catch (err) {
         // Revoke access with a network error
           if (err.message === 'Network Error') {
-              setLoginError(err.message)
+            setErrorScreen(err.message)
           }
       }
       setHasCheckedUser(true)
@@ -35,8 +35,8 @@ function App() {
     <UserContext.Provider 
       value = {{ 
         setUser, 
-        loginError, 
-        setLoginError, 
+        errorScreen, 
+        setErrorScreen, 
         email,
         setEmail,
         password,
@@ -45,7 +45,7 @@ function App() {
       {hasCheckedUser &&
         <>
           <h2>GutCheck</h2>
-          { (user && loginError == '') ? <LoggedInHomePage /> : <LoggedOutHomePage /> }  
+          { (user && errorScreen == '') ? <LoggedInHomePage /> : <LoggedOutHomePage /> }  
         </>
       }
     </UserContext.Provider>

@@ -2,13 +2,13 @@ import { useEffect, useState, useContext } from "react";
 import { api } from "../utilities";
 import UserContext from "../contexts/UserContext.jsx";
 
-// In the future this page will be like the home page for logged in users. Keep in mind that setting the logInError to something non-empty 
+// In the future this page will be like the home page for logged in users. Keep in mind that setting the errorScreen to something non-empty 
 export default function LoggedOutHomePage() {
     const [info, setInfo] = useState("")
     // Deal with non-login-related errors:
     const [hasLoaded, setHasLoaded] = useState(false)
     const [url, setUrl] = useState('')
-    const { setUser, setLoginError } = useContext(UserContext)
+    const { setUser, setErrorScreen } = useContext(UserContext)
 
     useEffect(() => {
         async function checkStatus() {
@@ -23,10 +23,10 @@ export default function LoggedOutHomePage() {
                 // If a response came back, show the response (common errors here are no token given, unvalidated email)
                 console.log(err)
                 if (err.response) {
-                    setLoginError(err.response.data.detail)
+                    setErrorScreen(err.response.data.detail)
                 } else {
                     //Otherwise show the request message (likely a network error)
-                    setLoginError(err.message)
+                    setErrorScreen(err.message)
                 }
             }
         }
@@ -47,8 +47,12 @@ export default function LoggedOutHomePage() {
                 setUser(null)
             } 
             catch (err) {
+                if (err.message === 'Network Error') {
+                    setErrorScreen('Network Error, failed to log out')
+                    return
+                }
                 // Revoke access with any error
-                setLoginError(err.message)
+                setErrorScreen(err.message)
             } 
         }
         logoutAPIPost();

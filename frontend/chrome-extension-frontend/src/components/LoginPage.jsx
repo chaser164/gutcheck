@@ -3,7 +3,7 @@ import { api } from "../utilities.jsx";
 import UserContext from "../contexts/UserContext.jsx";
 
 export default function SignUpPage() {
-    const { email, setEmail, password, setPassword, setLoginError, setUser } = useContext(UserContext)
+    const { email, setEmail, password, setPassword, setErrorScreen, setUser } = useContext(UserContext)
     const [submitLoading, setSubmitLoading] = useState(false)
     // const [label, setLabel] = useState('Send Reset Email')
     const [emailMessage, setEmailMessage] = useState('')
@@ -25,10 +25,10 @@ export default function SignUpPage() {
                 // console.log(err)
                 if (err.message.includes('404')) {
                     // No matching user credentials message
-                    setLoginError('No matching user credentials')
+                    setErrorScreen('No matching user credentials')
                 } else {
                     // Likely a Network error message
-                    setLoginError(err.message)
+                    setErrorScreen(err.message)
                 }
                 return
             } 

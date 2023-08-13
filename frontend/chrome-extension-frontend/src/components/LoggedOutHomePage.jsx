@@ -10,36 +10,36 @@ export default function LoggedOutHomePage() {
     const [displayEmailButton, setDisplayEmailButton] = useState(false)
     const [resendMessage, setResendMessage] = useState('')
     const [emailSendButtonLoading, setEmailSendButtonLoading] = useState(false)
-    const { loginError, setLoginError, setUser } = useContext(UserContext)
+    const { errorScreen, setErrorScreen, setUser } = useContext(UserContext)
 
-    // Based on log in error, set the visibility of the resend email button / resend message
+    // Based on error screen, set the visibility of the resend email button / resend message
     useEffect(() => {
-    if ((loginError == 'Check email to activate account!' || loginError == 'Unvalidated Email')) {
+    if ((errorScreen == 'Check email to activate account!' || errorScreen == 'Unvalidated Email')) {
         setDisplayEmailButton(true)
     }
     else {
         setDisplayEmailButton(false)
         setResendMessage('')
     }
-}, [loginError]);
+}, [errorScreen]);
     
 
-    // Revert display to original, get rid of loginErrors, don't assign a user, ensure any tokens are deleted
+    // Revert display to original, get rid of error screen message, don't assign a user, ensure any tokens are deleted
     function reset() {
         // Log out if possible for added layer of protection
         async function logout() {
             try {
                 const response = await api.post(`users/logout/`);
                 console.log('logout successful')
-                setLoginError('')
+                setErrorScreen('')
             } 
             catch (err) {
                 // Revoke access with a network error
                 if (err.message === 'Network Error') {
-                    setLoginError(err.message)
+                    setErrorScreen('Network Error, failed to log out')
                     return
                 }
-                setLoginError('')
+                setErrorScreen('')
                 console.log('no credentials to delete')
             } 
         }
@@ -62,7 +62,7 @@ export default function LoggedOutHomePage() {
             catch (err) {
                 // Revoke access with a network error
                 if (err.message === 'Network Error') {
-                    setLoginError(err.message)
+                    setErrorScreen(err.message)
                     return
                 }
                 setResendMessage(err.message)
@@ -73,7 +73,7 @@ export default function LoggedOutHomePage() {
     }
     return (
         <>
-            { loginError == '' ? 
+            { errorScreen == '' ? 
             <>
                 {/* If either button is clicked, show that page and hide the buttons */}
                 { !(showSignUp || showLogin) && (
@@ -88,7 +88,7 @@ export default function LoggedOutHomePage() {
                     { showLogin && <LoginPage /> }
                 </> 
             </> : 
-            <p>{loginError}</p>
+            <p>{errorScreen}</p>
             }
             { displayEmailButton && 
                 <>
@@ -98,7 +98,8 @@ export default function LoggedOutHomePage() {
                 
             }
             {/* Back button to get back to the initial state of 2 buttons (sign up/login) */}
-            {(showSignUp || showLogin || (loginError !== '')) && <button onClick={reset}>back</button>}
+            {/* Don't allow any back button clicking upon network error */}
+            {((showSignUp || showLogin || (errorScreen !== '') && !errorScreen.includes('Network Error'))) && <button onClick={reset}>back</button>}
         </>
     )
 }
