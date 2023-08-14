@@ -193,9 +193,15 @@ class Password_reset(APIView):
                 user.validation_or_reset_tokens = ''
                 user.validated = True
                 user.save()
+                # Invalidate all tokens associated with current logged in users (if any)
+                try:
+                    Token.objects.filter(user=user).delete()
+                except:
+                    pass
                 return Response({"message": "Password updated!"})
             else:
                 return Response({"message": "Expired link, password not updated"})
-        except:
+        except Exception as e:
+            print("An error occurred:", e)
             # User not found
             return Response({"message": "Invalid link, password not updated"})

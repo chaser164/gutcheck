@@ -15,11 +15,13 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     validation_or_reset_tokens = models.CharField(blank=True, max_length=200)
     validated = models.BooleanField(default=False)
-    # Set datetime at moment of creation as default
+    # Set datetime at 5 days before moment of creation as default (expired at the start)
     token_timestamp = models.DateTimeField(default=timezone.now() - timedelta(days=5))
     # The related names for the upvoters and downvoters M2M fields (defined in Post model) are upvoted_posts and downvoted_posts, respectively
     USERNAME_FIELD="email"
     REQUIRED_FIELDS=[]
+
+    WEBPAGE_BASE_URL = 'http://localhost:5174/'
 
     def is_expired(self):
         # Check if the token_timestamp is not None
@@ -85,7 +87,7 @@ class User(AbstractUser):
                 </tr>
                 <tr>
                     <td align="center">
-                        <a href="http://localhost:5174/validation/{validation_key}/" class="big-blue-button">
+                        <a href="{self.WEBPAGE_BASE_URL}validation/{validation_key}/" class="big-blue-button">
                             Confirm Email
                         </a>
                     </td>
@@ -168,7 +170,7 @@ class User(AbstractUser):
                     </tr>
                     <tr>
                         <td align="center">
-                            <a href="http://localhost:5174/reset/{reset_key}/" class="big-blue-button">
+                            <a href="{self.WEBPAGE_BASE_URL}reset/{reset_key}/" class="big-blue-button">
                                 Click to Reset Password
                             </a>
                         </td>
