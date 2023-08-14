@@ -133,9 +133,8 @@ THINGS TO CONSIDER:
 - Consider edge cases with no tokens sent in the request and things like that
 - Consider error handling in views that require auth/validation...auto logout? perhaps not that...
 - Adding validation auth to other views outside of user app
-- automatically add manifest.json to dist folder upon running "npm run build"
 - cleaning up console.logs
 - re-enter password in signup, possibly add validators for password strength
-- Remove credentials from the fontend?
 - change back button to logut in unvalidated email pages?
 - consider differences between webpage network vs chrome extension network
+- separate password reset token/expiration? is this needed?

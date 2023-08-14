@@ -11,8 +11,24 @@ export default function LoggedOutHomePage() {
     const [resendMessage, setResendMessage] = useState('')
     const [emailSendButtonLoading, setEmailSendButtonLoading] = useState(false)
     const { errorScreen, setErrorScreen, user, setUser } = useContext(UserContext)
-
+    
+    async function logout() {
+        try {
+            const response = await api.post(`users/logout/`);
+            console.log('logout successful')
+        } 
+        catch (err) {
+            console.log('logout attempt failed')
+            // Revoke access with a network error
+            if (err.message === 'Network Error') {
+                setErrorScreen('Network Error, failed to log out')
+                return
+            }
+            console.log(err.message)
+        } 
+    }
     // Based on error screen, set the visibility of the resend email button / resend message
+    // If not a network error or email-related message, try to log out upon error!
     useEffect(() => {
     if ((errorScreen === 'Check email to activate account!' || errorScreen === 'Unvalidated Email')) {
         setDisplayEmailButton(true)
@@ -20,27 +36,17 @@ export default function LoggedOutHomePage() {
     else {
         setDisplayEmailButton(false)
         setResendMessage('')
+        console.log("err: ", errorScreen)
+        console.log(errorScreen !== '')
+        if (errorScreen !== '' && !errorScreen.includes('Network Error')) {
+            logout()
+        }
     }
 }, [errorScreen]);
     
 
     // Revert display to original, get rid of error screen message, don't assign a user, ensure any tokens are deleted
     function reset() {
-        // Log out if possible for added layer of protection
-        async function logout() {
-            try {
-                const response = await api.post(`users/logout/`);
-                console.log('logout successful')
-            } 
-            catch (err) {
-                // Revoke access with a network error
-                if (err.message === 'Network Error') {
-                    setErrorScreen('Network Error, failed to log out')
-                    return
-                }
-                console.log(err.message)
-            } 
-        }
         setDisplayEmailButton(false)
         setShowSignUp(false)
         setShowLogin(false)

@@ -1,17 +1,24 @@
 import { useState, useContext } from "react";
 import { api } from "../utilities.jsx";
 import UserContext from "../contexts/UserContext.jsx";
+import { useSyncExternalStore } from "react";
 
 export default function SignUpPage() {
     const { email, setEmail, password, setPassword, setErrorScreen, setUser } = useContext(UserContext)
     const [submitLoading, setSubmitLoading] = useState(false)
-    // const [label, setLabel] = useState('Send Reset Email')
     const [emailMessage, setEmailMessage] = useState('')
     const [showPasswordReset, setShowPasswordReset] = useState(false)
+    const [loginErrorMessage, setLoginErrorMessage] = useState('')
     
     function loginClicked(e) {
         setSubmitLoading(true)
+        setLoginErrorMessage('')
         e.preventDefault()
+        if (!(email && password)) {
+            setLoginErrorMessage('Fields cannot be empty')
+            setSubmitLoading(false)
+            return
+        }
         // Trigger 'check email' page
         async function loginAPIPost() {
             try {
@@ -25,7 +32,8 @@ export default function SignUpPage() {
                 // console.log(err)
                 if (err.message.includes('404')) {
                     // No matching user credentials message
-                    setErrorScreen('No matching user credentials')
+                    setLoginErrorMessage('No matching user credentials')
+                    setSubmitLoading(false)
                 } else {
                     // Likely a Network error message
                     setErrorScreen(err.message)
@@ -93,6 +101,7 @@ export default function SignUpPage() {
                     <input type="submit" disabled={submitLoading}  />
                 </form>
                 { !showPasswordReset && <button onClick={switchView}>Forgot Password?</button> }
+                { !showPasswordReset && <p>{ loginErrorMessage }</p> }
                 { showPasswordReset && emailMessage && <p>{emailMessage}</p> }
             </>
         </>
