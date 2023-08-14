@@ -8,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
       
     class Meta:
         model = User
-        fields = ['id', 'email', 'password', 'validation_info', 'admin', 'posts']
+        fields = ['id', 'email', 'password', 'validated', 'admin', 'posts']
 
     def get_admin(self, instance):
         return instance.is_staff and instance.is_superuser

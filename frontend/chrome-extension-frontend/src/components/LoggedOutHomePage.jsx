@@ -10,11 +10,11 @@ export default function LoggedOutHomePage() {
     const [displayEmailButton, setDisplayEmailButton] = useState(false)
     const [resendMessage, setResendMessage] = useState('')
     const [emailSendButtonLoading, setEmailSendButtonLoading] = useState(false)
-    const { errorScreen, setErrorScreen, setUser } = useContext(UserContext)
+    const { errorScreen, setErrorScreen, user, setUser } = useContext(UserContext)
 
     // Based on error screen, set the visibility of the resend email button / resend message
     useEffect(() => {
-    if ((errorScreen == 'Check email to activate account!' || errorScreen == 'Unvalidated Email')) {
+    if ((errorScreen === 'Check email to activate account!' || errorScreen === 'Unvalidated Email')) {
         setDisplayEmailButton(true)
     }
     else {
@@ -31,7 +31,6 @@ export default function LoggedOutHomePage() {
             try {
                 const response = await api.post(`users/logout/`);
                 console.log('logout successful')
-                setErrorScreen('')
             } 
             catch (err) {
                 // Revoke access with a network error
@@ -39,16 +38,17 @@ export default function LoggedOutHomePage() {
                     setErrorScreen('Network Error, failed to log out')
                     return
                 }
-                setErrorScreen('')
-                console.log('no credentials to delete')
+                console.log(err.message)
             } 
         }
-
         setDisplayEmailButton(false)
         setShowSignUp(false)
         setShowLogin(false)
+        if (user) {
+            logout()
+        }
         setUser(null)
-        logout()
+        setErrorScreen('')
     }
     
     function resendEmailValidation() {
@@ -73,7 +73,7 @@ export default function LoggedOutHomePage() {
     }
     return (
         <>
-            { errorScreen == '' ? 
+            { !errorScreen ? 
             <>
                 {/* If either button is clicked, show that page and hide the buttons */}
                 { !(showSignUp || showLogin) && (
@@ -99,7 +99,7 @@ export default function LoggedOutHomePage() {
             }
             {/* Back button to get back to the initial state of 2 buttons (sign up/login) */}
             {/* Don't allow any back button clicking upon network error */}
-            {((showSignUp || showLogin || (errorScreen !== '') && !errorScreen.includes('Network Error'))) && <button onClick={reset}>back</button>}
+            {((showSignUp || showLogin || errorScreen) && !errorScreen.includes('Network Error')) && <button onClick={reset}>back</button>}
         </>
     )
 }

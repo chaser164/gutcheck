@@ -53,7 +53,12 @@ export default function SignUpPage() {
                 } 
                 else {
                     // Likely network error
-                    setEmailMessage(err.message)
+                    if (err.message.includes('Network Error')) {
+                        setErrorScreen(err.message)
+                    } 
+                    else {
+                        setEmailMessage(err.message)
+                    }
                 }
             }
             setSubmitLoading(false)
@@ -88,6 +93,7 @@ export default function SignUpPage() {
                     <input type="submit" disabled={submitLoading}  />
                 </form>
                 { !showPasswordReset && <button onClick={switchView}>Forgot Password?</button> }
+                { showPasswordReset && emailMessage && <p>{emailMessage}</p> }
             </>
         </>
     )

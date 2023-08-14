@@ -3,7 +3,7 @@ import { api } from "../utilities.jsx";
 import UserContext from "../contexts/UserContext.jsx";
 
 export default function SignUpPage() {
-    const { setErrorScreen, email, setEmail, password, setPassword } = useContext(UserContext)
+    const { setErrorScreen, email, setEmail, password, setPassword, setUser } = useContext(UserContext)
     const [submitLoading, setSubmitLoading] = useState(false)
     
     function signUpClicked(e) {
@@ -15,8 +15,9 @@ export default function SignUpPage() {
                 const response = await api.post(`users/signup/`, {
                     "email": email,
                     "password": password,
-                    });
+                });
                 // Display message to validate acconunt
+                setUser(response.data.user)
                 setErrorScreen('Check email to activate account!')
             } 
             catch (err) {

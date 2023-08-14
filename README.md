@@ -137,3 +137,4 @@ THINGS TO CONSIDER:
 - cleaning up console.logs
 - re-enter password in signup, possibly add validators for password strength
 - Remove credentials from the fontend?
+- change back button to logut in unvalidated email pages?

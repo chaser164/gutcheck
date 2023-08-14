@@ -23,17 +23,18 @@ function App() {
       catch (err) {
         // Revoke access with a network error
           if (err.message === 'Network Error') {
-            setErrorScreen(err.message)
+              setErrorScreen(err.message)
           }
       }
       setHasCheckedUser(true)
   }
   checkActiveUser()
   }, []);
-
+  
   return (
     <UserContext.Provider 
       value = {{ 
+        user,
         setUser, 
         errorScreen, 
         setErrorScreen, 

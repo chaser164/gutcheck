@@ -13,7 +13,8 @@ from datetime import timedelta
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
-    validation_info = models.CharField(blank=True, max_length=200)
+    validation_or_reset_tokens = models.CharField(blank=True, max_length=200)
+    validated = models.BooleanField(default=False)
     # Set datetime at moment of creation as default
     token_timestamp = models.DateTimeField(default=timezone.now() - timedelta(days=5))
     # The related names for the upvoters and downvoters M2M fields (defined in Post model) are upvoted_posts and downvoted_posts, respectively
@@ -38,11 +39,11 @@ class User(AbstractUser):
     def send_validation_email(self):
         # Make a validation key by hashing a UUID
         validation_key = User.hash(uuid.uuid4())
-        # Store the hash of the validation key in the validation_info field
-        self.validation_info = User.hash(validation_key)
+        # Store the hash of the validation key in the validation_or_reset_tokens field
+        self.validation_or_reset_tokens = User.hash(validation_key)
         # Update timestamp of when the token was created
         self.token_timestamp = timezone.now()
-
+        
         msg = MIMEMultipart()
         msg['Subject'] = 'GutCheck Email Activation'
         msg['From'] = 'creynders22@gmail.com'
@@ -122,8 +123,8 @@ class User(AbstractUser):
             print('here!!!!')
             # Make a reset key by hashing a UUID
             reset_key = User.hash(uuid.uuid4())
-            # Store the hash of the validation key in the validation_info field
-            self.validation_info = User.hash(reset_key)
+            # Store the hash of the validation key in the validation_or_reset_tokens field
+            self.validation_or_reset_tokens = User.hash(reset_key)
             # Update timestamp of when the token was created
             self.token_timestamp = timezone.now()
 

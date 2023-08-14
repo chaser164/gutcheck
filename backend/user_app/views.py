@@ -38,10 +38,8 @@ class Sign_up(APIView):
             return Response({"message": "Improper email format"}, status=HTTP_400_BAD_REQUEST)
 
         # Validate email
-        email_status = user.send_validation_email()
+        user.send_validation_email()
         # In case of unsuccessful email send...
-        if 'successfully' not in email_status:
-            return Response({"message": 'Error sending email, try again'}, status=HTTP_400_BAD_REQUEST)
         token, _ = Token.objects.get_or_create(user=user)
         life_time = datetime.now() + timedelta(days=7)
         format_life_time = http_date(life_time.timestamp())
@@ -149,7 +147,7 @@ class User_status(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        return Response({"email": request.user.email, "is_validated": request.user.validation_info == 'validated'})
+        return Response({"email": request.user.email, "is_validated": request.user.validated})
     
 
 class Resend_email(APIView):
@@ -165,9 +163,10 @@ class Validation(APIView):
     # just do objects.get ...
     def put(self, request, validation_key):
         try: 
-            user = User.objects.get(validation_info = User.hash(validation_key))
+            user = User.objects.get(validation_or_reset_tokens = User.hash(validation_key))
             if not user.is_expired():
-                user.validation_info = 'validated'
+                user.validation_or_reset_tokens = ''
+                user.validated = True
                 user.save()
                 return Response({"message": "Account activated"})
             else:
@@ -187,10 +186,12 @@ class Send_password_email(APIView):
 class Password_reset(APIView):
     def put(self, request, reset_key):
         try: 
-            user = User.objects.get(validation_info = User.hash(reset_key))
+            user = User.objects.get(validation_or_reset_tokens = User.hash(reset_key))
             if not user.is_expired():
                 user.set_password(request.data['password'])
-                user.validation_info = 'validated'
+
+                user.validation_or_reset_tokens = ''
+                user.validated = True
                 user.save()
                 return Response({"message": "Password updated!"})
             else:

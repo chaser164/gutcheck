@@ -35,5 +35,5 @@ class HttpOnlyTokenAuthentication(TokenAuthentication):
 class HttpOnlyTokenAuthenticationEmailValidated(HttpOnlyTokenAuthentication):
     @staticmethod
     def checkValidated(user):
-        if user.validation_info != 'validated':
+        if not user.validated:
             raise AuthenticationFailed('Unvalidated Email')
