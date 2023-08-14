@@ -138,3 +138,4 @@ THINGS TO CONSIDER:
 - re-enter password in signup, possibly add validators for password strength
 - Remove credentials from the fontend?
 - change back button to logut in unvalidated email pages?
+- consider differences between webpage network vs chrome extension network
