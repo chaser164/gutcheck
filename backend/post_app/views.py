@@ -10,14 +10,14 @@ from rest_framework.status import (
     HTTP_401_UNAUTHORIZED,
     HTTP_400_BAD_REQUEST,
 )
-from rest_framework.authentication import TokenAuthentication
+from utilities import HttpOnlyTokenAuthenticationEmailValidated
 from rest_framework.permissions import IsAuthenticated
 
 from .models import Post
 from .serializers import PostSerializer
 
 class All_posts(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyTokenAuthenticationEmailValidated]
     permission_classes = [IsAuthenticated]
     # The alternative: using "if request.user.is_authenticated: ..." for manually deciding which logic require authentication
 
@@ -33,24 +33,21 @@ class All_posts(APIView):
             try:
                 new_post.full_clean()
             except ValidationError as error:
-                return Response({"validation error": error}, status=HTTP_400_BAD_REQUEST)
+                return Response({"message": error}, status=HTTP_400_BAD_REQUEST)
             new_post.save()
             return Response(PostSerializer(new_post).data, status=HTTP_201_CREATED)
         else:
             return Response({"message": "Invalid request body"}, status=HTTP_400_BAD_REQUEST)
 
 class Posts_by_website(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyTokenAuthenticationEmailValidated]
     permission_classes = [IsAuthenticated]
 
     # It is unideal to use POST here. I'm doing this because I need to send a body because of the complex parameter (a URL) and get requests don't typically send a body
     def post(self, request):
-        if 'website' in request.data and request.data['website']:
-            posts = Post.objects.filter(website = request.data['website'])
-            serializedPosts = PostSerializer(posts, many=True)
-            return Response({"posts": serializedPosts.data})
-        else:
-            return Response({"message": "Invalid request body"}, status=HTTP_400_BAD_REQUEST)
+        posts = Post.objects.filter(website = request.data['website'])
+        serializedPosts = PostSerializer(posts, many=True)
+        return Response({"posts": serializedPosts.data})
         
     def delete(self, request):
         # Ensure valid body
@@ -71,7 +68,7 @@ class Posts_by_website(APIView):
 
 
 class A_post(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyTokenAuthenticationEmailValidated]
     permission_classes = [IsAuthenticated]
 
     def get(self, request, postid, vote=None):
@@ -110,7 +107,7 @@ class A_post(APIView):
             post.upvoters.remove(request.user)
             return Response({"message": "Abstained successfully"}, status=HTTP_204_NO_CONTENT)
         else:
-            return Response({"message": "Invalid URL"}, status=HTTP_404_NOT_FOUND)
+            return Response({"message": "Invalid action"}, status=HTTP_404_NOT_FOUND)
         
     
         

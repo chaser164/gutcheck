@@ -130,11 +130,7 @@ How the frontend login/signup works:
 
 
 THINGS TO CONSIDER:
-- Consider edge cases with no tokens sent in the request and things like that
-- Consider error handling in views that require auth/validation...auto logout? perhaps not that...
-- Adding validation auth to other views outside of user app
 - cleaning up console.logs
-- re-enter password in signup, possibly add validators for password strength
-- change back button to logut in unvalidated email pages?
+- change back button to logut in unvalidated email pages? needed?
 - consider differences between webpage network vs chrome extension network
 - separate password reset token/expiration? is this needed?
