@@ -12,6 +12,21 @@ export default function LoggedOutHomePage() {
     const [emailSendButtonLoading, setEmailSendButtonLoading] = useState(false)
     const { errorScreen, setErrorScreen, user, setUser } = useContext(UserContext)
     
+    // Based on error screen, set the visibility of the resend email button / resend message
+    // If not a network error or email-related message, try to log out upon error!
+    useEffect(() => {
+        if ((errorScreen === 'Check email to activate account!' || errorScreen === 'Unvalidated Email')) {
+            setDisplayEmailButton(true)
+        }
+        else {
+            setDisplayEmailButton(false)
+            setResendMessage('')
+            if (errorScreen !== '' && !errorScreen.includes('Network Error')) {
+                logout()
+            }
+        }
+    }, [errorScreen]);
+    
     async function logout() {
         try {
             const response = await api.post(`users/logout/`);
@@ -27,23 +42,6 @@ export default function LoggedOutHomePage() {
             console.log(err.message)
         } 
     }
-    // Based on error screen, set the visibility of the resend email button / resend message
-    // If not a network error or email-related message, try to log out upon error!
-    useEffect(() => {
-    if ((errorScreen === 'Check email to activate account!' || errorScreen === 'Unvalidated Email')) {
-        setDisplayEmailButton(true)
-    }
-    else {
-        setDisplayEmailButton(false)
-        setResendMessage('')
-        console.log("err: ", errorScreen)
-        console.log(errorScreen !== '')
-        if (errorScreen !== '' && !errorScreen.includes('Network Error')) {
-            logout()
-        }
-    }
-}, [errorScreen]);
-    
 
     // Revert display to original, get rid of error screen message, don't assign a user, ensure any tokens are deleted
     function reset() {

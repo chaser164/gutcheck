@@ -45,8 +45,14 @@ function App() {
     }}>
       {hasCheckedUser &&
         <>
+          { (user && errorScreen == '') ? 
+          <LoggedInHomePage /> 
+          : 
+          <>
           <h2>GutCheck</h2>
-          { (user && errorScreen == '') ? <LoggedInHomePage /> : <LoggedOutHomePage /> }  
+            <LoggedOutHomePage /> 
+          </> 
+          }  
         </>
       }
     </UserContext.Provider>

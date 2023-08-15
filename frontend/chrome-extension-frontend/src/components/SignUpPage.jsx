@@ -8,6 +8,14 @@ export default function SignUpPage() {
     const [signUpErrorMessage, setSignUpErrorMessage] = useState('')
     const [password2, setPassword2] = useState('')
     
+    // Ensure password is at least 8 characters
+    function lenCheck(password) {
+        if (password.length < 8) {
+            return false
+        }
+        return true
+    }
+
     function signUpClicked(e) {
         setSubmitLoading(true)
         e.preventDefault();
@@ -22,6 +30,12 @@ export default function SignUpPage() {
             // Ensure matching passwords
             if (password !== password2) {
                 setSignUpErrorMessage('Passwords must match')
+                setSubmitLoading(false)
+                return
+            }
+            // Ensure password length
+            if (!lenCheck(password)) {
+                setSignUpErrorMessage('Password must be at least 8 characters long')
                 setSubmitLoading(false)
                 return
             }

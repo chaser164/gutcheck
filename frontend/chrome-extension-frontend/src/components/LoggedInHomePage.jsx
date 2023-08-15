@@ -4,24 +4,30 @@ import UserContext from "../contexts/UserContext.jsx";
 
 // In the future this page will be like the home page for logged in users. Keep in mind that setting the errorScreen to something non-empty 
 export default function LoggedOutHomePage() {
-    const [info, setInfo] = useState("")
-    // Deal with non-login-related errors:
     const [hasLoaded, setHasLoaded] = useState(false)
     const [url, setUrl] = useState('')
+    const [posts, setPosts] = useState([])
     const { setUser, setErrorScreen } = useContext(UserContext)
 
     useEffect(() => {
-        async function checkStatus() {
+
+        // chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
+        //     let url = tabs[0].url;
+        //     setUrl(url)
+        // });
+
+        async function getPosts() {
             try {
-                // Accessing an endpoint requiring a validated email
-                const response = await api.get(`users/me/`);
+                // Get the website's posts
+                const response = await api.post(`posts/bywebsite/`, {
+                    "website": "https://chat.openai.com/",
+                });
                 console.log(response)
-                setInfo(response.data.email)
+                setPosts(response.data.posts)
                 setHasLoaded(true)
             } 
             catch (err) {
                 // If a response came back, show the response (common errors here are no token given, unvalidated email)
-                console.log(err)
                 if (err.response) {
                     setErrorScreen(err.response.data.detail)
                 } else {
@@ -30,12 +36,8 @@ export default function LoggedOutHomePage() {
                 }
             }
         }
-        checkStatus()
 
-        // chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
-        //     let url = tabs[0].url;
-        //     setUrl(url)
-        // });
+        getPosts()
 
     }, []);
 
@@ -62,8 +64,14 @@ export default function LoggedOutHomePage() {
         <>
             { hasLoaded &&
                 <>
-                    <p>logged in as: </p>
-                    <p>{info}</p>
+                    <h2>Posts</h2>
+                    {posts.length > 0 ?
+                    posts.map((post, i) => (
+                        <div key={i}><p>{post.text}</p></div>
+                    ))
+                    :
+                    <p>No posts yet!</p>
+                    }
                     <p>current url: {url}</p>
                     <button onClick={logout}>Logout</button>
                 </>
