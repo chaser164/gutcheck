@@ -46,8 +46,11 @@ class Posts_by_website(APIView):
     # It is unideal to use POST here. I'm doing this because I need to send a body because of the complex parameter (a URL) and get requests don't typically send a body
     def post(self, request):
         posts = Post.objects.filter(website = request.data['website'])
+        # Find whether or not the user has posted
+        users_who_posted = list(map(lambda post: post.user, posts))
+        user_posted = request.user in users_who_posted
         serializedPosts = PostSerializer(posts, many=True)
-        return Response(serializedPosts.data)
+        return Response({"posts": serializedPosts.data, "user_posted": user_posted})
         
     def delete(self, request):
         # Ensure valid body

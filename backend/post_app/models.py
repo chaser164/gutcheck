@@ -15,6 +15,6 @@ class Post(models.Model):
     def clean(self):
         websites = [post.website for post in self.user.posts.all()]
         if self.website in websites:
-            raise ValidationError('User already posted about this website')
+            raise ValidationError('You already posted about this website')
    
 

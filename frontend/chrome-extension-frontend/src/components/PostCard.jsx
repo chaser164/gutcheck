@@ -1,9 +1,9 @@
-import { useEffect, useState, useContext } from "react";
+import { useState, useContext } from "react";
 import { api } from "../utilities";
 import UserContext from "../contexts/UserContext.jsx";
 
 // In the future this page will be like the home page for logged in users. Keep in mind that setting the errorScreen to something non-empty 
-export default function LoggedOutHomePage({post, upvotedIDs, downvotedIDs}) {
+export default function PostCard({post, upvotedIDs, downvotedIDs}) {
 
     const initialUpvotes = upvotedIDs.includes(post.id) ? post.upvotes - 1 : post.upvotes
     const initialDownvotes = downvotedIDs.includes(post.id) ? post.downvotes - 1 : post.downvotes

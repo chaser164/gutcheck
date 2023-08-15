@@ -2,14 +2,17 @@ import { useEffect, useState, useContext } from "react";
 import { api } from "../utilities";
 import UserContext from "../contexts/UserContext.jsx";
 import PostCard from './PostCard.jsx'
+import AddPostPage from "./AddPostPage";
 
 // In the future this page will be like the home page for logged in users. Keep in mind that setting the errorScreen to something non-empty 
 export default function LoggedOutHomePage() {
     const [hasLoaded, setHasLoaded] = useState(false)
     const [url, setUrl] = useState('')
     const [posts, setPosts] = useState([])
+    const [hasPosted, setHasPosted] = useState(false)
     const [upvotedIDs, setUpvotedIDs] = useState([])
     const [downvotedIDs, setDownvotedIDs] = useState([])
+    const [showAddPostPage, setShowAddPostPage] = useState(false)
     const { setUser, setErrorScreen } = useContext(UserContext)
 
     useEffect(() => {
@@ -25,7 +28,9 @@ export default function LoggedOutHomePage() {
                 const response = await api.post(`posts/bywebsite/`, {
                     "website": "https://chat.openai.com/",
                 });
-                setPosts(response.data)
+                console.log(response)
+                setPosts(response.data.posts)
+                setHasPosted(response.data.user_posted)
             } 
             catch (err) {
                 // If a response came back, show the response (common errors here are no token given, unvalidated email)
@@ -77,7 +82,7 @@ export default function LoggedOutHomePage() {
         getDownvoted()
         setHasLoaded(true)
 
-    }, []);
+    }, [showAddPostPage]);
 
     function logout () {
         async function logoutAPIPost() {
@@ -99,18 +104,25 @@ export default function LoggedOutHomePage() {
 
     return (
         <>
-            { hasLoaded &&
+            { showAddPostPage ?
+                <AddPostPage setShowAddPostPage={setShowAddPostPage} />
+                :
                 <>
-                    <h2>Posts</h2>
-                    {posts.length > 0 ?
-                    posts.map((post, i) => (
-                        <div key={i}><PostCard post={post} upvotedIDs={upvotedIDs} downvotedIDs={downvotedIDs} /></div>
-                    ))
-                    :
-                    <p>No posts yet!</p>
+                    { hasLoaded &&
+                        <>
+                            <h2>Posts</h2>
+                            {posts.length > 0 ?
+                            posts.map((post, i) => (
+                                <div key={i}><PostCard post={post} upvotedIDs={upvotedIDs} downvotedIDs={downvotedIDs} /></div>
+                            ))
+                            :
+                            <p>No posts yet!</p>
+                            }
+                            <p>current url: {url}</p>
+                            <button onClick={logout}>Logout</button>
+                            <button onClick={() => setShowAddPostPage(true)} disabled={hasPosted} title={hasPosted ? "You can only post once per website" : null}>+</button>
+                        </>
                     }
-                    <p>current url: {url}</p>
-                    <button onClick={logout}>Logout</button>
                 </>
             }
         </>
