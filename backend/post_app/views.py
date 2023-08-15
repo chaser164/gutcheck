@@ -14,7 +14,7 @@ from utilities import HttpOnlyTokenAuthenticationEmailValidated
 from rest_framework.permissions import IsAuthenticated
 
 from .models import Post
-from .serializers import PostSerializer
+from .serializers import PostSerializer, PostIDSerializer
 
 class All_posts(APIView):
     authentication_classes = [HttpOnlyTokenAuthenticationEmailValidated]
@@ -23,7 +23,7 @@ class All_posts(APIView):
 
     def get(self, request):
         allSerializedPosts = PostSerializer(Post.objects.all(), many=True)
-        return Response({"posts": allSerializedPosts.data})
+        return Response(allSerializedPosts.data)
     
     def post(self, request):
         # Check if the request body appears valid
@@ -47,7 +47,7 @@ class Posts_by_website(APIView):
     def post(self, request):
         posts = Post.objects.filter(website = request.data['website'])
         serializedPosts = PostSerializer(posts, many=True)
-        return Response({"posts": serializedPosts.data})
+        return Response(serializedPosts.data)
         
     def delete(self, request):
         # Ensure valid body
@@ -107,7 +107,25 @@ class A_post(APIView):
             post.upvoters.remove(request.user)
             return Response({"message": "Abstained successfully"}, status=HTTP_204_NO_CONTENT)
         else:
-            return Response({"message": "Invalid action"}, status=HTTP_404_NOT_FOUND)
+            return Response({"detail": "Invalid action"}, status=HTTP_404_NOT_FOUND)
+        
+class Posts_by_vote(APIView):
+    authentication_classes = [HttpOnlyTokenAuthenticationEmailValidated]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, up_or_down):
+        if up_or_down == 'up':
+            # Get a list of id numbers of posts the user has upvoted
+            ids = PostIDSerializer(request.user.upvoted_posts, many=True).data
+            ids = list(map(lambda x: x['id'], ids))
+            return Response(ids)
+        elif up_or_down == 'down':
+            # Get a list of id numbers of posts the user has downvoted
+            ids = PostIDSerializer(request.user.downvoted_posts, many=True).data
+            ids = list(map(lambda x: x['id'], ids))
+            return Response(ids)
+        else:
+            return Response({"detail": "Invalid action"}, status=HTTP_404_NOT_FOUND)
         
     
         

@@ -20,3 +20,13 @@ class PostSerializer(serializers.ModelSerializer):
         return instance.downvoters.count()
 
 
+class PostIDSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Post
+        fields = ['id']
+
+
+
+
+

@@ -87,6 +87,9 @@ api/v1/posts/bywebsite/
 - DELETE removes all post associted with the website
     - ADMIN access only, so REQUIRES TOKEN AUTHORIZATION.
 
+api/v1/posts/byvote/<str:up_or_down>/
+- GET will return a list of posts that the user has either upvoted or downvoted (parameter chooses which list)
+- REQUIRES TOKEN AUTHORIZATION PLUS EMAIL VALIDATION.
 
 
 Good to know...
