@@ -30,12 +30,15 @@ h1 {
   font-family: inherit;
   background-color: #191919;
   color: whitesmoke;
-  cursor: pointer;
-  transition: border-color 0.25s;
 }
 
 .menu[disabled] {
   opacity: 0.6; /* Or any other styling you prefer */
+}
+
+.menu:not([disabled]) {
+  cursor: pointer;
+  transition: border-color 0.25s;
 }
 
 .menu:not([disabled]):hover {
@@ -72,8 +75,12 @@ h1 {
   border-radius: 4px;
   padding: 5px;
   width: 310px;
-  transition: border-color 0.25s;
   border: 1px solid #282828;
+}
+
+.submit-button:not([disabled]) {
+  cursor: pointer;
+  transition: border-color 0.25s;
 }
 
 .submit-button:not([disabled]):hover {
