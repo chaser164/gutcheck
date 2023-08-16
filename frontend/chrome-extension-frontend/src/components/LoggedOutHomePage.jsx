@@ -80,14 +80,14 @@ export default function LoggedOutHomePage() {
             {/* Back button to get back to the initial state of 2 buttons (sign up/login) */}
             {/* Don't allow any back button clicking upon network error */}
             <header className="title-holder">
-                {((showSignUp || showLogin || errorScreen) && !errorScreen.includes('Network Error')) && <button onClick={reset} className="back">back</button>}
+                {((showSignUp || showLogin || errorScreen) && !errorScreen.includes('Network Error')) && <button onClick={reset} className="back menu">←</button>}
             </header>
             { !errorScreen ? 
             <>
                 {/* If either button is clicked, show that page and hide the buttons */}
                 { !(showSignUp || showLogin) && (
                     <>
-                        <h2>GutCheck</h2>
+                        <h1>GutCheck</h1>
                         <div className="spacer">
                             <button onClick={() => setShowSignUp(true)} className="menu">Sign Up</button>
                             <button onClick={() => setShowLogin(true)} className="menu">Login</button>

@@ -90,7 +90,7 @@ export default function SignUpPage() {
                 placeholder="Confirm Password"
                 onChange={(e) => setPassword2(e.target.value)}
                 />
-                <p>{ signUpErrorMessage }</p>
+                <p className="input-error-message">{ signUpErrorMessage }</p>
                 <input className="submit-button" type="submit" disabled={submitLoading} value="Sign Up" />
             </form> 
         </div>

@@ -16,7 +16,6 @@ export default function LoggedOutHomePage() {
     const { setUser, setErrorScreen } = useContext(UserContext)
 
     useEffect(() => {
-        // Only go when the url is fetched
 
         // // Get the current URL
         // chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {

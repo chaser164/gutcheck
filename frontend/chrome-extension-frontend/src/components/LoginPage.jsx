@@ -6,7 +6,7 @@ import { useSyncExternalStore } from "react";
 export default function SignUpPage() {
     const { email, setEmail, password, setPassword, setErrorScreen, setUser } = useContext(UserContext)
     const [submitLoading, setSubmitLoading] = useState(false)
-    const [emailMessage, setEmailMessage] = useState('')
+    const [emailMessage, setEmailMessage] = useState(['', false])
     const [showPasswordReset, setShowPasswordReset] = useState(false)
     const [loginErrorMessage, setLoginErrorMessage] = useState('')
     
@@ -48,21 +48,25 @@ export default function SignUpPage() {
         setSubmitLoading(true)
         e.preventDefault()
         if (!email) {
-            setEmailMessage('Field cannot be empty')
+            const newMessage = ['Field cannot be empty', true]
+            setEmailMessage(newMessage)
             setSubmitLoading(false)
             return
         }
-        setEmailMessage('')
+        const noMessage = ['', false]
+        setEmailMessage(noMessage)
         async function resetEmailAPIPost() {
             try {
                 const response = await api.post(`users/reset-email/`, {
                     "email": email,
                     });
-                setEmailMessage(response.data.message)
+                const successMessage = [response.data.message, false]
+                setEmailMessage(successMessage)
             } 
             catch (err) {
                 if (err.message.includes('404')) {
-                    setEmailMessage('Unregistered Email')
+                    const failMessage = ['Unregistered Email', false]
+                    setEmailMessage(failMessage)
                 } 
                 else {
                     // Likely network error
@@ -70,7 +74,8 @@ export default function SignUpPage() {
                         setErrorScreen(err.message)
                     } 
                     else {
-                        setEmailMessage(err.message)
+                        const errorMessage = [err.message, true]
+                        setEmailMessage(errorMessage)
                     }
                 }
             }
@@ -87,7 +92,7 @@ export default function SignUpPage() {
     return (
         <div className="center-container">
             <form onSubmit={(e) => showPasswordReset ? resetPassword(e) : loginClicked(e)} className="form-container">
-                <h2>{showPasswordReset ? 'Reset password:' : 'Log In'}</h2>
+                <h2>{showPasswordReset ? 'Reset Password:' : 'Log In'}</h2>
                 <input
                 type="email"
                 value={email}
@@ -104,10 +109,10 @@ export default function SignUpPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     />
                 }
-                { !showPasswordReset && <p>{ loginErrorMessage }</p> }
+                { !showPasswordReset && <p className="input-error-message">{ loginErrorMessage }</p> }
                 <input className="submit-button" type="submit" disabled={submitLoading} value={ showPasswordReset ? "Send Email" : "Log In" } />
+                { showPasswordReset && <p className={emailMessage[1] ? "input-error-message" : ""}>{ emailMessage[0] }</p> }
                 { !showPasswordReset && <button onClick={switchView} className="menu forgot">Forgot Password</button> }
-                { showPasswordReset && emailMessage && <p>{ emailMessage }</p> }
             </form>
         </div>
     )

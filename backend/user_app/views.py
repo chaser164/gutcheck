@@ -29,7 +29,7 @@ class Sign_up(APIView):
         try:
             user = User.objects.create_user(**request.data)
         except:
-            return Response({"message": "Email already in use for another account"}, status=HTTP_400_BAD_REQUEST)
+            return Response({"message": "Email already registered"}, status=HTTP_400_BAD_REQUEST)
         # Check that email is valid, if not, delete the created user
         try:
             user.full_clean()

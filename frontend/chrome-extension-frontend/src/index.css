@@ -12,6 +12,8 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+  width: 430px;
+  min-height: 200px;
 }
 
 h1 {
@@ -27,6 +29,7 @@ h1 {
   font-weight: 500;
   font-family: inherit;
   background-color: #191919;
+  color: whitesmoke;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -61,14 +64,26 @@ h1 {
 }
 
 .submit-button {
-  border: 1px solid #ccc;
   border-radius: 4px;
   padding: 5px;
   width: 310px;
+  transition: border-color 0.25s;
+  border: 1px solid #282828;
+}
+
+.submit-button:hover {
+  border-color: #ffffff;
 }
 
 .back {
-  align-self: flex-start;
+  align-self: flex-end;
+  font-size: large;
+  font-family: "Times New Roman", Times, serif;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 2px;
+  padding-bottom: 4px;
+
 }
 
 .title-holder {
@@ -89,3 +104,7 @@ h2 {
   padding: 5px;
 }
 
+.input-error-message {
+  height: 15px;
+  color: rgb(255, 179, 0);
+}
