@@ -48,10 +48,7 @@ function App() {
           { (user && errorScreen == '') ? 
           <LoggedInHomePage /> 
           : 
-          <>
-          <h2>GutCheck</h2>
-            <LoggedOutHomePage /> 
-          </> 
+          <LoggedOutHomePage /> 
           }  
         </>
       }

@@ -3,7 +3,7 @@ import { api } from "../utilities";
 import UserContext from "../contexts/UserContext.jsx";
 
 // In the future this page will be like the home page for logged in users. Keep in mind that setting the errorScreen to something non-empty 
-export default function AddPostPage({ setShowAddPostPage }) {
+export default function AddPostPage({ setShowAddPostPage, url }) {
     const { setErrorScreen } = useContext(UserContext)
     const [submitLoading, setSubmitLoading] = useState(false)
     const [postErrorMessage, setPostErrorMessage] = useState('')
@@ -25,7 +25,7 @@ export default function AddPostPage({ setShowAddPostPage }) {
             try {
                 const response = await api.post(`posts/`, {
                     "text": text,
-                    "website": "https://chat.openai.com/"
+                    "website": url
                 });
                 // Go back to posts page
                 setShowAddPostPage(false)

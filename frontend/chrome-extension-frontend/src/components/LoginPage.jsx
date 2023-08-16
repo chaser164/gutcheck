@@ -47,6 +47,11 @@ export default function SignUpPage() {
     function resetPassword(e) {
         setSubmitLoading(true)
         e.preventDefault()
+        if (!email) {
+            setEmailMessage('Field cannot be empty')
+            setSubmitLoading(false)
+            return
+        }
         setEmailMessage('')
         async function resetEmailAPIPost() {
             try {
@@ -80,31 +85,31 @@ export default function SignUpPage() {
     }
 
     return (
-        <>
-            <>
-                <form onSubmit={(e) => showPasswordReset ? resetPassword(e) : loginClicked(e)}>
-                    <h5>{showPasswordReset ? 'Enter email to reset password:' : 'Log in'}</h5>
+        <div className="center-container">
+            <form onSubmit={(e) => showPasswordReset ? resetPassword(e) : loginClicked(e)} className="form-container">
+                <h2>{showPasswordReset ? 'Reset password:' : 'Log In'}</h2>
+                <input
+                type="email"
+                value={email}
+                disabled={submitLoading}
+                placeholder="Email"
+                onChange={(e) => setEmail(e.target.value)}
+                />
+                { !showPasswordReset &&
                     <input
-                    type="email"
-                    value={email}
+                    type="password"
+                    value={password}
                     disabled={submitLoading}
-                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Password"
+                    onChange={(e) => setPassword(e.target.value)}
                     />
-                    { !showPasswordReset &&
-                        <input
-                        type="password"
-                        value={password}
-                        disabled={submitLoading}
-                        onChange={(e) => setPassword(e.target.value)}
-                        />
-                    }
-                    <input type="submit" disabled={submitLoading}  />
-                </form>
-                { !showPasswordReset && <button onClick={switchView}>Forgot Password?</button> }
+                }
                 { !showPasswordReset && <p>{ loginErrorMessage }</p> }
-                { showPasswordReset && emailMessage && <p>{emailMessage}</p> }
-            </>
-        </>
+                <input className="submit-button" type="submit" disabled={submitLoading} value={ showPasswordReset ? "Send Email" : "Log In" } />
+                { !showPasswordReset && <button onClick={switchView} className="menu forgot">Forgot Password</button> }
+                { showPasswordReset && emailMessage && <p>{ emailMessage }</p> }
+            </form>
+        </div>
     )
     
 }

@@ -77,14 +77,22 @@ export default function LoggedOutHomePage() {
     }
     return (
         <>
+            {/* Back button to get back to the initial state of 2 buttons (sign up/login) */}
+            {/* Don't allow any back button clicking upon network error */}
+            <header className="title-holder">
+                {((showSignUp || showLogin || errorScreen) && !errorScreen.includes('Network Error')) && <button onClick={reset} className="back">back</button>}
+            </header>
             { !errorScreen ? 
             <>
                 {/* If either button is clicked, show that page and hide the buttons */}
                 { !(showSignUp || showLogin) && (
-                        <>
-                            <button onClick={() => setShowSignUp(true)}>Sign Up</button>
-                            <button onClick={() => setShowLogin(true)}>Login</button>
-                        </>
+                    <>
+                        <h2>GutCheck</h2>
+                        <div className="spacer">
+                            <button onClick={() => setShowSignUp(true)} className="menu">Sign Up</button>
+                            <button onClick={() => setShowLogin(true)} className="menu">Login</button>
+                        </div>
+                    </>
                     )
                 }
                 <>
@@ -96,14 +104,11 @@ export default function LoggedOutHomePage() {
             }
             { displayEmailButton && 
                 <>
-                    <button onClick={resendEmailValidation} disabled={emailSendButtonLoading}>resend validation email</button>
+                    <button onClick={resendEmailValidation} disabled={emailSendButtonLoading} className="menu">resend validation email</button>
                     { resendMessage !== '' && <p>{resendMessage}</p>}
                 </>
                 
             }
-            {/* Back button to get back to the initial state of 2 buttons (sign up/login) */}
-            {/* Don't allow any back button clicking upon network error */}
-            {((showSignUp || showLogin || errorScreen) && !errorScreen.includes('Network Error')) && <button onClick={reset}>back</button>}
         </>
     )
 }

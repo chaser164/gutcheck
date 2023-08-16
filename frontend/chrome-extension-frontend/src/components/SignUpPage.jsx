@@ -66,31 +66,34 @@ export default function SignUpPage() {
     }
 
     return (
-        <>
-        <form onSubmit={(e) => signUpClicked(e)}>
-            <h5>Sign Up</h5>
-            <input
-            type="email"
-            value={email}
-            disabled={submitLoading}
-            onChange={(e) => setEmail(e.target.value)}
-            />
-            <input
-            type="password"
-            value={password}
-            disabled={submitLoading}
-            onChange={(e) => setPassword(e.target.value)}
-            />
-                        <input
-            type="password"
-            value={password2}
-            disabled={submitLoading}
-            onChange={(e) => setPassword2(e.target.value)}
-            />
-            <input type="submit" disabled={submitLoading} />
-        </form> 
-        <p>{ signUpErrorMessage }</p>
-        </>
+        <div className="center-container">
+            <form onSubmit={(e) => signUpClicked(e)} className="form-container">
+                <h2>Sign Up</h2>
+                <input
+                type="email"
+                value={email}
+                disabled={submitLoading}
+                placeholder="Email"
+                onChange={(e) => setEmail(e.target.value)}
+                />
+                <input
+                type="password"
+                value={password}
+                disabled={submitLoading}
+                placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
+                />
+                            <input
+                type="password"
+                value={password2}
+                disabled={submitLoading}
+                placeholder="Confirm Password"
+                onChange={(e) => setPassword2(e.target.value)}
+                />
+                <p>{ signUpErrorMessage }</p>
+                <input className="submit-button" type="submit" disabled={submitLoading} value="Sign Up" />
+            </form> 
+        </div>
     )
     
 }

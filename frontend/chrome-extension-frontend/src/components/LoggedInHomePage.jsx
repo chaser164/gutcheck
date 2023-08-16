@@ -16,21 +16,29 @@ export default function LoggedOutHomePage() {
     const { setUser, setErrorScreen } = useContext(UserContext)
 
     useEffect(() => {
+        // Only go when the url is fetched
 
+        // // Get the current URL
         // chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
         //     let url = tabs[0].url;
         //     setUrl(url)
         // });
+        setUrl('https://chat.openai.com/')
 
         async function getPosts() {
             try {
                 // Get the website's posts
                 const response = await api.post(`posts/bywebsite/`, {
-                    "website": "https://chat.openai.com/",
+                    "website": url,
                 });
                 console.log(response)
                 setPosts(response.data.posts)
                 setHasPosted(response.data.user_posted)
+                // Call the other API requests, set hasLoaded to true to activate account
+                // (put these in here b/c in case of failed call (likely due to inactive account) won't ever load the activated page even for a split second)
+                getUpvoted()
+                getDownvoted()
+                setHasLoaded(true)
             } 
             catch (err) {
                 // If a response came back, show the response (common errors here are no token given, unvalidated email)
@@ -78,11 +86,8 @@ export default function LoggedOutHomePage() {
         }
 
         getPosts()
-        getUpvoted()
-        getDownvoted()
-        setHasLoaded(true)
 
-    }, [showAddPostPage]);
+    }, [showAddPostPage, url]);
 
     function logout () {
         async function logoutAPIPost() {
@@ -105,7 +110,7 @@ export default function LoggedOutHomePage() {
     return (
         <>
             { showAddPostPage ?
-                <AddPostPage setShowAddPostPage={setShowAddPostPage} />
+                <AddPostPage setShowAddPostPage={setShowAddPostPage} url={url} />
                 :
                 <>
                     { hasLoaded &&
@@ -118,7 +123,6 @@ export default function LoggedOutHomePage() {
                             :
                             <p>No posts yet!</p>
                             }
-                            <p>current url: {url}</p>
                             <button onClick={logout}>Logout</button>
                             <button onClick={() => setShowAddPostPage(true)} disabled={hasPosted} title={hasPosted ? "You can only post once per website" : null}>+</button>
                         </>
