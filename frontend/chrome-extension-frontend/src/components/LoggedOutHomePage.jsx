@@ -104,7 +104,7 @@ export default function LoggedOutHomePage() {
             }
             { displayEmailButton && 
                 <>
-                    <button onClick={resendEmailValidation} disabled={emailSendButtonLoading} className="menu">resend validation email</button>
+                    <button onClick={resendEmailValidation} disabled={emailSendButtonLoading} className="menu">Resend validation email</button>
                     { resendMessage !== '' && <p>{resendMessage}</p>}
                 </>
                 

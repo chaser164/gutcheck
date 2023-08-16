@@ -12,7 +12,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
-  width: 430px;
+  /* width: 430px; */
   min-height: 200px;
 }
 
@@ -33,7 +33,12 @@ h1 {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-.menu:hover {
+
+.menu[disabled] {
+  opacity: 0.6; /* Or any other styling you prefer */
+}
+
+.menu:not([disabled]):hover {
   border-color: #787fff;
 }
 
@@ -57,7 +62,7 @@ h1 {
 }
 
 .form-container input[type="email"], input[type="password"] {
-  border: 1px solid #ccc;
+  border: 1px solid #878787;
   border-radius: 4px;
   width: 300px;
   padding: 5px;
@@ -71,7 +76,7 @@ h1 {
   border: 1px solid #282828;
 }
 
-.submit-button:hover {
+.submit-button:not([disabled]):hover {
   border-color: #ffffff;
 }
 
