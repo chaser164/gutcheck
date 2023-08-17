@@ -99,11 +99,23 @@ export default function PostCard({post, upvotedIDs, downvotedIDs}) {
 
     }
 
+    function dateDisplay(dateString) {
+        const options = {
+            year: 'numeric',
+            month: 'short', // Use 'short' to display the month abbreviation
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+        };
+        const postDate = new Date(dateString); // Convert UTC timestamp to user's local time
+        return postDate.toLocaleString(undefined, options)
+    }
+
     return (
         <div className="post-container">
             <div className="left-post-container">
                 <p className="post-text">{post.text}</p>
-                <p className="date">{post.date}</p>
+                <p className="date">{dateDisplay(post.datetime)}</p>
             </div>
             <div>
                 <div>
