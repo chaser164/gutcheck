@@ -12,9 +12,11 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
-  /* width: 430px; */
+  width: 400px;
   min-height: 200px;
 }
+
+/* LOGIN & SIGNUP PAGES */
 
 h1 {
   font-size: 3.2em;
@@ -88,7 +90,7 @@ h1 {
 }
 
 .back {
-  align-self: flex-end;
+  align-self: flex-start;
   font-size: large;
   font-family: "Times New Roman", Times, serif;
   padding-left: 15px;
@@ -119,4 +121,38 @@ h2 {
 .input-error-message {
   height: 15px;
   color: rgb(255, 179, 0);
+}
+
+/* POST PAGES */
+
+.posts-container {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.header-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.post-container {
+  border-top: 1px rosybrown;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+  border: 1px solid whitesmoke;
+  padding: 10px;
+  border-radius:  15px;
+  
+}
+
+.logout {
+  align-self: flex-start;
+  font-size: small;
+  padding: 10px;
+
 }

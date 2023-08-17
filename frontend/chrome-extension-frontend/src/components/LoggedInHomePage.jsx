@@ -114,16 +114,24 @@ export default function LoggedOutHomePage() {
                 <>
                     { hasLoaded &&
                         <>
-                            <h2>Posts</h2>
-                            {posts.length > 0 ?
-                            posts.map((post, i) => (
-                                <div key={i}><PostCard post={post} upvotedIDs={upvotedIDs} downvotedIDs={downvotedIDs} /></div>
-                            ))
-                            :
-                            <p>No posts yet!</p>
-                            }
-                            <button onClick={logout}>Logout</button>
-                            <button onClick={() => setShowAddPostPage(true)} disabled={hasPosted} title={hasPosted ? "You can only post once per website" : null}>+</button>
+                            <header className="header-container">
+                                <button onClick={logout} className="logout menu">Logout</button>
+                                <div>
+                                    <h2>{posts.length} {posts.length == 1 ? "Report" : "Reports"} for</h2>
+                                    <p>{url}</p>
+                                </div>
+                            </header>
+                            <br />
+                            <div className="posts-container">
+                                <button onClick={() => setShowAddPostPage(true)} disabled={hasPosted} title={hasPosted ? "You can only post once per website" : null} className="menu">Contribute +</button>
+                                {posts.length > 0 ?
+                                posts.map((post, i) => (
+                                    <div key={i}><PostCard post={post} upvotedIDs={upvotedIDs} downvotedIDs={downvotedIDs} /></div>
+                                ))
+                                :
+                                <p>No posts yet!</p>
+                                }
+                            </div>
                         </>
                     }
                 </>

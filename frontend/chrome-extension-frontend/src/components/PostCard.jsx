@@ -100,18 +100,18 @@ export default function PostCard({post, upvotedIDs, downvotedIDs}) {
     }
 
     return (
-        <>
+        <div className="post-container">
             <p>{post.text}</p>
             <div>
                 <div>
-                    <button onClick={upvote}>{ upvoted ? "~^~" : "^" }</button>
                     <p>{ numberDisplay(upvoted ? initialUpvotes + 1 : initialUpvotes) }</p>
+                    <button onClick={upvote}>{ upvoted ? "~^~" : "^" }</button>
                 </div>
                 <div>
                     <button onClick={downvote}>{ downvoted ? "~v~" : "v" }</button>
-                    <p>{ numberDisplay(downvoted ? initialDownvotes + 1 : initialDownvotes) }</p>
+                    <p>{ numberDisplay(downvoted ? initialDownvotes * -1 - 1 : initialDownvotes * -1) }</p>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
