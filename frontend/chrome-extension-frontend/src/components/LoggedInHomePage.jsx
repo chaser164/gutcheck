@@ -17,12 +17,12 @@ export default function LoggedOutHomePage() {
 
     useEffect(() => {
 
-        // Get the current URL
-        chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
-            let url = tabs[0].url;
-            setUrl(url)
-        });
-        // setUrl('https://chat.openai.com/')
+        // Get the current URL (code only works in a chrome extension)
+        // chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
+        //     let url = tabs[0].url;
+        //     setUrl(url)
+        // });
+        setUrl('https://chat.openai.com/')
 
         async function getPosts() {
             try {
@@ -129,7 +129,7 @@ export default function LoggedOutHomePage() {
                                     <div key={i}><PostCard post={post} upvotedIDs={upvotedIDs} downvotedIDs={downvotedIDs} /></div>
                                 ))
                                 :
-                                <p>No posts yet!</p>
+                                <p>No reports yet. Be the first!</p>
                                 }
                             </div>
                         </>

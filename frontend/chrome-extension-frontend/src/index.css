@@ -150,9 +150,30 @@ h2 {
   
 }
 
+.post-text {
+  text-align: left;
+  font-size: 10pt;
+}
+
 .logout {
   align-self: flex-start;
   font-size: small;
   padding: 10px;
 
+}
+
+.up {
+  transform: rotate(270deg);
+  border-top-right-radius: 5pt;
+  border-bottom-right-radius: 5pt;
+  border: 0pt;
+  font-size: large;
+}
+
+.down {
+  transform: rotate(90deg);
+  border-top-right-radius: 5pt;
+  border-bottom-right-radius: 5pt;
+  border: 0pt;
+  font-size: large;
 }
