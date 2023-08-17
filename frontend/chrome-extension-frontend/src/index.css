@@ -166,14 +166,31 @@ h2 {
   transform: rotate(270deg);
   border-top-right-radius: 5pt;
   border-bottom-right-radius: 5pt;
-  border: 0pt;
+  border: 1pt solid transparent;
   font-size: large;
+  transition: border-color 0.25s;
 }
 
 .down {
-  transform: rotate(90deg);
-  border-top-right-radius: 5pt;
-  border-bottom-right-radius: 5pt;
-  border: 0pt;
+  transform: rotate(270deg);
+  border-top-left-radius: 5pt;
+  border-bottom-left-radius: 5pt;
+  border: 1pt solid transparent;
   font-size: large;
+  transition: border-color 0.25s;
+}
+
+.up:hover {
+  border: 1pt solid #787fff;
+}
+
+.down:hover {
+  border: 1pt solid #787fff;
+}
+
+.voted {
+  border: 1pt solid #787fff;
+  background-color: black;
+  color: whitesmoke;
+  
 }
