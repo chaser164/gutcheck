@@ -17,12 +17,12 @@ export default function LoggedOutHomePage() {
 
     useEffect(() => {
 
-        // // Get the current URL
-        // chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
-        //     let url = tabs[0].url;
-        //     setUrl(url)
-        // });
-        setUrl('https://chat.openai.com/')
+        // Get the current URL
+        chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
+            let url = tabs[0].url;
+            setUrl(url)
+        });
+        // setUrl('https://chat.openai.com/')
 
         async function getPosts() {
             try {
