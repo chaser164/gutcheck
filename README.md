@@ -137,3 +137,10 @@ THINGS TO CONSIDER:
 - change back button to logut in unvalidated email pages? needed?
 - consider differences between webpage network vs chrome extension network
 - separate password reset token/expiration? is this needed?
+
+-----------------------------------------------------------------------------------
+
+THINGS TO CONSIDER ON THE FRONTEND:
+- Add footnotes to posts?
+- Add a modal or Tabs to provide a way to show the full URL before navigating to footnote?
+- Fix date format (nearly done)
