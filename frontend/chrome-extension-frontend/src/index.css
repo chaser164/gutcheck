@@ -16,6 +16,11 @@
   min-height: 200px;
 }
 
+#root {
+  padding: 1rem;
+  text-align: center;
+}
+
 /* LOGIN & SIGNUP PAGES */
 
 h1 {
@@ -186,6 +191,7 @@ h2 {
   border: 1pt solid transparent;
   font-size: large;
   transition: border-color 0.25s;
+  
 }
 
 .up:hover {
@@ -203,3 +209,7 @@ h2 {
   
 }
 
+.date {
+  font-size: 9pt;
+  color: #a4a4a4
+}

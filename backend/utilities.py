@@ -25,6 +25,10 @@ class HttpOnlyTokenAuthentication(TokenAuthentication):
             user = User.objects.get(auth_token=auth_token)
         except User.DoesNotExist:
             return None
+        
+        print('\n\n\nORIGIN:')
+        print(request.META.get('HTTP_ORIGIN', None))
+        print('\n\n\n')
     
         self.checkValidated(user)
 

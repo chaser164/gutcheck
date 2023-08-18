@@ -44,7 +44,7 @@ class Sign_up(APIView):
         life_time = datetime.now() + timedelta(days=7)
         format_life_time = http_date(life_time.timestamp())
         response = Response({"user": user.email})
-        response.set_cookie(key="token", value=token.key, httponly=True, secure=True, samesite='None', expires=format_life_time)
+        response.set_cookie(key="token", value=token.key, httponly=True, secure=True, samesite='Strict', expires=format_life_time)
         return response
         # Response({"user": user.email})
     
@@ -59,7 +59,7 @@ class Log_in(APIView):
             life_time = datetime.now() + timedelta(days=7)
             format_life_time = http_date(life_time.timestamp())
             response = Response({"user": user.email})
-            response.set_cookie(key="token", value=token.key, httponly=True, secure=True, samesite='None', expires=format_life_time)
+            response.set_cookie(key="token", value=token.key, httponly=True, secure=True, samesite='Strict', expires=format_life_time)
             return response
         else:
             return Response({"message": "No user matching credentials"}, status=HTTP_404_NOT_FOUND)
@@ -98,7 +98,7 @@ class Admin_sign_up(APIView):
         life_time = datetime.now() + timedelta(days=7)
         format_life_time = http_date(life_time.timestamp())
         response = Response({"user": admin_user.email})
-        response.set_cookie(key="token", value=token.key, httponly=True, secure=True, samesite='None', expires=format_life_time)
+        response.set_cookie(key="token", value=token.key, httponly=True, secure=True, samesite='Strict', expires=format_life_time)
         return response
 
 class All_users(APIView):

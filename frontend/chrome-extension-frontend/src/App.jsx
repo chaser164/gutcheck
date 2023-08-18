@@ -1,4 +1,3 @@
-import './App.css'
 import { api } from './utilities'
 import { useState, useEffect } from 'react'
 import LoggedOutHomePage from './components/LoggedOutHomePage'
@@ -48,7 +47,7 @@ function App() {
           { (user && errorScreen == '') ? 
           <LoggedInHomePage /> 
           : 
-          <LoggedOutHomePage /> 
+            <LoggedOutHomePage /> 
           }  
         </>
       }
