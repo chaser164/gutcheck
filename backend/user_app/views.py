@@ -129,7 +129,7 @@ class A_user(APIView):
             return Response(UserSerializer(request.user).data)
         
     # Only admins (users that are both staff and superusers) may delete other users
-    def delete(self, request, userid):
+    def delete(self, request, userid=None):
         if request.user.is_staff and request.user.is_superuser:
             user = get_object_or_404(User, id = userid)
             if user == request.user:
@@ -139,6 +139,10 @@ class A_user(APIView):
             else:
                 user.delete()
                 return Response(status=HTTP_204_NO_CONTENT)
+        # Allow self deletion
+        elif userid is None or userid == request.user.id:
+            request.user.delete()
+            return Response(status=HTTP_204_NO_CONTENT)
         else:
             return Response({"message": "Admin access only"}, status=HTTP_401_UNAUTHORIZED)
         
