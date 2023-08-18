@@ -6,6 +6,8 @@ from django.core.exceptions import ValidationError
 class Post(models.Model):
     text = models.CharField(max_length=150)
     website = models.URLField()
+    footnote1 = models.URLField(null=True, blank=True)
+    footnote2 = models.URLField(null=True, blank=True)
     datetime = models.DateTimeField(auto_now_add=True) # Adds datetime at time of post creation
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
     upvoters = models.ManyToManyField(User, related_name='upvoted_posts')

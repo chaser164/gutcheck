@@ -26,9 +26,10 @@ class HttpOnlyTokenAuthentication(TokenAuthentication):
         except User.DoesNotExist:
             return None
         
-        print('\n\n\nORIGIN:')
-        print(request.META.get('HTTP_ORIGIN', None))
-        print('\n\n\n')
+        # consider adding a check to ensure the origin is coming from the chrome extension?
+        # print('\n\n\nORIGIN:')
+        # print(request.META.get('HTTP_ORIGIN', None))
+        # print('\n\n\n')
     
         self.checkValidated(user)
 

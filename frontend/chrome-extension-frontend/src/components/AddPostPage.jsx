@@ -46,20 +46,38 @@ export default function AddPostPage({ setShowAddPostPage, url }) {
         postAPICall();
     }
 
+    // Increase count of viewable footnote fields (max 2)
+    function incrFootnoteDisplay(e) {
+        console.log('footnote added')
+    }
+
     return (
         <>
-        <form onSubmit={(e) => postClicked(e)}>
-            <h5>Make a post</h5>
-            <input
-            type="text"
-            value={text}
-            disabled={submitLoading}
-            onChange={(e) => setText(e.target.value)}
-            />
-            <input type="submit" disabled={submitLoading} value="post" />
-        </form> 
-        <p>{ postErrorMessage }</p>
-        <button onClick={() => setShowAddPostPage(false)}>Back</button>
+            <header onClick={() => setShowAddPostPage(false)} className="title-holder">
+                <button className="back menu">←</button>
+            </header>
+            <div className="center-container">
+                <form onSubmit={(e) => postClicked(e)} className="form-container">
+                    <h2>Make a Post</h2>
+                    <div className="textarea-container">
+                        <textarea 
+                            rows="6" 
+                            cols="36" 
+                            disabled={submitLoading}
+                            onChange={(e) => setText(e.target.value)}
+                            placeholder="Your report's body text goes here..." 
+                        />
+                        <p className={text.length <= 150 ? "char-counter" : "char-counter-error"}>{text.length}/150 characters</p>
+                    </div>
+                    <button type="button" className="menu footnote-button" onClick={incrFootnoteDisplay}>Footnote +</button>
+                    {/* <input
+                    type="text"
+                    value={text}
+                    /> */}
+                    <input type="submit" className="submit-button" disabled={submitLoading} value="Post" />
+                </form> 
+                <p>{ postErrorMessage }</p>
+            </div>
         </>
     )
 }

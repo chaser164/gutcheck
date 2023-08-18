@@ -71,7 +71,7 @@ h1 {
   align-items: center;
 }
 
-.form-container input[type="email"], input[type="password"] {
+.form-container input[type="text"], input[type="email"], input[type="password"] {
   border: 1px solid #878787;
   border-radius: 4px;
   width: 300px;
@@ -130,6 +130,9 @@ h2 {
 
 /* POST PAGES */
 
+
+/* Broader containers */
+
 .posts-container {
   overflow-y: auto;
   display: flex;
@@ -142,6 +145,8 @@ h2 {
   flex-direction: column;
   justify-content: flex-end;
 }
+
+/* Individual post specifics */
 
 .post-container {
   border-top: 1px rosybrown;
@@ -168,12 +173,21 @@ h2 {
   font-size: 10pt;
 }
 
+.date {
+  font-size: 9pt;
+  color: #a4a4a4
+}
+
+/* Logout button specifics */
+
 .logout {
   align-self: flex-start;
   font-size: small;
   padding: 10px;
 
 }
+
+/* upvote/downvote buttons */
 
 .up {
   transform: rotate(270deg);
@@ -209,7 +223,32 @@ h2 {
   
 }
 
-.date {
+/* Making a post */
+
+textarea {
+  resize: none;
+  border-radius: 4px;
+  padding: 4px;
+  border: 1px solid #878787;
+}
+
+.char-counter {
+  align-self: flex-start;
   font-size: 9pt;
-  color: #a4a4a4
+}
+
+.char-counter-error {
+  align-self: flex-start;
+  font-size: 9pt;
+  color: rgb(255, 179, 0);
+}
+
+.textarea-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.footnote-button {
+  font-size: small;
 }
