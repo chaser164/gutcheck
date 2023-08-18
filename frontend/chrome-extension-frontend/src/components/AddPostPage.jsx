@@ -7,6 +7,7 @@ export default function AddPostPage({ setShowAddPostPage, url }) {
     const { setErrorScreen } = useContext(UserContext)
     const [submitLoading, setSubmitLoading] = useState(false)
     const [postErrorMessage, setPostErrorMessage] = useState('')
+    const [footnoteDisplayCount, setFootnoteDisplayCount] = useState(0)
     const [text, setText] = useState('')
 
 
@@ -47,8 +48,9 @@ export default function AddPostPage({ setShowAddPostPage, url }) {
     }
 
     // Increase count of viewable footnote fields (max 2)
-    function incrFootnoteDisplay(e) {
-        console.log('footnote added')
+    function incrFootnoteDisplay() {
+        if (0 <= footnoteDisplayCount && footnoteDisplayCount < 2)
+            setFootnoteDisplayCount((prev) => prev + 1)
     }
 
     return (
@@ -69,7 +71,7 @@ export default function AddPostPage({ setShowAddPostPage, url }) {
                         />
                         <p className={text.length <= 150 ? "char-counter" : "char-counter-error"}>{text.length}/150 characters</p>
                     </div>
-                    <button type="button" className="menu footnote-button" onClick={incrFootnoteDisplay}>Footnote +</button>
+                    <button type="button" disabled={footnoteDisplayCount >= 2} className="menu footnote-button" onClick={incrFootnoteDisplay}>Footnote +</button>
                     {/* <input
                     type="text"
                     value={text}
