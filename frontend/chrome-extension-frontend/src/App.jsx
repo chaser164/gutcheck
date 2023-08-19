@@ -8,6 +8,7 @@ import UserContext from './contexts/UserContext.jsx'
 function App() {
   const [user, setUser] = useState(null)
   const [errorScreen, setErrorScreen] = useState('')
+  const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [hasCheckedUser, setHasCheckedUser] = useState(false)
@@ -37,6 +38,8 @@ function App() {
         setUser, 
         errorScreen, 
         setErrorScreen, 
+        username,
+        setUsername,
         email,
         setEmail,
         password,

@@ -3,7 +3,7 @@ import { api } from "../utilities.jsx";
 import UserContext from "../contexts/UserContext.jsx";
 
 export default function SignUpPage() {
-    const { setErrorScreen, email, setEmail, password, setPassword, setUser } = useContext(UserContext)
+    const { setErrorScreen, username, setUsername, email, setEmail, password, setPassword, setUser } = useContext(UserContext)
     const [submitLoading, setSubmitLoading] = useState(false)
     const [signUpErrorMessage, setSignUpErrorMessage] = useState('')
     const [password2, setPassword2] = useState('')
@@ -21,15 +21,38 @@ export default function SignUpPage() {
         e.preventDefault();
         // Trigger 'check email' page
         async function signUpAPIPost() {
+
             // Ensure populated fields
-            if (!(email && password)) {
-                setSignUpErrorMessage('Fields cannot be empty')
+            if (!username) {
+                setSignUpErrorMessage('Username cannot be empty')
                 setSubmitLoading(false)
                 return
             }
-            // Ensure matching passwords
-            if (password !== password2) {
-                setSignUpErrorMessage('Passwords must match')
+            if (!email) {
+                setSignUpErrorMessage('Email cannot be empty')
+                setSubmitLoading(false)
+                return
+            }
+            if (!password) {
+                setSignUpErrorMessage('Password cannot be empty')
+                setSubmitLoading(false)
+                return
+            }
+            if (!password2) {
+                setSignUpErrorMessage('Password confirmation cannot be empty')
+                setSubmitLoading(false)
+                return
+            }
+            // Ensure valid username
+            const usernamePattern = /^[a-zA-Z0-9._]+$/;
+            if (!usernamePattern.test(username)) {
+                setSignUpErrorMessage('Username contains invalid characters')
+                setSubmitLoading(false)
+                return
+            }
+            // Ensure username length limit not exceeded
+            if (username.length > 30) {
+                setSignUpErrorMessage('Username cannot exceed 30 characters')
                 setSubmitLoading(false)
                 return
             }
@@ -39,9 +62,17 @@ export default function SignUpPage() {
                 setSubmitLoading(false)
                 return
             }
+            // Ensure matching passwords
+            if (password !== password2) {
+                setSignUpErrorMessage('Passwords must match')
+                setSubmitLoading(false)
+                return
+            }
+
             setSignUpErrorMessage('')
             try {
                 const response = await api.post(`users/signup/`, {
+                    "alias": username,
                     "email": email,
                     "password": password,
                 });
@@ -70,7 +101,14 @@ export default function SignUpPage() {
             <form onSubmit={(e) => signUpClicked(e)} className="form-container">
                 <h2>Sign Up</h2>
                 <input
-                type="email"
+                type="text"
+                value={username}
+                disabled={submitLoading}
+                placeholder="Username"
+                onChange={(e) => setUsername(e.target.value)}
+                />
+                <input
+                type="text"
                 value={email}
                 disabled={submitLoading}
                 placeholder="Email"

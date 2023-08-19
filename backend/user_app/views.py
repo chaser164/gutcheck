@@ -11,6 +11,7 @@ from rest_framework.status import (
     HTTP_401_UNAUTHORIZED,
     HTTP_400_BAD_REQUEST,
 )
+from django.db import IntegrityError
 from django.utils.http import http_date
 from rest_framework.authtoken.models import Token
 # from rest_framework.authentication import TokenAuthentication
@@ -25,11 +26,25 @@ class Sign_up(APIView):
     
     def post(self, request):
         request.data["username"] = request.data["email"]
-        # Try to create a user, the creation will not occur if the email is already being used
+        # Attempt to create user
         try:
             user = User.objects.create_user(**request.data)
-        except:
-            return Response({"message": "Email already registered"}, status=HTTP_400_BAD_REQUEST)
+        except IntegrityError as e:
+            print(e)
+            # Ensure uniqueness, return error messages otherwise
+            if 'unique constraint' in str(e).lower():
+                # Handle integrity constraint violations
+                if 'email' in str(e).lower():
+                    return Response({"message": "Email already registered"}, status=HTTP_400_BAD_REQUEST)
+                elif 'alias' in str(e).lower():
+                    return Response({"message": "Alias already in use"}, status=HTTP_400_BAD_REQUEST)
+            else:
+                # Handle other integrity errors (I doubt this would ever be triggered, but extra safe to have this)
+                return Response({"message": "Integrity error occurred"}, status=HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            # Handle other exceptions
+            print(e)
+            return Response({"message": "Could not create user"}, status=HTTP_400_BAD_REQUEST)
         # Check that email is valid, if not, delete the created user
         try:
             user.full_clean()
