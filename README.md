@@ -147,5 +147,6 @@ MORE THINGS TO CONSIDER:
 - Expand post view / go to individual post page to see footnotes
 - Add usernames to users
 - Add shorthand displays to indicate especially large upvote/downvote numbers
+- Change 'no reports yet. be the first! message (?)
 
 
