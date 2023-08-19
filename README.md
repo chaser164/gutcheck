@@ -140,7 +140,9 @@ THINGS TO CONSIDER:
 
 -----------------------------------------------------------------------------------
 
-THINGS TO CONSIDER ON THE FRONTEND:
-- Add footnotes to posts?
+MORE THINGS TO CONSIDER:
 - Add a modal or Tabs to provide a way to show the full URL before navigating to footnote?
-- Fix date format (nearly done)
+- Add a way to disallow posting on pages where chrome cannot find a URL (only show AddPostPage when URL is set?)
+- Make sure to set the cookies to 'Strict' to limit CSRF attack vulnerability when using as chrome extension
+
+
