@@ -8,6 +8,8 @@ class Post(models.Model):
     website = models.URLField()
     footnote1 = models.URLField(null=True, blank=True)
     footnote2 = models.URLField(null=True, blank=True)
+    explanation1 = models.CharField(null=True, blank=True, max_length=100)
+    explanation2 = models.CharField(null=True, blank=True, max_length=100)
     datetime = models.DateTimeField(auto_now_add=True) # Adds datetime at time of post creation
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
     upvoters = models.ManyToManyField(User, related_name='upvoted_posts')

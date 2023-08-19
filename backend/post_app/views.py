@@ -26,14 +26,36 @@ class All_posts(APIView):
         return Response(allSerializedPosts.data)
     
     def post(self, request):
+        print(request.data)
         # Check if the request body appears valid
         if 'text' in request.data and request.data['text'] and 'website' in request.data and request.data['website']:
+            # Add website and body text to post
             new_post = Post(text = request.data['text'], website=request.data['website'], user = request.user)
-            # Ensure the fields are valid before saving into the database
+            # Ensure valid body URL
+            # Guards in frontend will prevent character limit validators from triggering
             try:
                 new_post.full_clean()
-            except ValidationError as error:
-                return Response({"message": error}, status=HTTP_400_BAD_REQUEST)
+            except:
+                return Response({"message": "Cannot post on this webpage"}, status=HTTP_400_BAD_REQUEST)
+            # If there are footnote1/explanation1 fields, add these to the post
+            if 'footnote1' in request.data and request.data['footnote1'] and 'explanation1' in request.data and request.data['explanation1']:
+                new_post.footnote1 = request.data['footnote1']
+                new_post.explanation1 = request.data['explanation1']
+                # Ensure valid footnote 1 url
+                try:
+                    new_post.full_clean()
+                except:
+                    return Response({"message": "Footnote 1 URL is invalid"}, status=HTTP_400_BAD_REQUEST)
+            # If there are footnote2/explanation2 fields, add these to the post
+            if 'footnote2' in request.data and request.data['footnote2'] and 'explanation2' in request.data and request.data['explanation2']:
+                new_post.footnote2 = request.data['footnote2']
+                new_post.explanation2 = request.data['explanation2']
+                # Ensure valid footnote 2 url
+                try:
+                    new_post.full_clean()
+                except:
+                    return Response({"message": "Footnote 2 URL is invalid"}, status=HTTP_400_BAD_REQUEST)
+            # Save the post; it's valid by this point
             new_post.save()
             return Response(PostSerializer(new_post).data, status=HTTP_201_CREATED)
         else:
