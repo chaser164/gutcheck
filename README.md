@@ -109,6 +109,7 @@ How the frontend login/signup works:
     - Clicking back will log out of unvalidated account
     - possible errors:
         - Email already in use for another account
+        - Username already in use
         - Improper email format (for those that edit HTML)
         - Network error
         - There is a catchall system to display rarer errors
@@ -134,7 +135,6 @@ How the frontend login/signup works:
 
 THINGS TO CONSIDER:
 - cleaning up console.logs
-- change back button to logut in unvalidated email pages? needed?
 - consider differences between webpage network vs chrome extension network
 - separate password reset token/expiration? is this needed?
 

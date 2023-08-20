@@ -2,15 +2,15 @@ from rest_framework import serializers
 from .models import Post
 
 class PostSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField()
+    username = serializers.SerializerMethodField()
     upvotes = serializers.SerializerMethodField()
     downvotes = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
-        fields = ['id', 'user', 'text', 'website', 'datetime', 'upvotes', 'downvotes']
+        fields = ['id', 'username', 'text', 'website', 'datetime', 'upvotes', 'downvotes']
 
-    def get_user(self, instance):
+    def get_username(self, instance):
         return instance.user.username
 
     def get_upvotes(self, instance):

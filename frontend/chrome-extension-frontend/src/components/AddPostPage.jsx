@@ -77,6 +77,7 @@ export default function AddPostPage({ setShowAddPostPage, url }) {
                     body["explanation2"] = explanation2
                 }
                 const response = await api.post(`posts/`, body);
+                console.log(response)
                 // Go back to posts page
                 setShowAddPostPage(false)
             } 

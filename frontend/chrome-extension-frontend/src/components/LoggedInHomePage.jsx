@@ -129,7 +129,7 @@ export default function LoggedOutHomePage() {
                                     <div key={i}><PostCard post={post} upvotedIDs={upvotedIDs} downvotedIDs={downvotedIDs} /></div>
                                 ))
                                 :
-                                <p>No reports yet. Be the first!</p>
+                                <p>No one has posted here yet. Be the first!</p>
                                 }
                             </div>
                         </>

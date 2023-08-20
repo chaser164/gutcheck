@@ -114,7 +114,10 @@ export default function PostCard({post, upvotedIDs, downvotedIDs}) {
     return (
         <div className="post-container">
             <div className="left-post-container">
-                <p className="date">{dateDisplay(post.datetime)}</p>
+                <div className="post-header">
+                    <p>@{ post.username }</p>
+                    <p className="date">{dateDisplay(post.datetime)}</p>
+                </div>
                 <p className="post-text">{post.text}</p>
                 <button className="menu forgot">show foototes</button>
             </div>
