@@ -146,6 +146,7 @@ MORE THINGS TO CONSIDER:
 - Expand post view / go to individual post page to see footnotes
 - Add shorthand displays to indicate especially large upvote/downvote numbers
 - Change 'no reports yet. be the first!' message (?)
-- Consider changing the terminology 'alias' around?
+- capitalization in username
+- Add a title field to posts?
 
 

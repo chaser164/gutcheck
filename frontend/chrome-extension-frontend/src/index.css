@@ -149,6 +149,7 @@ h2 {
 
 /* Individual post specifics */
 
+
 .post-container {
   border-top: 1px rosybrown;
   display: flex;
@@ -174,6 +175,19 @@ h2 {
   text-align: left;
   font-size: 10pt;
   overflow-wrap: break-word;
+}
+
+/* Post header section */
+
+.post-header {
+  text-align: left;
+  margin: 1px;
+  line-height: 1px;
+}
+
+.username-title {
+  font-weight: bolder;
+  font-size: 15pt;
 }
 
 .date {
