@@ -12,7 +12,6 @@ from datetime import timedelta
 # Create your models here.
 
 class User(AbstractUser):
-    alias = models.CharField(unique=True, max_length=30)
     email = models.EmailField(unique=True)
     validation_or_reset_tokens = models.CharField(blank=True, max_length=200)
     validated = models.BooleanField(default=False)

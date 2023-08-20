@@ -138,6 +138,11 @@ REST_FRAMEWORK = {
     ],
 }
 
+AUTHENTICATION_BACKENDS = [
+    'utilities.CustomAuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173', # development server
     'http://localhost:5174', # another development server

@@ -17,7 +17,7 @@ from rest_framework.authtoken.models import Token
 # from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from utilities import HttpOnlyTokenAuthentication, HttpOnlyTokenAuthenticationEmailValidated
-
+from django.core.exceptions import ValidationError
 from .models import User
 from .serializers import UserSerializer
 
@@ -25,19 +25,17 @@ from .serializers import UserSerializer
 class Sign_up(APIView):
     
     def post(self, request):
-        request.data["username"] = request.data["email"]
         # Attempt to create user
         try:
             user = User.objects.create_user(**request.data)
         except IntegrityError as e:
-            print(e)
             # Ensure uniqueness, return error messages otherwise
             if 'unique constraint' in str(e).lower():
                 # Handle integrity constraint violations
                 if 'email' in str(e).lower():
                     return Response({"message": "Email already registered"}, status=HTTP_400_BAD_REQUEST)
-                elif 'alias' in str(e).lower():
-                    return Response({"message": "Alias already in use"}, status=HTTP_400_BAD_REQUEST)
+                elif 'username' in str(e).lower():
+                    return Response({"message": "Username already in use"}, status=HTTP_400_BAD_REQUEST)
             else:
                 # Handle other integrity errors (I doubt this would ever be triggered, but extra safe to have this)
                 return Response({"message": "Integrity error occurred"}, status=HTTP_400_BAD_REQUEST)
@@ -48,7 +46,7 @@ class Sign_up(APIView):
         # Check that email is valid, if not, delete the created user
         try:
             user.full_clean()
-        except:
+        except ValidationError as e:
             user.delete()
             return Response({"message": "Improper email format"}, status=HTTP_400_BAD_REQUEST)
 
@@ -61,14 +59,13 @@ class Sign_up(APIView):
         response = Response({"user": user.email})
         response.set_cookie(key="token", value=token.key, httponly=True, secure=True, samesite='None', expires=format_life_time)
         return response
-        # Response({"user": user.email})
     
 class Log_in(APIView):
 
     def post(self, request):
-        email = request.data.get("email")
+        input = request.data.get("input")
         password = request.data.get("password")
-        user = authenticate(username=email, password=password)
+        user = authenticate(input=input, password=password)
         if user:
             token, _ = Token.objects.get_or_create(user=user)
             life_time = datetime.now() + timedelta(days=7)
@@ -89,32 +86,32 @@ class Log_out(APIView):
         response.delete_cookie("token")
         return response
 
-class Admin_sign_up(APIView):
-    # MAKE THIS A MORE SECURE PAGE...(some key that changes every day)
+# class Admin_sign_up(APIView):
+#     # MAKE THIS A MORE SECURE PAGE...(some key that changes every day)
 
-    def post(self, request):
-        request.data["username"] = request.data["email"]
-        # Try to create a user, the creation will not occur if the email is already being used
-        try:
-            admin_user = User.objects.create_user(**request.data)
-        except:
-            return Response({"message": "Email already in use for another account"}, status=HTTP_400_BAD_REQUEST)
-        # Check that email is valid, if not, delete the created user
-        try:
-            admin_user.full_clean()
-        except:
-            admin_user.delete()
-            return Response({"message": "Improper email format"}, status=HTTP_400_BAD_REQUEST)
-        admin_user.is_staff = True
-        admin_user.is_superuser = True
-        # Validate email and create token
-        admin_user.send_validation_email()
-        token, _ = Token.objects.get_or_create(user=admin_user)
-        life_time = datetime.now() + timedelta(days=7)
-        format_life_time = http_date(life_time.timestamp())
-        response = Response({"user": admin_user.email})
-        response.set_cookie(key="token", value=token.key, httponly=True, secure=True, samesite='None', expires=format_life_time)
-        return response
+#     def post(self, request):
+#         request.data["username"] = request.data["email"]
+#         # Try to create a user, the creation will not occur if the email is already being used
+#         try:
+#             admin_user = User.objects.create_user(**request.data)
+#         except:
+#             return Response({"message": "Email already in use for another account"}, status=HTTP_400_BAD_REQUEST)
+#         # Check that email is valid, if not, delete the created user
+#         try:
+#             admin_user.full_clean()
+#         except:
+#             admin_user.delete()
+#             return Response({"message": "Improper email format"}, status=HTTP_400_BAD_REQUEST)
+#         admin_user.is_staff = True
+#         admin_user.is_superuser = True
+#         # Validate email and create token
+#         admin_user.send_validation_email()
+#         token, _ = Token.objects.get_or_create(user=admin_user)
+#         life_time = datetime.now() + timedelta(days=7)
+#         format_life_time = http_date(life_time.timestamp())
+#         response = Response({"user": admin_user.email})
+#         response.set_cookie(key="token", value=token.key, httponly=True, secure=True, samesite='None', expires=format_life_time)
+#         return response
 
 class All_users(APIView):
     authentication_classes = [HttpOnlyTokenAuthenticationEmailValidated]

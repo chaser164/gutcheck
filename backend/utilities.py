@@ -1,5 +1,6 @@
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.exceptions import AuthenticationFailed
+from django.contrib.auth.backends import ModelBackend
 from user_app.models import User
 
 
@@ -42,3 +43,22 @@ class HttpOnlyTokenAuthenticationEmailValidated(HttpOnlyTokenAuthentication):
     def checkValidated(user):
         if not user.validated:
             raise AuthenticationFailed('Unvalidated Email')
+        
+
+class CustomAuthenticationBackend(ModelBackend):
+    def authenticate(self, request, input, password):
+        # Check matching username
+        try:
+            user = User.objects.get(username=input)
+        except User.DoesNotExist:
+            # No matching username with the input, so check for matching email
+            try:
+                user = User.objects.get(email=input)
+            except User.DoesNotExist:
+                # If we could
+                return
+                None
+        
+        if user.check_password(password):
+            return user
+        return None

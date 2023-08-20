@@ -4,17 +4,20 @@ import UserContext from "../contexts/UserContext.jsx";
 import { useSyncExternalStore } from "react";
 
 export default function SignUpPage() {
-    const { email, setEmail, password, setPassword, setErrorScreen, setUser } = useContext(UserContext)
+    const { setErrorScreen, setUser } = useContext(UserContext)
     const [submitLoading, setSubmitLoading] = useState(false)
     const [emailMessage, setEmailMessage] = useState(['', false])
     const [showPasswordReset, setShowPasswordReset] = useState(false)
     const [loginErrorMessage, setLoginErrorMessage] = useState('')
+    const [input, setInput] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
     
     function loginClicked(e) {
         setSubmitLoading(true)
         setLoginErrorMessage('')
         e.preventDefault()
-        if (!(email && password)) {
+        if (!(input && password)) {
             setLoginErrorMessage('Fields cannot be empty')
             setSubmitLoading(false)
             return
@@ -23,7 +26,7 @@ export default function SignUpPage() {
         async function loginAPIPost() {
             try {
               const response = await api.post(`users/login/`, {
-                "email": email,
+                "input": input,
                 "password": password,
                 });
                 setUser(response.data.user)
@@ -93,20 +96,31 @@ export default function SignUpPage() {
         <div className="center-container">
             <form onSubmit={(e) => showPasswordReset ? resetPassword(e) : loginClicked(e)} className="form-container">
                 <h2>{showPasswordReset ? 'Reset Password:' : 'Log In'}</h2>
-                <input
-                type="email"
-                value={email}
-                disabled={submitLoading}
-                placeholder="Email"
-                onChange={(e) => setEmail(e.target.value)}
-                />
-                { !showPasswordReset &&
+                { !showPasswordReset ? 
+                    <>
+
+                        <input
+                        type="text"
+                        value={input}
+                        disabled={submitLoading}
+                        placeholder="Email or Username"
+                        onChange={(e) => setInput(e.target.value)}
+                        />
+                        <input
+                        type="password"
+                        value={password}
+                        disabled={submitLoading}
+                        placeholder="Password"
+                        onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </>
+                    :
                     <input
-                    type="password"
-                    value={password}
+                    type="email"
+                    value={email}
                     disabled={submitLoading}
-                    placeholder="Password"
-                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Email"
+                    onChange={(e) => setEmail(e.target.value)}
                     />
                 }
                 { !showPasswordReset && <p className="input-error-message">{ loginErrorMessage }</p> }

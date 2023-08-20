@@ -3,9 +3,12 @@ import { api } from "../utilities.jsx";
 import UserContext from "../contexts/UserContext.jsx";
 
 export default function SignUpPage() {
-    const { setErrorScreen, username, setUsername, email, setEmail, password, setPassword, setUser } = useContext(UserContext)
+    const { setErrorScreen, setUser } = useContext(UserContext)
     const [submitLoading, setSubmitLoading] = useState(false)
     const [signUpErrorMessage, setSignUpErrorMessage] = useState('')
+    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
     const [password2, setPassword2] = useState('')
     
     // Ensure password is at least 8 characters
@@ -72,7 +75,7 @@ export default function SignUpPage() {
             setSignUpErrorMessage('')
             try {
                 const response = await api.post(`users/signup/`, {
-                    "alias": username,
+                    "username": username,
                     "email": email,
                     "password": password,
                 });
@@ -108,7 +111,7 @@ export default function SignUpPage() {
                 onChange={(e) => setUsername(e.target.value)}
                 />
                 <input
-                type="text"
+                type="email"
                 value={email}
                 disabled={submitLoading}
                 placeholder="Email"
