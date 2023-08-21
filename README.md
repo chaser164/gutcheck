@@ -145,7 +145,6 @@ MORE THINGS TO CONSIDER:
 - Make sure to set the cookies to 'Strict' to limit CSRF attack vulnerability when using as chrome extension
 - Expand post view / go to individual post page to see footnotes
 - Add shorthand displays to indicate especially large upvote/downvote numbers
-- Change 'no reports yet. be the first!' message (?)
 - capitalization in username
 - Add a title field to posts?
 

@@ -119,7 +119,7 @@ export default function PostCard({post, upvotedIDs, downvotedIDs}) {
                     <p className="date">{dateDisplay(post.datetime)}</p>
                 </div>
                 <p className="post-text">{post.text}</p>
-                <button className="menu forgot">show foototes</button>
+                <button className="menu footnote-display-button">show foototes</button>
             </div>
             <div>
                 <div>
