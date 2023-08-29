@@ -159,7 +159,6 @@ h2 {
   border: 1px solid whitesmoke;
   padding: 10px;
   border-radius:  15px;
-  
 }
 
 .left-post-container {
@@ -302,5 +301,52 @@ textarea {
   text-align: center;
 }
 
+/* link aesthetics */
+
+/* Basic styling */
+a {
+  color: #007bff; /* Change to your desired text color */
+  text-decoration: none; /* Remove the underline */
+  cursor: pointer; /* Change the cursor to a pointer on hover */
+  font-size: 8.5pt;
+  margin: 0;
+}
+
+/* Hover effect */
+a:hover {
+  color: #3d98f9; /* Change to a slightly different color on hover */
+  text-decoration: underline; /* Add underline on hover */
+}
 
 
+.no-footnotes {
+  font-size: 7.5pt;
+  color: #a4a4a4;
+  font-style: italic;
+}
+
+.footnote-text-container {
+  width: 250px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  padding-left: 15px;
+}
+
+.footnote-title {
+  font-weight: bolder;
+  font-size: 13.5pt;
+}
+
+.footnote-post-text {
+  width: 250px;
+  text-align: left;
+  font-size: 9pt;
+  overflow-wrap: break-word;
+}
+
+.footnote-spacer {
+  margin-top: 50px;
+}

@@ -5,10 +5,12 @@ import { useEffect } from "react";
 
 // In the future this page will be like the home page for logged in users. Keep in mind that setting the errorScreen to something non-empty 
 export default function PostCard({post, upvotedIDs, downvotedIDs}) {
+    const footnoteText = post.footnote1 && post.footnote2 ? "2 footnotes" : "1 footnote"
     const [initialUpvotes, setInitialUpvotes] = useState([])
     const [initialDownvotes, setInitialDownvotes] = useState([])
     const [upvoted, setUpvoted] = useState(false)
     const [downvoted, setDownvoted] = useState(false)
+    const [footnotesVisible, setFootnotesVisible] = useState(false)
     const { setErrorScreen } = useContext(UserContext)
 
     // After render and after upvotedIDs/posts have definitely been set, set the upvotes/downvotes values / has vs. hasn't voted values accordingly
@@ -111,6 +113,11 @@ export default function PostCard({post, upvotedIDs, downvotedIDs}) {
         return postDate.toLocaleString(undefined, options)
     }
 
+    // Toggle footnote visibility
+    function showFootnotes() {
+        setFootnotesVisible((prev) => !prev)
+    }
+
     return (
         <div className="post-container">
             <div className="left-post-container">
@@ -119,7 +126,36 @@ export default function PostCard({post, upvotedIDs, downvotedIDs}) {
                     <p className="date">{dateDisplay(post.datetime)}</p>
                 </div>
                 <p className="post-text">{post.text}</p>
-                <button className="menu footnote-display-button">show foototes</button>
+                { (post.footnote1 || post.footnote2) ?
+                <>
+                <button onClick={showFootnotes} className="menu footnote-display-button">{footnotesVisible ? "hide" : "show"} { footnoteText }</button>
+                    { footnotesVisible && 
+                        <>
+                        { post.footnote1 && 
+                            <>
+                                <br/>
+                                <div className="footnote-text-container">
+                                    <a href = {post.footnote1}>{ post.footnote1 }</a>
+                                    <p className="footnote-post-text">{ post.explanation1 }</p>
+                                </div>
+                            </>
+                        }
+                        { post.footnote2 && 
+                            <>
+                                <div div className="footnote-spacer" />
+                                <div className="footnote-text-container">
+                                    <a href = {post.footnote2}>{ post.footnote2 }</a>
+                                    <p className="footnote-post-text">{ post.explanation2 }</p>
+                                </div>
+                            </>
+                        }
+                        </>
+                    }
+                </>
+                : 
+                <p className="no-footnotes">no footnotes</p>
+                }
+
             </div>
             <div>
                 <div>
