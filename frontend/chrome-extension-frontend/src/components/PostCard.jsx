@@ -4,7 +4,7 @@ import UserContext from "../contexts/UserContext.jsx";
 import { useEffect } from "react";
 
 // In the future this page will be like the home page for logged in users. Keep in mind that setting the errorScreen to something non-empty 
-export default function PostCard({post, upvotedIDs, downvotedIDs}) {
+export default function PostCard({post, upvotedIDs, downvotedIDs, setFlaggedPostID}) {
     const footnoteText = post.footnote1 && post.footnote2 ? "2 footnotes" : "1 footnote"
     const [initialUpvotes, setInitialUpvotes] = useState([])
     const [initialDownvotes, setInitialDownvotes] = useState([])
@@ -118,6 +118,11 @@ export default function PostCard({post, upvotedIDs, downvotedIDs}) {
         setFootnotesVisible((prev) => !prev)
     }
 
+    // Display flag view
+    function flag() {
+        setFlaggedPostID(post.id)
+    }
+
     return (
         <div className="post-container">
             <div className="left-post-container">
@@ -133,7 +138,7 @@ export default function PostCard({post, upvotedIDs, downvotedIDs}) {
                         <>
                         { post.footnote1 && 
                             <>
-                                <br/>
+                                <br />
                                 <div className="footnote-text-container">
                                     <a href = {post.footnote1}>{ post.footnote1 }</a>
                                     <p className="footnote-post-text">{ post.explanation1 }</p>
@@ -158,6 +163,14 @@ export default function PostCard({post, upvotedIDs, downvotedIDs}) {
 
             </div>
             <div>
+                <div>
+
+                    { post.flagged ? 
+                    <button disabled={true} className="flag-button-selected" title="You flagged this">⚑</button>
+                    :
+                    <button className="flag-button" onClick={flag}>⚑</button>
+                    }
+                </div>
                 <div>
                     <p>{ numberDisplay(upvoted ? initialUpvotes + 1 : initialUpvotes) }</p>
                     <button onClick={upvote} className={upvoted ? "voted up" : "up"}>{'>'}</button>

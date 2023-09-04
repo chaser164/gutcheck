@@ -348,5 +348,48 @@ a:hover {
 }
 
 .footnote-spacer {
-  margin-top: 50px;
+  margin-top: 30px;
 }
+
+/* flag button */
+
+.flag-button {
+  border-radius: 12px;
+  border: 1px solid transparent;
+  padding: 0.3em 0.65em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #191919;
+  color: whitesmoke;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+.flag-button:hover {
+  border-color: #787fff;
+}
+
+.flag-button-selected {
+  border-radius: 12px;
+  border: 1px solid transparent;
+  padding: 0.3em 0.65em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: whitesmoke;
+  color: black;
+}
+
+/* checkbox styling */
+
+.checkboxes-container {
+  display: flex;
+  flex-direction: column;
+  align-items: first baseline;
+}
+
+.checkbox-display {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+

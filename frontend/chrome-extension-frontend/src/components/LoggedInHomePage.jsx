@@ -3,6 +3,7 @@ import { api } from "../utilities";
 import UserContext from "../contexts/UserContext.jsx";
 import PostCard from './PostCard.jsx'
 import AddPostPage from "./AddPostPage";
+import FlagPage from "./FlagPage";
 
 // In the future this page will be like the home page for logged in users. Keep in mind that setting the errorScreen to something non-empty 
 export default function LoggedOutHomePage() {
@@ -13,6 +14,7 @@ export default function LoggedOutHomePage() {
     const [upvotedIDs, setUpvotedIDs] = useState([])
     const [downvotedIDs, setDownvotedIDs] = useState([])
     const [showAddPostPage, setShowAddPostPage] = useState(false)
+    const [flaggedPostID, setFlaggedPostID] = useState(null)
     const { setUser, setErrorScreen } = useContext(UserContext)
 
     useEffect(() => {
@@ -86,7 +88,7 @@ export default function LoggedOutHomePage() {
 
         getPosts()
 
-    }, [showAddPostPage, url]);
+    }, [showAddPostPage, flaggedPostID, url]);
 
     function logout () {
         async function logoutAPIPost() {
@@ -112,28 +114,34 @@ export default function LoggedOutHomePage() {
                 <AddPostPage setShowAddPostPage={setShowAddPostPage} url={url} />
                 :
                 <>
-                    { hasLoaded &&
-                        <>
-                            <header className="header-container">
-                                <button onClick={logout} className="logout menu">Logout</button>
-                                <div>
-                                    <h2>{posts.length} {posts.length == 1 ? "Report" : "Reports"} for</h2>
-                                    <p>{url}</p>
+                { flaggedPostID ?
+                    <FlagPage setFlaggedPostID={setFlaggedPostID} post_id={flaggedPostID} />
+                    :
+                    <>
+                        { hasLoaded &&
+                            <>
+                                <header className="header-container">
+                                    <button onClick={logout} className="logout menu">Logout</button>
+                                    <div>
+                                        <h2>{posts.length} {posts.length == 1 ? "Report" : "Reports"} for</h2>
+                                        <p>{url}</p>
+                                    </div>
+                                </header>
+                                <br />
+                                <div className="posts-container">
+                                    <button onClick={() => setShowAddPostPage(true)} disabled={hasPosted} title={hasPosted ? "You can only post once per website" : null} className="menu">Contribute +</button>
+                                    {posts.length > 0 ?
+                                    posts.map((post, i) => (
+                                        <div key={i}><PostCard post={post} upvotedIDs={upvotedIDs} downvotedIDs={downvotedIDs} setFlaggedPostID={setFlaggedPostID} /></div>
+                                    ))
+                                    :
+                                    <p>No one has posted here yet. Be the first!</p>
+                                    }
                                 </div>
-                            </header>
-                            <br />
-                            <div className="posts-container">
-                                <button onClick={() => setShowAddPostPage(true)} disabled={hasPosted} title={hasPosted ? "You can only post once per website" : null} className="menu">Contribute +</button>
-                                {posts.length > 0 ?
-                                posts.map((post, i) => (
-                                    <div key={i}><PostCard post={post} upvotedIDs={upvotedIDs} downvotedIDs={downvotedIDs} /></div>
-                                ))
-                                :
-                                <p>No one has posted here yet. Be the first!</p>
-                                }
-                            </div>
-                        </>
-                    }
+                            </>
+                        }
+                    </>
+                }
                 </>
             }
         </>

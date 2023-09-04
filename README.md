@@ -133,19 +133,14 @@ How the frontend login/signup works:
 - Email activation links expire after 100 seconds
 
 
-THINGS TO CONSIDER:
-- cleaning up console.logs
-- consider differences between webpage network vs chrome extension network
-- separate password reset token/expiration? is this needed?
-
 -----------------------------------------------------------------------------------
 
-MORE THINGS TO CONSIDER:
+THINGS TO CONSIDER DURING DEVELOPMENT:
 - Add a way to disallow posting on pages where chrome cannot find a URL (only show AddPostPage when URL is set?)
 - Make sure to set the cookies to 'Strict' to limit CSRF attack vulnerability when using as chrome extension
 - Add shorthand displays to indicate especially large upvote/downvote numbers
-- capitalization in username
+- disallow capitalization in username
 - Add a title field to posts?
-- ensure no weirdness happens upon signup when network isn't working well
+- ensure no errors happens upon signup when network isn't connected
 
 
