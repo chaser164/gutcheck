@@ -22,9 +22,7 @@ class PostSerializer(serializers.ModelSerializer):
         return instance.downvoters.count()
     
     def get_flagged(self, instance):
-        user_flags = list(Flag.objects.filter(user=instance.user))
-        posts_flagged_by_user = list(map(lambda x: x.post.id, user_flags))
-        print(posts_flagged_by_user)
+        posts_flagged_by_user = self.context.get("posts_flagged_by_user")
         # True if the user has already flagged this post, false otherwise
         return instance.id in posts_flagged_by_user
 

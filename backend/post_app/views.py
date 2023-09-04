@@ -12,6 +12,7 @@ from utilities import HttpOnlyTokenAuthenticationEmailValidated
 from rest_framework.permissions import IsAuthenticated
 
 from .models import Post
+from flag_app.models import Flag
 from .serializers import PostSerializer, PostIDSerializer
 
 class All_posts(APIView):
@@ -69,7 +70,10 @@ class Posts_by_website(APIView):
         # Find whether or not the user has posted
         users_who_posted = list(map(lambda post: post.user, posts))
         user_posted = request.user in users_who_posted
-        serializedPosts = PostSerializer(posts, many=True)
+        # Get lists of post ids user has flagged and pass this list into the serializer
+        user_flags = list(Flag.objects.filter(user=request.user))
+        posts_flagged_by_user = list(map(lambda x: x.post.id, user_flags))
+        serializedPosts = PostSerializer(posts, context={"posts_flagged_by_user": posts_flagged_by_user}, many=True)
         return Response({"posts": serializedPosts.data, "user_posted": user_posted})
         
     def delete(self, request):

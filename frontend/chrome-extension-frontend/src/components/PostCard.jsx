@@ -165,7 +165,7 @@ export default function PostCard({post, upvotedIDs, downvotedIDs, setFlaggedPost
             <div>
                 <div>
 
-                    { post.flagged ? 
+                    { post.flagged  ? 
                     <button disabled={true} className="flag-button-selected" title="You flagged this">⚑</button>
                     :
                     <button className="flag-button" onClick={flag}>⚑</button>
