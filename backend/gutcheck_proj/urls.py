@@ -1,5 +1,5 @@
 """
-URL configuration for peer_review_proj project.
+URL configuration for gutcheck_proj project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
@@ -21,4 +21,5 @@ urlpatterns = [
     # path('admin/', admin.site.urls),
     path('api/v1/users/', include('user_app.urls')),
     path('api/v1/posts/', include('post_app.urls')),
+    path('api/v1/flags/', include('flag_app.urls')),
 ]

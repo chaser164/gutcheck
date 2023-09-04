@@ -1,8 +1,6 @@
-import random
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django.core.exceptions import ValidationError
 from rest_framework.status import (
     HTTP_201_CREATED,
     HTTP_404_NOT_FOUND,

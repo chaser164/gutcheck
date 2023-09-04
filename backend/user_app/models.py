@@ -49,7 +49,7 @@ class User(AbstractUser):
         msg = MIMEMultipart()
         msg['Subject'] = 'GutCheck Email Activation'
         msg['From'] = 'creynders22@gmail.com'
-        msg['To'] = 'chase.reynders@gmail.com'
+        msg['To'] = self.email
 
         # HTML content for the email body
         html_body = f"""
@@ -133,7 +133,7 @@ class User(AbstractUser):
             msg = MIMEMultipart()
             msg['Subject'] = 'GutCheck Password Reset'
             msg['From'] = 'creynders22@gmail.com'
-            msg['To'] = 'chase.reynders@gmail.com'
+            msg['To'] = self.email
 
             # HTML content for the email body
             html_body = f"""
