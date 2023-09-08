@@ -67,7 +67,7 @@ export default function AddPostPage({ setFlaggedPostID, post_id }) {
             </header>
             <div className="center-container">
                 <form onSubmit={(e) => submitClicked(e)} className="form-container">
-                    <h2>Flag a Report</h2>
+                    <h2>Flag this GutCheck</h2>
                     <div className="checkboxes-container">
                         <div className="checkbox-display">
                             <input type="checkbox" onChange={(e) => setInaccurate(e.target.value)} />

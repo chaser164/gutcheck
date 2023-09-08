@@ -20,11 +20,11 @@ export default function LoggedOutHomePage() {
     useEffect(() => {
 
         // Get the current URL (code only works in a chrome extension)
-        // chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
-        //     let url = tabs[0].url;
-        //     setUrl(url)
-        // });
-        setUrl('https://chat.openai.com/')
+        chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
+            let url = tabs[0].url;
+            setUrl(url)
+        });
+        // setUrl('https://chat.openai.com/')
 
         async function getPosts() {
             try {
@@ -123,7 +123,7 @@ export default function LoggedOutHomePage() {
                                 <header className="header-container">
                                     <button onClick={logout} className="logout menu">Logout</button>
                                     <div>
-                                        <h2>{posts.length} {posts.length == 1 ? "Report" : "Reports"} for</h2>
+                                        <h2>{posts.length} {posts.length == 1 ? "GutCheck" : "GutChecks"} for</h2>
                                         <p>{url}</p>
                                     </div>
                                 </header>

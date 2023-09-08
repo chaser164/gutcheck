@@ -220,6 +220,7 @@ h2 {
   border: 1pt solid transparent;
   font-size: large;
   transition: border-color 0.25s;
+  cursor: pointer;
 }
 
 .down {
@@ -229,6 +230,7 @@ h2 {
   border: 1pt solid transparent;
   font-size: large;
   transition: border-color 0.25s;
+  cursor: pointer;
   
 }
 
