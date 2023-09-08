@@ -142,5 +142,7 @@ THINGS TO CONSIDER DURING DEVELOPMENT:
 - disallow capitalization in username
 - Add a title field to posts?
 - ensure no errors happens upon signup when network isn't connected
+- stylize email confirmation page
+- add admin priviliges
 
 

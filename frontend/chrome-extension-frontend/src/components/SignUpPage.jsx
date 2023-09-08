@@ -105,10 +105,10 @@ export default function SignUpPage() {
                 <h2>Sign Up</h2>
                 <input
                 type="text"
-                value={username}
+                value={username.toLowerCase()}
                 disabled={submitLoading}
                 placeholder="Username"
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => setUsername(e.target.value.toLowerCase())}
                 />
                 <input
                 type="email"
