@@ -1,0 +1,397 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #282828;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  width: 400px;
+  min-height: 200px;
+}
+
+#root {
+  padding: 1rem;
+  text-align: center;
+}
+
+/* LOGIN & SIGNUP PAGES */
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+.menu {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #191919;
+  color: whitesmoke;
+}
+
+.menu[disabled] {
+  opacity: 0.6; /* Or any other styling you prefer */
+}
+
+.menu:not([disabled]) {
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+.menu:not([disabled]):hover {
+  border-color: #787fff;
+}
+
+.spacer {
+  justify-content: center;
+  display: flex;
+  gap: 10px;
+}
+
+.center-container {
+  display: flex;
+  justify-content: center;
+}
+
+.form-container {
+  width: 225px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.form-container input[type="text"], input[type="email"], input[type="password"] {
+  border: 1px solid #878787;
+  border-radius: 4px;
+  width: 300px;
+  padding: 5px;
+}
+
+.submit-button {
+  border-radius: 4px;
+  padding: 5px;
+  width: 310px;
+  border: 1px solid #282828;
+}
+
+.submit-button:not([disabled]) {
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+.submit-button:not([disabled]):hover {
+  border-color: #ffffff;
+}
+
+.back {
+  align-self: flex-start;
+  font-size: large;
+  font-family: "Times New Roman", Times, serif;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 2px;
+  padding-bottom: 4px;
+
+}
+
+.title-holder {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+h2 {
+  justify-content: center;
+}
+
+.forgot {
+  margin: 10px;
+  width: 125px;
+  font-size: 8.5pt;
+  padding: 5px;
+}
+
+.input-error-message {
+  height: 15px;
+  width: 350px;
+  color: rgb(255, 179, 0);
+}
+
+/* POST PAGES */
+
+
+/* Broader containers */
+
+.posts-container {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.header-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/* Individual post specifics */
+
+
+.post-container {
+  border-top: 1px rosybrown;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+  border: 1px solid whitesmoke;
+  padding: 10px;
+  border-radius:  15px;
+}
+
+.left-post-container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  padding-left: 7px;
+}
+
+
+/* Post header section */
+
+.post-header {
+  text-align: left;
+  line-height: 1px;
+}
+
+.username-title {
+  font-weight: bolder;
+  font-size: 15pt;
+}
+
+.date {
+  font-size: 9pt;
+  color: #a4a4a4
+}
+
+/* Post body */
+
+.post-text {
+  width: 270px;
+  text-align: left;
+  font-size: 10pt;
+  overflow-wrap: break-word;
+}
+
+.footnote-display-button {
+  text-align: left;
+  font-size: 8.5pt;
+}
+
+/* Logout button specifics */
+
+.logout {
+  align-self: flex-start;
+  font-size: small;
+  padding: 10px;
+
+}
+
+/* upvote/downvote buttons */
+
+.up {
+  transform: rotate(270deg);
+  border-top-right-radius: 5pt;
+  border-bottom-right-radius: 5pt;
+  border: 1pt solid transparent;
+  font-size: large;
+  transition: border-color 0.25s;
+  cursor: pointer;
+}
+
+.down {
+  transform: rotate(270deg);
+  border-top-left-radius: 5pt;
+  border-bottom-left-radius: 5pt;
+  border: 1pt solid transparent;
+  font-size: large;
+  transition: border-color 0.25s;
+  cursor: pointer;
+  
+}
+
+.up:hover {
+  border: 1pt solid #787fff;
+}
+
+.down:hover {
+  border: 1pt solid #787fff;
+}
+
+.voted {
+  border: 1pt solid #787fff;
+  background-color: black;
+  color: whitesmoke;
+  
+}
+
+/* Making a post */
+
+textarea {
+  resize: none;
+  border-radius: 4px;
+  padding: 4px;
+  border: 1px solid #878787;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.char-counter {
+  align-self: flex-start;
+  font-size: 9pt;
+}
+
+.char-counter-error {
+  align-self: flex-start;
+  font-size: 9pt;
+  color: rgb(255, 179, 0);
+}
+
+.textarea-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* making footnotes */
+
+.footnote-button {
+  font-size: small;
+}
+
+.footnote-title-container {
+  width: 310px;
+  position: relative;
+}
+
+.footnote-title {
+  display: block;
+  margin: auto;
+}
+
+.x {
+  position:absolute; 
+  top: 0; 
+  right: 0;
+  padding-top: 2px;
+  padding-bottom: 3px;
+  padding-left: 8px;
+  padding-right: 8px;
+  text-align: center;
+}
+
+/* link aesthetics */
+
+/* Basic styling */
+a {
+  color: #007bff; /* Change to your desired text color */
+  text-decoration: none; /* Remove the underline */
+  cursor: pointer; /* Change the cursor to a pointer on hover */
+  font-size: 8.5pt;
+  margin: 0;
+}
+
+/* Hover effect */
+a:hover {
+  color: #3d98f9; /* Change to a slightly different color on hover */
+  text-decoration: underline; /* Add underline on hover */
+}
+
+
+.no-footnotes {
+  font-size: 7.5pt;
+  color: #a4a4a4;
+  font-style: italic;
+}
+
+.footnote-text-container {
+  width: 250px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  padding-left: 20px;
+}
+
+.footnote-title {
+  font-weight: bolder;
+  font-size: 13.5pt;
+}
+
+.footnote-post-text {
+  width: 250px;
+  text-align: left;
+  font-size: 9pt;
+  overflow-wrap: break-word;
+}
+
+.footnote-spacer {
+  margin-top: 30px;
+}
+
+/* flag button */
+
+.flag-button {
+  border-radius: 12px;
+  border: 1px solid transparent;
+  padding: 0.3em 0.65em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #191919;
+  color: whitesmoke;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+.flag-button:hover {
+  border-color: #787fff;
+}
+
+.flag-button-selected {
+  border-radius: 12px;
+  border: 1px solid transparent;
+  padding: 0.3em 0.65em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: whitesmoke;
+  color: black;
+}
+
+/* checkbox styling */
+
+.checkboxes-container {
+  display: flex;
+  flex-direction: column;
+  align-items: first baseline;
+}
+
+.checkbox-display {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
