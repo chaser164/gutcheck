@@ -23,8 +23,12 @@ class PostSerializer(serializers.ModelSerializer):
     
     def get_flagged(self, instance):
         posts_flagged_by_user = self.context.get("posts_flagged_by_user")
-        # True if the user has already flagged this post, false otherwise
-        return instance.id in posts_flagged_by_user
+
+        if posts_flagged_by_user:
+            # True if the user has already flagged this post, false otherwise
+            return instance.id in posts_flagged_by_user
+        else:
+            return False
 
 
 class PostIDSerializer(serializers.ModelSerializer):
