@@ -1,4 +1,9 @@
-What happens at each endpoint:
+GUTCHECK
+
+This is an ongoing personal project of mine that attaches a comment section to any web page.
+Currently, I'm using this README as rough API documentation as well as a place to take notes on the state of the project in general.
+
+What happens at each endpoint of the API:
 
 api/v1/users/
 - GET will return a list of all users and their info 
