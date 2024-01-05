@@ -170,7 +170,7 @@ class User(AbstractUser):
                     </tr>
                     <tr>
                         <td align="center">
-                            <a href="{self.WEBPAGE_BASE_URL}reset/{reset_key}/" class="big-blue-button">
+                            <a href="google.com/" class="big-blue-button">
                                 Click to Reset Password
                             </a>
                         </td>

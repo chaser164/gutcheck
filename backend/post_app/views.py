@@ -10,6 +10,7 @@ from rest_framework.status import (
 )
 from utilities import HttpOnlyTokenAuthenticationEmailValidated
 from rest_framework.permissions import IsAuthenticated
+from django.utils import timezone
 
 from .models import Post
 from flag_app.models import Flag
@@ -25,7 +26,6 @@ class All_posts(APIView):
         return Response(allSerializedPosts.data)
     
     def post(self, request):
-        print(request.data)
         # Check if the request body appears valid
         if 'text' in request.data and request.data['text'] and 'website' in request.data and request.data['website']:
             # Add website and body text to post
@@ -117,10 +117,53 @@ class A_post(APIView):
             return Response({"message": "Cannot delete others' posts"}, status=HTTP_401_UNAUTHORIZED)
         
     def put(self, request, postid, vote=None):
-        if vote is None:
-            # The intended endpoint must have been GET or DELETE
-            return Response({"detail": "Method \"PUT\" not allowed."}, status=HTTP_404_NOT_FOUND)
         post = get_object_or_404(Post, id = postid)
+        # Update post
+        if vote is None:
+            # Check if the request body appears valid
+            if 'text' in request.data and request.data['text'] and 'website' in request.data and request.data['website']:
+                # Add website and body text to post
+                post.text = request.data['text']
+                post.website = request.data['website']
+                # Ensure valid body URL
+                # Guards in frontend will prevent character limit validators from triggering
+                try:
+                    post.full_clean()
+                except:
+                    return Response({"message": "Cannot post on this webpage"}, status=HTTP_400_BAD_REQUEST)
+                # If there are footnote1/explanation1 fields, add these to the post
+                if 'footnote1' in request.data and request.data['footnote1'] and 'explanation1' in request.data and request.data['explanation1']:
+                    post.footnote1 = request.data['footnote1']
+                    post.explanation1 = request.data['explanation1']
+                    # Ensure valid footnote 1 url
+                    try:
+                        post.full_clean()
+                    except:
+                        return Response({"message": "Footnote 1 URL is invalid"}, status=HTTP_400_BAD_REQUEST)
+                # No specified footnote means we should empty it
+                else:
+                    post.footnote1 = ''
+                    post.explanation1 = ''
+                # If there are footnote2/explanation2 fields, add these to the post
+                if 'footnote2' in request.data and request.data['footnote2'] and 'explanation2' in request.data and request.data['explanation2']:
+                    post.footnote2 = request.data['footnote2']
+                    post.explanation2 = request.data['explanation2']
+                    # Ensure valid footnote 2 url
+                    try:
+                        post.full_clean()
+                    except:
+                        return Response({"message": "Footnote 2 URL is invalid"}, status=HTTP_400_BAD_REQUEST)
+                # No specified footnote means we should empty it
+                else:
+                    post.footnote2 = ''
+                    post.explanation2 = ''
+                # Update timestamp
+                post.datetime = timezone.now()
+                # Save the post; it's valid by this point
+                post.save()
+                return Response(PostSerializer(post).data, status=HTTP_201_CREATED)
+            else:
+                return Response({"message": "Invalid request body"}, status=HTTP_400_BAD_REQUEST)
         if vote == 'upvote':
             post.downvoters.remove(request.user)
             post.upvoters.add(request.user)

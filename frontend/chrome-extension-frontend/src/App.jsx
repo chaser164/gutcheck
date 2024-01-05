@@ -15,7 +15,7 @@ function App() {
     async function checkActiveUser() {
       try {
           const response = await api.get(`users/status/`)
-          setUser(response.data.email)
+          setUser(response.data.user)
       } 
       catch (err) {
         // Revoke access with a network error

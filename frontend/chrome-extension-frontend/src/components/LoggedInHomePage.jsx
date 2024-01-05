@@ -15,7 +15,16 @@ export default function LoggedOutHomePage() {
     const [downvotedIDs, setDownvotedIDs] = useState([])
     const [showAddPostPage, setShowAddPostPage] = useState(false)
     const [flaggedPostID, setFlaggedPostID] = useState(null)
+    const [deletedCount, setDeletedCount] = useState(0);
+    const [postidToEdit, setPostidToEdit] = useState(null);
     const { setUser, setErrorScreen } = useContext(UserContext)
+
+    // When returning to main page, reset edit status
+    useEffect(() => {
+        if(!showAddPostPage) {
+            setPostidToEdit(null)
+        }
+    }, [showAddPostPage])
 
     useEffect(() => {
 
@@ -32,7 +41,6 @@ export default function LoggedOutHomePage() {
                 const response = await api.post(`posts/bywebsite/`, {
                     "website": url,
                 });
-                console.log(response)
                 setPosts(response.data.posts)
                 setHasPosted(response.data.user_posted)
                 // Call the other API requests, set hasLoaded to true to activate account
@@ -88,7 +96,31 @@ export default function LoggedOutHomePage() {
 
         getPosts()
 
-    }, [showAddPostPage, flaggedPostID, url]);
+    }, [showAddPostPage, flaggedPostID, url, deletedCount]);
+
+
+    useEffect(() => {
+        // Guard against reset
+        if(!postidToEdit) {
+            return;
+        }
+        setShowAddPostPage(true)
+    }, [postidToEdit]);
+
+    function findEditPost() {
+        const emptyPost = {"text": "", "footnote1": "", "explanation1": "", "footnote2": "", "explanation2": ""}
+        if (!postidToEdit) {
+            return emptyPost
+        }
+        const postToEdit = posts.find(post => post.id === postidToEdit);
+
+        // Return either found post or empty post
+        if (postToEdit) {
+            return postToEdit
+        } else {
+           return emptyPost
+        }
+    }
 
     function logout () {
         async function logoutAPIPost() {
@@ -111,7 +143,7 @@ export default function LoggedOutHomePage() {
     return (
         <>
             { showAddPostPage ?
-                <AddPostPage setShowAddPostPage={setShowAddPostPage} url={url} />
+                <AddPostPage setShowAddPostPage={setShowAddPostPage} url={url} content={findEditPost()} setPostidToEdit={setPostidToEdit}  />
                 :
                 <>
                 { flaggedPostID ?
@@ -132,7 +164,7 @@ export default function LoggedOutHomePage() {
                                     <button onClick={() => setShowAddPostPage(true)} disabled={hasPosted} title={hasPosted ? "You can only post once per website" : null} className="menu">Contribute +</button>
                                     {posts.length > 0 ?
                                     posts.map((post, i) => (
-                                        <div key={i}><PostCard post={post} upvotedIDs={upvotedIDs} downvotedIDs={downvotedIDs} setFlaggedPostID={setFlaggedPostID} /></div>
+                                        <div key={i}><PostCard post={post} upvotedIDs={upvotedIDs} downvotedIDs={downvotedIDs} setFlaggedPostID={setFlaggedPostID} setDeletedCount={setDeletedCount} setPostidToEdit={setPostidToEdit} /></div>
                                     ))
                                     :
                                     <p>No one has posted here yet. Be the first!</p>

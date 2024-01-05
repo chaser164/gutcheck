@@ -3,18 +3,17 @@ import { api } from "../utilities";
 import UserContext from "../contexts/UserContext.jsx";
 
 // In the future this page will be like the home page for logged in users. Keep in mind that setting the errorScreen to something non-empty 
-export default function AddPostPage({ setShowAddPostPage, url }) {
+export default function AddPostPage({ setShowAddPostPage, url, content, setPostidToEdit, isAnEdit }) {
     const { setErrorScreen } = useContext(UserContext)
     const [submitLoading, setSubmitLoading] = useState(false)
     const [postErrorMessage, setPostErrorMessage] = useState('')
-    const [showFootnote1, setShowFootnote1] = useState(false)
-    const [showFootnote2, setShowFootnote2] = useState(false)
-    const [text, setText] = useState('')
-    const [footnote1, setFootnote1] = useState('')
-    const [explanation1, setExplanation1] = useState('')
-    const [footnote2, setFootnote2] = useState('')
-    const [explanation2, setExplanation2] = useState('')
-
+    const [showFootnote1, setShowFootnote1] = useState(content["footnote1"] && content["footnote1"] !== "")
+    const [showFootnote2, setShowFootnote2] = useState(content["footnote2"] && content["footnote2"] !== "")
+    const [text, setText] = useState(content["text"] || "")
+    const [footnote1, setFootnote1] = useState(content["footnote1"] || "")
+    const [explanation1, setExplanation1] = useState(content["explanation1"] || "")
+    const [footnote2, setFootnote2] = useState(content["footnote2"] || "")
+    const [explanation2, setExplanation2] = useState(content["explanation2"] || "")
 
     function postClicked(e) {
         setSubmitLoading(true)
@@ -76,8 +75,11 @@ export default function AddPostPage({ setShowAddPostPage, url }) {
                     body["footnote2"] = footnote2
                     body["explanation2"] = explanation2
                 }
-                const response = await api.post(`posts/`, body);
-                console.log(response)
+                if (content["text"] === "") {
+                    const response = await api.post(`posts/`, body);
+                } else {
+                    const response = await api.put(`posts/${content["id"]}/`, body);
+                }
                 // Go back to posts page
                 setShowAddPostPage(false)
             } 
@@ -145,6 +147,7 @@ export default function AddPostPage({ setShowAddPostPage, url }) {
                             rows="4" 
                             cols="43" 
                             disabled={submitLoading}
+                            value={text}
                             onChange={(e) => setText(e.target.value)}
                             placeholder="Body text" 
                         />
@@ -204,7 +207,7 @@ export default function AddPostPage({ setShowAddPostPage, url }) {
                     }
                     <button type="button" disabled={showFootnote1 && showFootnote2} className="menu footnote-button" onClick={displayFootnotes}>Footnote +</button>
                     <p className="input-error-message"> { postErrorMessage }</p>
-                    <input type="submit" className="submit-button" disabled={submitLoading} value="Post" />
+                    <input type="submit" className="submit-button" disabled={submitLoading} value={content["text"] === "" ? "Post" : "Update"} />
                 </form> 
             </div>
         </>

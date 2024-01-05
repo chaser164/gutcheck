@@ -141,12 +141,10 @@ How the frontend login/signup works:
 -----------------------------------------------------------------------------------
 
 THINGS TO CONSIDER DURING DEVELOPMENT:
-- Add a way to disallow posting on pages where chrome cannot find a URL (only show AddPostPage when URL is set?)
 - Make sure to set the cookies to 'Strict' to limit CSRF attack vulnerability when using as chrome extension
 - Add shorthand displays to indicate especially large upvote/downvote numbers
-- ensure no errors happens upon signup when network isn't connected
 - stylize email confirmation page
-- add admin priviliges
 - wrap URLs
+- allow account deletion
 
 

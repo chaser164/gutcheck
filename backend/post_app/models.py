@@ -17,8 +17,10 @@ class Post(models.Model):
 
     # Only allow a user to post about a particular website once
     def clean(self):
-        websites = [post.website for post in self.user.posts.all()]
-        if self.website in websites:
-            raise ValidationError('You already posted about this website')
+        # Only check website uniqueness when not editing a post
+        if not self.datetime:
+            websites = [post.website for post in self.user.posts.all()]
+            if self.website in websites:
+                raise ValidationError('You already posted about this website')
    
 

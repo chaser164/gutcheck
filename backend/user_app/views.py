@@ -56,7 +56,7 @@ class Sign_up(APIView):
         token, _ = Token.objects.get_or_create(user=user)
         life_time = datetime.now() + timedelta(days=7)
         format_life_time = http_date(life_time.timestamp())
-        response = Response({"user": user.email})
+        response = Response({"user": user.username})
         response.set_cookie(key="token", value=token.key, httponly=True, secure=True, samesite='None', expires=format_life_time)
         return response
     
@@ -70,7 +70,7 @@ class Log_in(APIView):
             token, _ = Token.objects.get_or_create(user=user)
             life_time = datetime.now() + timedelta(days=7)
             format_life_time = http_date(life_time.timestamp())
-            response = Response({"user": user.email})
+            response = Response({"user": user.username})
             response.set_cookie(key="token", value=token.key, httponly=True, secure=True, samesite='None', expires=format_life_time)
             return response
         else:
@@ -163,7 +163,7 @@ class User_status(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        return Response({"email": request.user.email, "is_validated": request.user.validated})
+        return Response({"email": request.user.email, "user": request.user.username, "is_validated": request.user.validated})
     
 
 class Resend_email(APIView):

@@ -4,14 +4,14 @@ import UserContext from "../contexts/UserContext.jsx";
 import { useEffect } from "react";
 
 // In the future this page will be like the home page for logged in users. Keep in mind that setting the errorScreen to something non-empty 
-export default function PostCard({post, upvotedIDs, downvotedIDs, setFlaggedPostID}) {
+export default function PostCard({post, upvotedIDs, downvotedIDs, setFlaggedPostID, setDeletedCount, setPostidToEdit}) {
     const footnoteText = post.footnote1 && post.footnote2 ? "2 footnotes" : "1 footnote"
     const [initialUpvotes, setInitialUpvotes] = useState([])
     const [initialDownvotes, setInitialDownvotes] = useState([])
     const [upvoted, setUpvoted] = useState(false)
     const [downvoted, setDownvoted] = useState(false)
     const [footnotesVisible, setFootnotesVisible] = useState(false)
-    const { setErrorScreen } = useContext(UserContext)
+    const { setErrorScreen, user } = useContext(UserContext)
 
     // After render and after upvotedIDs/posts have definitely been set, set the upvotes/downvotes values / has vs. hasn't voted values accordingly
     useEffect(() => {
@@ -123,8 +123,26 @@ export default function PostCard({post, upvotedIDs, downvotedIDs, setFlaggedPost
         setFlaggedPostID(post.id)
     }
 
+    function deletePost() {
+        async function deleteAPICall() {
+            try {
+                const response = await api.delete(`posts/${post.id}/`)
+                setDeletedCount((prevCount) => prevCount + 1)
+            } 
+            catch (err) {
+                // Show the request message (likely a network error)
+                setErrorScreen(err.message)
+            }
+        }
+        return deleteAPICall()
+    }
+
+    function editPost() {
+        setPostidToEdit(post.id)
+    }
+
     return (
-        <div className="post-container">
+        <div className={post.username === user ? "my-post post-container" : "post-container"}>
             <div className="left-post-container">
                 <div className="post-header">
                     <p className="username-title">{ post.username }</p>
@@ -160,7 +178,13 @@ export default function PostCard({post, upvotedIDs, downvotedIDs, setFlaggedPost
                 : 
                 <p className="no-footnotes">no footnotes</p>
                 }
-
+                { user === post.username && 
+                <div className="delete-edit-container">
+                    <button className="manip-button" onClick={deletePost}>Delete</button>
+                    <br />
+                    <button className="manip-button" onClick={editPost}>Edit</button>
+                </div>
+                }
             </div>
             <div>
                 <div>
