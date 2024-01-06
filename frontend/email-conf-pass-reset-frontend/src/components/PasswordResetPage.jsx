@@ -32,7 +32,7 @@ export default function PasswordResetPage() {
 
     return (
         !resetMessage ? 
-            <form onSubmit={(e) => resetClicked(e)}>
+            <form className="form-container" onSubmit={(e) => resetClicked(e)}>
                 <h3>Reset Password</h3>
                 <label>new password:</label>
                 <input
@@ -49,7 +49,7 @@ export default function PasswordResetPage() {
                 disabled={submitLoading}
                 onChange={(e) => setPassword2(e.target.value)}
                 />
-                <input type="submit" disabled={submitLoading || password !== password2 || password.length  == 0} />
+                <input className="submit-button" type="submit" disabled={submitLoading || password !== password2 || password.length  == 0} />
                 { password !== password2 && <p>passwords must match!</p>}
             </form> 
             : 

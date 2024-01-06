@@ -85,6 +85,9 @@ api/v1/posts/<int:postid>/<str:vote>/
     - The only accepted strings are 'upvote', 'downvote', and 'abstain'.
     - REQUIRES TOKEN AUTHORIZATION.
 
+api/v1/posts/has-posts/
+- POST will return a boolean of whether or not the website has GutChecks
+
 api/v1/posts/bywebsite/
 - POST will list out all the websites matching the URL provided in the body
     - A little awkward to use post here. Doing this because the parameter (a URL) is too complex to include in a get request endpoint
@@ -142,9 +145,6 @@ How the frontend login/signup works:
 
 THINGS TO CONSIDER DURING DEVELOPMENT:
 - Make sure to set the cookies to 'Strict' to limit CSRF attack vulnerability when using as chrome extension
-- Add shorthand displays to indicate especially large upvote/downvote numbers
-- stylize email confirmation page
-- wrap URLs
-- allow account deletion
+
 
 

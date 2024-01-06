@@ -122,7 +122,6 @@ class User(AbstractUser):
         
 
     def send_reset_email(self):
-            print('here!!!!')
             # Make a reset key by hashing a UUID
             reset_key = User.hash(uuid.uuid4())
             # Store the hash of the validation key in the validation_or_reset_tokens field
@@ -170,7 +169,7 @@ class User(AbstractUser):
                     </tr>
                     <tr>
                         <td align="center">
-                            <a href="google.com/" class="big-blue-button">
+                            <a href="{self.WEBPAGE_BASE_URL}reset/{reset_key}/" class="big-blue-button">
                                 Click to Reset Password
                             </a>
                         </td>

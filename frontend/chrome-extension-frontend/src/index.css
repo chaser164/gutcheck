@@ -40,7 +40,7 @@ h1 {
 }
 
 .menu[disabled] {
-  opacity: 0.6; /* Or any other styling you prefer */
+  opacity: 0.6;
 }
 
 .menu:not([disabled]) {
@@ -399,9 +399,10 @@ a:hover {
   gap: 10px;
 }
 
-/* delete and button styling */
+/* delete and edit button styling */
 
 .delete-edit-container {
+  font-size: 11pt;
   padding-top: 20px;
   width: 94px;
   display: flex;
@@ -420,7 +421,7 @@ a:hover {
   outline: none;
 }
 
-.delete-button:hover,
-.delete-button:focus {
+.manip-button:hover,
+.manip-button:focus {
   color: whitesmoke;
 }

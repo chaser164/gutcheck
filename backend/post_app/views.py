@@ -60,6 +60,15 @@ class All_posts(APIView):
         else:
             return Response({"message": "Invalid request body"}, status=HTTP_400_BAD_REQUEST)
 
+class Posts_by_website_no_info(APIView):
+    # It is unideal to use POST here. I'm doing this because I need to send a body because of the complex parameter (a URL) and get requests don't typically send a body
+    def post(self, request):
+        if ('website' in request.data and request.data['website']):
+            has_posts = len(Post.objects.filter(website = request.data['website'])) > 0
+            return Response({"has_posts": has_posts})
+        else:
+            return Response({"has_posts": False})
+
 class Posts_by_website(APIView):
     authentication_classes = [HttpOnlyTokenAuthenticationEmailValidated]
     permission_classes = [IsAuthenticated]

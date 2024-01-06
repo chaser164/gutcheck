@@ -14,5 +14,5 @@ urlpatterns = [
     path("validation/<str:validation_key>/", Validation.as_view(), name="validation"),
     path("resend/", Resend_email.as_view(), name='resend'),
     path("reset-email/", Send_password_email.as_view(), name='password reset email send'),
-    path("reset-password/<reset_key>/", Password_reset.as_view(), name='password reset'),
+    path("reset-password/<str:reset_key>/", Password_reset.as_view(), name='password reset'),
 ]

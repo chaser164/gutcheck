@@ -95,8 +95,11 @@ export default function PostCard({post, upvotedIDs, downvotedIDs, setFlaggedPost
         if (num === 0) {
             return "0"
         }
-        else {
+        else if (Math.abs(num < 1000)) {
             return String(num)
+        }
+        else {
+            return `${num.toFixed(1)}K`
         }
 
     }

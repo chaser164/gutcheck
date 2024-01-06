@@ -1,3 +1,49 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #282828;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body {
   text-align: center;
+}
+
+.form-container {
+  /* width: 225px; */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.form-container input[type="text"], input[type="email"], input[type="password"] {
+  border: 1px solid #878787;
+  border-radius: 4px;
+  width: 300px;
+  padding: 5px;
+}
+
+.submit-button {
+  border-radius: 4px;
+  padding: 5px;
+  width: 310px;
+  border: 1px solid #282828;
+}
+
+.submit-button:not([disabled]) {
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+.submit-button:not([disabled]):hover {
+  border-color: #ffffff;
 }
