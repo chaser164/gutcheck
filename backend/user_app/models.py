@@ -48,7 +48,7 @@ class User(AbstractUser):
         
         msg = MIMEMultipart()
         msg['Subject'] = 'GutCheck Email Activation'
-        msg['From'] = 'creynders22@gmail.com'
+        msg['From'] = 'gutcheck.extension@gmail.com'
         msg['To'] = self.email
 
         # HTML content for the email body
@@ -92,6 +92,14 @@ class User(AbstractUser):
                         </a>
                     </td>
                 </tr>
+                <tr>
+                    <td align="center">
+                        <p>If the button doesn't work, use this link:</p>
+                        <a href="{self.WEBPAGE_BASE_URL}validation/{validation_key}/">
+                            {self.WEBPAGE_BASE_URL}validation/{validation_key}/
+                        </a>
+                    </td>
+                </tr>
             </table>
         </body>
         </html>
@@ -104,7 +112,7 @@ class User(AbstractUser):
         smtp_server = 'smtp.gmail.com'
         smtp_port = 587
 
-        username = 'creynders22@gmail.com'
+        username = 'gutcheck.extension@gmail.com'
         # app-specific password, per google's requirements (stored in .env file)
         load_dotenv()
         password = os.getenv('APP_PASSWORD')
@@ -115,7 +123,7 @@ class User(AbstractUser):
                 server.login(username, password)
                 server.send_message(msg)
             self.save()
-            return "Email sent successfully!"
+            return "Email sent successfully! (Check spam)"
             # Only save database upon successful email send
         except Exception as e:
             return "Error sending email"
@@ -131,7 +139,7 @@ class User(AbstractUser):
 
             msg = MIMEMultipart()
             msg['Subject'] = 'GutCheck Password Reset'
-            msg['From'] = 'creynders22@gmail.com'
+            msg['From'] = 'gutcheck.extension@gmail.com'
             msg['To'] = self.email
 
             # HTML content for the email body
@@ -174,6 +182,14 @@ class User(AbstractUser):
                             </a>
                         </td>
                     </tr>
+                    <tr>
+                    <td align="center">
+                        <p>If the button doesn't work, use this link:</p>
+                        <a href="{self.WEBPAGE_BASE_URL}reset/{reset_key}/">
+                            {self.WEBPAGE_BASE_URL}reset/{reset_key}/
+                        </a>
+                    </td>
+                </tr>
                 </table>
             </body>
             </html>
@@ -186,7 +202,7 @@ class User(AbstractUser):
             smtp_server = 'smtp.gmail.com'
             smtp_port = 587
 
-            username = 'creynders22@gmail.com'
+            username = 'gutcheck.extension@gmail.com'
             # app-specific password, per google's requirements (stored in .env file)
             load_dotenv()
             password = os.getenv('APP_PASSWORD')
@@ -197,7 +213,7 @@ class User(AbstractUser):
                     server.login(username, password)
                     server.send_message(msg)
                 self.save()
-                return "Email sent successfully!"
+                return "Email sent successfully! (Check spam)"
                 # Only save database upon successful email send
             except Exception as e:
                 return "Error sending email"
