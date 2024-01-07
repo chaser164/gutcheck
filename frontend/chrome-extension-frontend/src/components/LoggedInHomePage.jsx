@@ -29,12 +29,12 @@ export default function LoggedOutHomePage() {
     useEffect(() => {
 
         // Get the current URL (code only works in a chrome extension)
-        // chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
-        //     let url = tabs[0].url;
-        //     setUrl(url)
-        // });
+        chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
+            let url = tabs[0].url;
+            setUrl(url)
+        });
         // For development:
-        setUrl('https://chat.openai.com/')
+        // setUrl('https://chat.openai.com/')
 
         async function getPosts() {
             try {
