@@ -28,7 +28,10 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'gutcheck-chaser164.pythonanywhere.com']
+ALLOWED_HOSTS = [
+    # '127.0.0.1', # for development
+    'gutcheck-chaser164.pythonanywhere.com' # production
+    ]
 
 
 # Application definition
@@ -148,8 +151,9 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173', # development server
-    'http://localhost:5174', # another development server
+    # 'http://localhost:5173', # development server
+    # 'http://localhost:5174', # another development server
+    'https://gutcheck-extension.netlify.app', # production
 
 ]
 

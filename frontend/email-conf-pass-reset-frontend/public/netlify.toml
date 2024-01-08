@@ -1,5 +1,4 @@
-# netlify.toml
-
+# Redirects all server-side routing to index.html (allows for client side routing)
 [[redirects]]
   from = "/*"
   to = "/index.html"
