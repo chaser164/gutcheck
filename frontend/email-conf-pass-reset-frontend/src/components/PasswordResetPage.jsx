@@ -61,7 +61,7 @@ export default function PasswordResetPage() {
                 disabled={submitLoading}
                 onChange={(e) => setPassword2(e.target.value)}
                 />
-                <input className="submit-button" type="submit" />
+                <input className="submit-button" disabled={submitLoading} type="submit" />
                 <p className="warning-text">{warningMessage}</p>
             </form> 
             : 

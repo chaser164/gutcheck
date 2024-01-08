@@ -147,6 +147,11 @@ h2 {
   justify-content: flex-end;
 }
 
+.url-container {
+  width: 350px;
+  word-wrap: break-word;
+}
+
 /* Individual post specifics */
 
 

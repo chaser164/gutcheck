@@ -157,7 +157,7 @@ export default function LoggedOutHomePage() {
                                     <button onClick={logout} className="logout menu">Logout</button>
                                     <div>
                                         <h2>{posts.length} {posts.length == 1 ? "GutCheck" : "GutChecks"} for</h2>
-                                        <p>{url}</p>
+                                        <p className="url-container">{url}</p>
                                     </div>
                                 </header>
                                 <br />

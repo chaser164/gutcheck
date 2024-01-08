@@ -1,7 +1,6 @@
 import { useState, useContext } from "react";
 import { api } from "../utilities.jsx";
 import UserContext from "../contexts/UserContext.jsx";
-import { useSyncExternalStore } from "react";
 
 export default function SignUpPage() {
     const { setErrorScreen, setUser } = useContext(UserContext)
