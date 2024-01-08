@@ -1,14 +1,11 @@
 GUTCHECK
-
 This is an ongoing personal project of mine that attaches a comment section to any web page.
-Currently, I'm using this README as rough API documentation as well as a place to take notes on the state of the project in general.
-
+Currently, I'm using this README as rough API documentation as well as a place to take notes on the state of the project in general
+.
 What happens at each endpoint of the API:
-
 api/v1/users/
 - GET will return a list of all users and their info 
     - page is only accessible to ADMIN users, so REQUIRES TOKEN AUTHORIZATION PLUS VALIDATION.
-
 api/v1/users/<int:userid>/
 - GET will return the specified user and their info 
     - page is only accessible to ADMIN users (unless viewing your own profile), so REQUIRES TOKEN AUTHORIZATION PLUS VALIDATION.
@@ -16,18 +13,14 @@ api/v1/users/<int:userid>/
     - page is only accessible to ADMIN users, so REQUIRES TOKEN AUTHORIZATION PLUS VALIDATION.
     - prevents self-deletion.
     - CONSIDER (NOT IMPLEMENTED YET): allow any user to delete themself (and thus log themself out)? Probably should do this...
-
 api/v1/users/me/
 - GET will return a user's own info (including posts).
     - REQUIRES TOKEN AUTHORIZATION PLUS VALIDATION. 
-
 api/v1/users/status/
 - GET will return a user's email and validated status.
     - REQUIRES TOKEN AUTHORIZATION.
-
 api/v1/users/validation/<str:validation_key>/
 - PUT will validate and activate the account associated with the given validation key.
-
 api/v1/users/resend/
 - POST will attempt to send a validation email to the user, automatically updating the account validation key of the user
     - REQUIRES TOKEN AUTHORIZATION.
@@ -51,7 +44,7 @@ api/v1/users/admin-signup/
 - POST will sign up an admin user and send a validation email. 
     - Request body must contain a username and password field. 
     - Response will be username and token.
-    - UNPROTECTED ENDPOINT AT THE MOMENT FOR DEV PURPOSES; THIS MUST CHANGE IN THE FUTURE!!!
+    - UNPROTECTED ENDPOINT AT THE MOMENT FOR DEV PURPOSES; THIS MUST CHANGE IN THE FUTUREls!
 
 api/v1/users/reset-email/
 - POST will send password reset email
@@ -144,7 +137,4 @@ How the frontend login/signup works:
 -----------------------------------------------------------------------------------
 
 THINGS TO CONSIDER DURING DEVELOPMENT:
-- Make sure to set the cookies to 'Strict' to limit CSRF attack vulnerability when using as chrome extension
-
-
-
+- Make sure to set the cookies to 'Strict' to limit CSRF attack vulnerability when using as chrome extension!
