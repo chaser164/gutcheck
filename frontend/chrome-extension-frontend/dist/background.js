@@ -5,7 +5,7 @@ chrome.runtime.onConnect.addListener(function (port) {
       port.onMessage.addListener(async function (request) {
         if (request && request.msg === 'new tab') {
           try {
-            const apiUrl = "http://127.0.0.1:8000/api/v1/posts/has-posts/";
+            const apiUrl = "https://gutcheck-chaser164.pythonanywhere.com/posts/has-posts/";
   
             const response = await fetch(apiUrl, {
               method: "POST",
