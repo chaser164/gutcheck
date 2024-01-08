@@ -3,6 +3,11 @@
     "name": "GutCheck",
     "description": "A human-run misinformation reporter",
     "version": "1.0",
+    "icons": { 
+      "16": "logo-images/gutcheck-logo-16.png",
+      "48": "logo-images/gutcheck-logo-48.png",
+      "128": "logo-images/gutcheck-logo-128.png" 
+    },
     "action": {
       "default_popup": "index.html"
     },
