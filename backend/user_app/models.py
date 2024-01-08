@@ -21,7 +21,7 @@ class User(AbstractUser):
     USERNAME_FIELD="email"
     REQUIRED_FIELDS=[]
 
-    WEBPAGE_BASE_URL = 'http://localhost:5174/'
+    WEBPAGE_BASE_URL = 'https://gutcheck-extension.netlify.app/'
 
     def is_expired(self):
         # Check if the token_timestamp is not None
