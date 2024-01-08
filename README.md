@@ -11,4 +11,4 @@ Users may perform the following actions on any post:
   - Explicit content
   - Malicious footnote URL.
 
-Flagged posts will be reviewed an dealt with appropriately by admin.
+Flagged posts will be reviewed and dealt with appropriately by admin.
