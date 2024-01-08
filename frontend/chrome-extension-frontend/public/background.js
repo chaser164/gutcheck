@@ -5,7 +5,7 @@ chrome.runtime.onConnect.addListener(function (port) {
       port.onMessage.addListener(async function (request) {
         if (request && request.msg === 'new tab') {
           try {
-            const apiUrl = "https://gutcheck-chaser164.pythonanywhere.com/posts/has-posts/";
+            const apiUrl = "https://gutcheck-chaser164.pythonanywhere.com/api/v1/posts/has-posts/";
   
             const response = await fetch(apiUrl, {
               method: "POST",
@@ -14,7 +14,6 @@ chrome.runtime.onConnect.addListener(function (port) {
               },
               body: JSON.stringify({ website: request.url }),
             });
-  
             if (response.ok) {
               const responseData = await response.json();
               const hasPosts = responseData.has_posts || false;
