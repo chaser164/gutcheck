@@ -25,5 +25,5 @@
       }
     ],
 
-    "permissions": ["scripting", "cookies", "tabs", "activeTab"]
+    "permissions": ["cookies", "activeTab"]
 }
