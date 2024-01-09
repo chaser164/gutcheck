@@ -9,6 +9,7 @@ function App() {
   const [user, setUser] = useState(null)
   const [errorScreen, setErrorScreen] = useState('')
   const [hasCheckedUser, setHasCheckedUser] = useState(false)
+  const [hasAllUrlsPermission, setHasAllUrlsPermission] = useState(false)
   
   // On initial render, test to see if there is currently a logged-in user. If so, set user state to this user
   useEffect(() => {
@@ -25,7 +26,17 @@ function App() {
       }
       setHasCheckedUser(true)
   }
-  checkActiveUser()
+  // Check permissions
+  chrome.permissions.contains({ origins: ["<all_urls>"] }, result => {
+    setHasAllUrlsPermission(result)
+    if(result) {
+      checkActiveUser()
+    } else {
+      // Set to 'Network Error' to prevent automatic logout
+      setErrorScreen('Network Error')
+      setHasCheckedUser(true)
+    }
+  });
   }, []);
   
   return (
@@ -34,14 +45,15 @@ function App() {
         user,
         setUser, 
         errorScreen, 
-        setErrorScreen, 
+        setErrorScreen,
+        hasAllUrlsPermission,
     }}>
       {hasCheckedUser &&
         <>
           { (user && errorScreen == '') ? 
           <LoggedInHomePage /> 
           : 
-            <LoggedOutHomePage /> 
+          <LoggedOutHomePage /> 
           }  
         </>
       }

@@ -10,8 +10,10 @@ export default function LoggedOutHomePage() {
     const [displayEmailButton, setDisplayEmailButton] = useState(false)
     const [resendMessage, setResendMessage] = useState('')
     const [emailSendButtonLoading, setEmailSendButtonLoading] = useState(false)
-    const { errorScreen, setErrorScreen, user, setUser } = useContext(UserContext)
+    const { errorScreen, setErrorScreen, user, setUser, hasAllUrlsPermission } = useContext(UserContext)
     
+
+
     // Based on error screen, set the visibility of the resend email button / resend message
     // If not a network error or email-related message, try to log out upon error!
     useEffect(() => {
@@ -75,6 +77,15 @@ export default function LoggedOutHomePage() {
         }
         resendAPIPost()
     }
+
+    // Allow access to all URLs    
+    function allow() {
+        chrome.permissions.request({
+            origins: ["<all_urls>"]
+        });
+        setErrorScreen('')
+    }
+
     return (
         <>
             {/* Back button to get back to the initial state of 2 buttons (sign up/login) */}
@@ -99,8 +110,20 @@ export default function LoggedOutHomePage() {
                     { showSignUp && <SignUpPage /> }
                     { showLogin && <LoginPage /> }
                 </> 
-            </> : 
-            <p>{errorScreen}</p>
+            </> :
+            <> 
+                {hasAllUrlsPermission ? 
+                    <p>{errorScreen}</p> 
+                :(
+                    <p>
+                        You still need to
+                        <br />
+                        <button className="manip-button" onClick={allow}>
+                        Allow access to all websites
+                        </button>
+                    </p>
+                )}
+            </>
             }
             { displayEmailButton && 
                 <>
