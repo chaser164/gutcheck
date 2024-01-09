@@ -1,3 +1,13 @@
+//Listen for extension being installed
+chrome.runtime.onInstalled.addListener(install => {
+  if(install.reason == 'install'){
+    //Open the configuration page
+    chrome.tabs.create({
+      url: '/welcome/welcome.html'
+    });
+  };
+});
+
 // Listen for connections from content scripts
 chrome.runtime.onConnect.addListener(function (port) {
     if (port.name === 'content-script') {

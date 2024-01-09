@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import LoggedOutHomePage from './components/LoggedOutHomePage'
 import LoggedInHomePage from './components/LoggedInHomePage'
 import UserContext from './contexts/UserContext.jsx'
+import Loader from './components/Loader.jsx'
 
 
 function App() {
@@ -48,7 +49,7 @@ function App() {
         setErrorScreen,
         hasAllUrlsPermission,
     }}>
-      {hasCheckedUser &&
+      {hasCheckedUser ?
         <>
           { (user && errorScreen == '') ? 
           <LoggedInHomePage /> 
@@ -56,6 +57,10 @@ function App() {
           <LoggedOutHomePage /> 
           }  
         </>
+        :
+        <div className='loader-container'>
+          <Loader />
+        </div>
       }
     </UserContext.Provider>
 )
