@@ -16,10 +16,11 @@ export default function LoggedInHomePage() {
     const [upvotedIDs, setUpvotedIDs] = useState([])
     const [downvotedIDs, setDownvotedIDs] = useState([])
     const [showAddPostPage, setShowAddPostPage] = useState(false)
-    const [showSettingsPage, setShowSettingsPage] = useState(false);
+    const [showSettingsPage, setShowSettingsPage] = useState(false)
     const [flaggedPostID, setFlaggedPostID] = useState(null)
     const [deletedCount, setDeletedCount] = useState(0)
     const [postidToEdit, setPostidToEdit] = useState(null)
+    const [logoutClicked, setLogoutClicked] = useState(false)
     const { setUser, setErrorScreen, setHasAlerts } = useContext(UserContext)
 
     // When returning to main page, reset edit status
@@ -127,6 +128,7 @@ export default function LoggedInHomePage() {
     }
 
     function logout () {
+        setLogoutClicked(true)
         async function logoutAPIPost() {
             try {
                 const response = await api.post(`users/logout/`);
@@ -134,6 +136,7 @@ export default function LoggedInHomePage() {
                 setHasAlerts(false)
             } 
             catch (err) {
+                setLogoutClicked(false)
                 if (err.message === 'Network Error') {
                     setErrorScreen('Network Error, failed to log out')
                     return
@@ -167,8 +170,8 @@ export default function LoggedInHomePage() {
                                 <>
                                     <header className="header-container">
                                         <div className="header-buttons-container">
-                                            <button onClick={logout} className="logout menu">log out</button>
-                                            <button onClick={openSettings} className="settings"><img className="cog" src={gear}/></button>
+                                            <button onClick={logout} className="logout menu" disabled={logoutClicked}>log out</button>
+                                            <button onClick={openSettings} className="settings" disabled={logoutClicked}><img className="cog" src={gear}/></button>
                                         </div>
                                         <div>
                                             <h2>{posts.length} {posts.length == 1 ? "GutCheck" : "GutChecks"} for</h2>
@@ -177,10 +180,10 @@ export default function LoggedInHomePage() {
                                     </header>
                                     <br />
                                     <div className="posts-container">
-                                        <button onClick={() => setShowAddPostPage(true)} disabled={hasPosted} title={hasPosted ? "You can only post once per website" : null} className="menu">Contribute +</button>
+                                        <button onClick={() => setShowAddPostPage(true)} disabled={hasPosted || logoutClicked} title={hasPosted ? "You can only post once per website" : null} className="menu">Contribute +</button>
                                         {posts.length > 0 ?
                                         posts.map((post, i) => (
-                                            <div key={i}><PostCard post={post} upvotedIDs={upvotedIDs} downvotedIDs={downvotedIDs} setFlaggedPostID={setFlaggedPostID} setDeletedCount={setDeletedCount} setPostidToEdit={setPostidToEdit} /></div>
+                                            <div key={i}><PostCard post={post} upvotedIDs={upvotedIDs} downvotedIDs={downvotedIDs} setFlaggedPostID={setFlaggedPostID} setDeletedCount={setDeletedCount} setPostidToEdit={setPostidToEdit} logoutClicked={logoutClicked} /></div>
                                         ))
                                         :
                                         <p>No one has posted here yet. Be the first!</p>

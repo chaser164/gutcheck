@@ -4,13 +4,14 @@ import UserContext from "../contexts/UserContext.jsx";
 import { useEffect } from "react";
 
 // In the future this page will be like the home page for logged in users. Keep in mind that setting the errorScreen to something non-empty 
-export default function PostCard({post, upvotedIDs, downvotedIDs, setFlaggedPostID, setDeletedCount, setPostidToEdit}) {
+export default function PostCard({post, upvotedIDs, downvotedIDs, setFlaggedPostID, setDeletedCount, setPostidToEdit, logoutClicked}) {
     const footnoteText = post.footnote1 && post.footnote2 ? "2 footnotes" : "1 footnote"
     const [initialUpvotes, setInitialUpvotes] = useState([])
     const [initialDownvotes, setInitialDownvotes] = useState([])
     const [upvoted, setUpvoted] = useState(false)
     const [downvoted, setDownvoted] = useState(false)
     const [footnotesVisible, setFootnotesVisible] = useState(false)
+    const [deleteLoading, setDeleteLoading] = useState(false)
     const { setErrorScreen, user } = useContext(UserContext)
 
     // After render and after upvotedIDs/posts have definitely been set, set the upvotes/downvotes values / has vs. hasn't voted values accordingly
@@ -127,6 +128,7 @@ export default function PostCard({post, upvotedIDs, downvotedIDs, setFlaggedPost
     }
 
     function deletePost() {
+        setDeleteLoading(true)
         async function deleteAPICall() {
             try {
                 const response = await api.delete(`posts/${post.id}/`)
@@ -135,6 +137,7 @@ export default function PostCard({post, upvotedIDs, downvotedIDs, setFlaggedPost
             catch (err) {
                 // Show the request message (likely a network error)
                 setErrorScreen(err.message)
+                setDeleteLoading(false)
             }
         }
         return deleteAPICall()
@@ -183,9 +186,9 @@ export default function PostCard({post, upvotedIDs, downvotedIDs, setFlaggedPost
                 }
                 { user === post.username && 
                 <div className="delete-edit-container">
-                    <button className="manip-button" onClick={deletePost}>Delete</button>
+                    <button className="manip-button" onClick={deletePost} disabled={deleteLoading || logoutClicked}>Delete</button>
                     <br />
-                    <button className="manip-button" onClick={editPost}>Edit</button>
+                    <button className="manip-button" onClick={editPost} disabled={deleteLoading || logoutClicked}>Edit</button>
                 </div>
                 }
             </div>
@@ -195,15 +198,15 @@ export default function PostCard({post, upvotedIDs, downvotedIDs, setFlaggedPost
                     { post.flagged  ? 
                     <button disabled={true} className="flag-button-selected" title="You flagged this">⚑</button>
                     :
-                    <button className="flag-button" title="Flag this GutCheck" onClick={flag}>⚑</button>
+                    <button className="flag-button" title="Flag this GutCheck" onClick={flag} disabled={deleteLoading || logoutClicked}>⚑</button>
                     }
                 </div>
                 <div>
                     <p>{ numberDisplay(upvoted ? initialUpvotes + 1 : initialUpvotes) }</p>
-                    <button onClick={upvote} className={upvoted ? "voted up" : "up"}>{'>'}</button>
+                    <button onClick={upvote} disabled={deleteLoading || logoutClicked} className={upvoted ? "voted up" : "up"}>{'>'}</button>
                 </div>
                 <div>
-                    <button onClick={downvote} className={downvoted ? "voted down" : "down"}>{'<'}</button>
+                    <button onClick={downvote} disabled={deleteLoading || logoutClicked} className={downvoted ? "voted down" : "down"}>{'<'}</button>
                     <p>{ numberDisplay(downvoted ? initialDownvotes * -1 - 1 : initialDownvotes * -1) }</p>
                 </div>
             </div>
