@@ -231,4 +231,5 @@ class Alerts(APIView):
     def put(self, request):
         request.user.receives_alerts = request.data['alerts']
         request.user.save()
+        return Response(status=HTTP_204_NO_CONTENT)
         
