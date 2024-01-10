@@ -145,17 +145,26 @@ class A_user(APIView):
         if request.user.is_staff and request.user.is_superuser:
             user = get_object_or_404(User, id = userid)
             if user == request.user:
+                user.auth_token.delete()
+                response = Response(status=HTTP_204_NO_CONTENT)
+                response.delete_cookie("token")
                 user.delete()
-                return Response(status=HTTP_204_NO_CONTENT)
+                return response
             if user.is_staff and user.is_superuser:
                 return Response({"message": "Cannot delete other admins"}, status=HTTP_401_UNAUTHORIZED)
             else:
+                user.auth_token.delete()
+                response = Response(status=HTTP_204_NO_CONTENT)
+                response.delete_cookie("token")
                 user.delete()
-                return Response(status=HTTP_204_NO_CONTENT)
+                return response
         # Allow self deletion
         elif userid is None or userid == request.user.id:
+            request.user.auth_token.delete()
+            response = Response(status=HTTP_204_NO_CONTENT)
+            response.delete_cookie("token")
             request.user.delete()
-            return Response(status=HTTP_204_NO_CONTENT)
+            return response
         else:
             return Response({"message": "Admin access only"}, status=HTTP_401_UNAUTHORIZED)
         

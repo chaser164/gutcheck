@@ -13,7 +13,28 @@ port.onMessage.addListener(function (response) {
 });
 
 // Request data from the background script
-const url = document.location.href
-port.postMessage({ msg: 'new tab', url: url });
 
-chrome.runtime.sendMessage({ action: "test" });
+
+// Check if user has alerts enabled
+let hasAlerts;
+
+chrome.storage.sync.get('hasAlerts', function (result) {
+  if (chrome.runtime.lastError) {
+    // Handle errors, if any
+    console.error(chrome.runtime.lastError);
+    // Default to true if not found or an error occurs
+    hasAlerts = true;
+  } else {
+    // Use the retrieved value or default to true if not found
+    hasAlerts = result.hasAlerts !== undefined ? result.hasAlerts : true;
+  }
+
+  // If the user has alerts enabled, trigger a potential alert
+  if (hasAlerts) {
+    const url = document.location.href
+    port.postMessage({ msg: 'new tab', url: url });
+
+  }
+});
+
+

@@ -14,6 +14,7 @@ chrome.runtime.onConnect.addListener(function (port) {
       // Handle messages from the content script
       port.onMessage.addListener(async function (request) {
         if (request && request.msg === 'new tab') {
+
           try {
             const apiUrl = "https://gutcheck-chaser164.pythonanywhere.com/api/v1/posts/has-posts/";
   
@@ -25,7 +26,6 @@ chrome.runtime.onConnect.addListener(function (port) {
               body: JSON.stringify({ website: request.url }),
             });
             if (response.ok) {
-              chrome.runtime.sendMessage({ action: "send alert" });
               const responseData = await response.json();
               const hasPosts = responseData.has_posts || false;
               // Send the response back to the content script

@@ -20,7 +20,7 @@ export default function LoggedInHomePage() {
     const [flaggedPostID, setFlaggedPostID] = useState(null)
     const [deletedCount, setDeletedCount] = useState(0)
     const [postidToEdit, setPostidToEdit] = useState(null)
-    const { setUser, setErrorScreen, hasAlerts } = useContext(UserContext)
+    const { setUser, setErrorScreen, setHasAlerts } = useContext(UserContext)
 
     // When returning to main page, reset edit status
     useEffect(() => {
@@ -131,6 +131,7 @@ export default function LoggedInHomePage() {
             try {
                 const response = await api.post(`users/logout/`);
                 setUser(null)
+                setHasAlerts(false)
             } 
             catch (err) {
                 if (err.message === 'Network Error') {

@@ -11,7 +11,7 @@ function App() {
   const [errorScreen, setErrorScreen] = useState('')
   const [hasCheckedUser, setHasCheckedUser] = useState(false)
   const [hasAllUrlsPermission, setHasAllUrlsPermission] = useState(false)
-  const [hasAlerts, setHasAlerts] = useState(true)
+  const [hasAlerts, setHasAlerts] = useState(false)
   
   // Keep track of alert settings in storage
   useEffect(() => {
@@ -27,6 +27,8 @@ function App() {
           setUser(response.data.user)
       } 
       catch (err) {
+        // Prevent alerts when signed out
+        setHasAlerts(false)
         // Revoke access with a network error
           if (err.message === 'Network Error') {
               setErrorScreen(err.message)

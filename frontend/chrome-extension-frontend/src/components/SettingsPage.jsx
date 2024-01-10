@@ -4,8 +4,9 @@ import UserContext from "../contexts/UserContext.jsx";
 
 // In the future this page will be like the home page for logged in users. Keep in mind that setting the errorScreen to something non-empty 
 export default function SettingsPage({ setShowSettingPage }) {
-    const { setErrorScreen, setHasAlerts, hasAlerts } = useContext(UserContext)
+    const { setErrorScreen, setHasAlerts, hasAlerts, setUser } = useContext(UserContext)
     const [dangerZone, setDangerZone] = useState(false)
+    const [deletionLoading, setDeletionLoading] = useState(false)
 
 
     function changeAlertConfig(val) {
@@ -27,13 +28,31 @@ export default function SettingsPage({ setShowSettingPage }) {
     }
 
     function deleteAccount() {
-        console.log("delete!!")
+        setDeletionLoading(true)
+        async function deleteAPIPost() {
+            try {
+                const response = await api.delete(`users/me/`);
+                setUser(null)
+                setHasAlerts(false)
+            } 
+            catch (err) {
+                setDeletionLoading(false)
+                if (err.message === 'Network Error') {
+                    setErrorScreen('Network Error, failed to log out')
+                    return
+                }
+                // Revoke access with any error
+                setErrorScreen(err.message)
+            } 
+            setDeletionLoading(false)
+        }
+        deleteAPIPost();
     }
 
     return (
         <>
             <header onClick={() => setShowSettingPage(false)} className="title-holder">
-                <button className="back menu">←</button>
+                <button className="back menu" disabled={deletionLoading}>←</button>
             </header>
             <h2>Settings</h2>
             <div className="checkbox-display">
@@ -48,8 +67,8 @@ export default function SettingsPage({ setShowSettingPage }) {
                     <button className="menu" onClick={() => setDangerZone(true)}>Delete account</button>
                     :
                     <>
-                        <button className="menu" onClick={() => setDangerZone(false)}>cancel</button>
-                        <button className="menu acc-delete" onClick={deleteAccount}>confirm permanent deletion</button>
+                        <button className="menu" onClick={() => setDangerZone(false)} disabled={deletionLoading}>cancel</button>
+                        <button className="menu acc-delete" onClick={deleteAccount} disabled={deletionLoading}>confirm permanent deletion</button>
                     </>
                 }
             </div>
