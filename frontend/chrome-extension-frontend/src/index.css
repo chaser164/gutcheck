@@ -147,6 +147,12 @@ h2 {
   justify-content: flex-end;
 }
 
+.header-buttons-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .url-container {
   width: 350px;
   word-wrap: break-word;
@@ -211,13 +217,27 @@ h2 {
   font-size: 8.5pt;
 }
 
-/* Logout button specifics */
+/* Logout and settings button specifics */
 
 .logout {
   align-self: flex-start;
   font-size: small;
   padding: 10px;
 
+}
+
+.settings {
+  width: 40px;
+  background: transparent;
+  border: none;
+  align-self: flex-end;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.cog {
+  width: 100%;
+  height: auto;
 }
 
 /* upvote/downvote buttons */

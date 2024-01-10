@@ -30,11 +30,9 @@ chrome.runtime.onConnect.addListener(function (port) {
               // Send the response back to the content script
               port.postMessage({ hasPosts: hasPosts });
             } else {
-              console.error("Error:", response.status, response.statusText);
               port.postMessage({ hasPosts: false });
             }
           } catch (error) {
-            console.error("Error:", error);
             port.postMessage({ hasPosts: false });
           }
         }

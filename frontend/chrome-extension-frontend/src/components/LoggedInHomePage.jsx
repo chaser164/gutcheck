@@ -4,6 +4,7 @@ import UserContext from "../contexts/UserContext.jsx";
 import PostCard from './PostCard.jsx'
 import AddPostPage from "./AddPostPage";
 import FlagPage from "./FlagPage";
+import gear from "../assets/gear.png";
 
 // In the future this page will be like the home page for logged in users. Keep in mind that setting the errorScreen to something non-empty 
 export default function LoggedOutHomePage() {
@@ -154,7 +155,10 @@ export default function LoggedOutHomePage() {
                         { hasLoaded &&
                             <>
                                 <header className="header-container">
-                                    <button onClick={logout} className="logout menu">Logout</button>
+                                    <div className="header-buttons-container">
+                                        <button onClick={logout} className="logout menu">log out</button>
+                                        <button onClick={logout} className="settings"><img className="cog" src={gear}/></button>
+                                    </div>
                                     <div>
                                         <h2>{posts.length} {posts.length == 1 ? "GutCheck" : "GutChecks"} for</h2>
                                         <p className="url-container">{url}</p>

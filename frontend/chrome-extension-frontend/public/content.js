@@ -9,8 +9,6 @@ port.onMessage.addListener(function (response) {
     if (hasPosts) {
       alert("Message from GutCheck:\n\n\nThis website has GutChecks. Open up the GutCheck Chrome Extension for details!");
     }
-  } else {
-    console.error("Error: Unexpected response format", response);
   }
 });
 
