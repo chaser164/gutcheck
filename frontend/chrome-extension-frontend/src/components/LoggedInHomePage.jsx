@@ -8,7 +8,7 @@ import FlagPage from "./FlagPage";
 import gear from "../assets/gear.png";
 
 // In the future this page will be like the home page for logged in users. Keep in mind that setting the errorScreen to something non-empty 
-export default function LoggedOutHomePage() {
+export default function LoggedInHomePage() {
     const [hasLoaded, setHasLoaded] = useState(false)
     const [url, setUrl] = useState('')
     const [posts, setPosts] = useState([])
@@ -20,7 +20,7 @@ export default function LoggedOutHomePage() {
     const [flaggedPostID, setFlaggedPostID] = useState(null)
     const [deletedCount, setDeletedCount] = useState(0)
     const [postidToEdit, setPostidToEdit] = useState(null)
-    const { setUser, setErrorScreen } = useContext(UserContext)
+    const { setUser, setErrorScreen, hasAlerts } = useContext(UserContext)
 
     // When returning to main page, reset edit status
     useEffect(() => {

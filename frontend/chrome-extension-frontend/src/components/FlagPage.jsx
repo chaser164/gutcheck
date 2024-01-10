@@ -32,10 +32,10 @@ export default function AddPostPage({ setFlaggedPostID, post_id }) {
                 console.log(inaccurate)
                 const body = {
                     "reason": reason,
-                    "inaccurate": inaccurate == 'on',
-                    "hate_speech": hateSpeech == 'on',
-                    "explicit_content": explicitContent == 'on',
-                    "maliciousURL": maliciousURL == 'on',
+                    "inaccurate": inaccurate,
+                    "hate_speech": hateSpeech,
+                    "explicit_content": explicitContent,
+                    "maliciousURL": maliciousURL,
                     "post": post_id,
                 }
                 const response = await api.post(`flags/`, body);
@@ -70,19 +70,19 @@ export default function AddPostPage({ setFlaggedPostID, post_id }) {
                     <h2>Flag this GutCheck</h2>
                     <div className="checkboxes-container">
                         <div className="checkbox-display">
-                            <input type="checkbox" onChange={(e) => setInaccurate(e.target.value)} />
+                            <input type="checkbox" onChange={(e) => setInaccurate(e.target.checked)} />
                             <p>Inaccurate</p>
                         </div>
                         <div className="checkbox-display">
-                            <input type="checkbox" onChange={(e) => setHateSpeech(e.target.value)} />
+                            <input type="checkbox" onChange={(e) => setHateSpeech(e.target.checked)} />
                             <p>Hate Speech</p>
                         </div>
                         <div className="checkbox-display">
-                            <input type="checkbox" onChange={(e) => setExplicitContent(e.target.value)} />
+                            <input type="checkbox" onChange={(e) => setExplicitContent(e.target.checked)} />
                             <p>Explicit Content</p>
                         </div>
                         <div className="checkbox-display">
-                            <input type="checkbox" onChange={(e) => setMaliciousURL(e.target.value)} />
+                            <input type="checkbox" onChange={(e) => setMaliciousURL(e.target.checked)} />
                             <p>Malicious Footnote URL</p>
                         </div>
                     </div>

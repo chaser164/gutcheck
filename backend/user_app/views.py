@@ -56,7 +56,7 @@ class Sign_up(APIView):
         token, _ = Token.objects.get_or_create(user=user)
         life_time = datetime.now() + timedelta(days=7)
         format_life_time = http_date(life_time.timestamp())
-        response = Response({"user": user.username})
+        response = Response({"user": user.username, 'receives_alerts': user.receives_alerts})
         response.set_cookie(key="token", value=token.key, httponly=True, secure=True, samesite='Strict', expires=format_life_time)
         return response
     
@@ -70,7 +70,7 @@ class Log_in(APIView):
             token, _ = Token.objects.get_or_create(user=user)
             life_time = datetime.now() + timedelta(days=7)
             format_life_time = http_date(life_time.timestamp())
-            response = Response({"user": user.username})
+            response = Response({"user": user.username, 'receives_alerts': user.receives_alerts})
             response.set_cookie(key="token", value=token.key, httponly=True, secure=True, samesite='Strict', expires=format_life_time)
             return response
         else:
@@ -145,7 +145,8 @@ class A_user(APIView):
         if request.user.is_staff and request.user.is_superuser:
             user = get_object_or_404(User, id = userid)
             if user == request.user:
-                return Response({"message": "Cannot delete yourself"}, status=HTTP_401_UNAUTHORIZED)
+                user.delete()
+                return Response(status=HTTP_204_NO_CONTENT)
             if user.is_staff and user.is_superuser:
                 return Response({"message": "Cannot delete other admins"}, status=HTTP_401_UNAUTHORIZED)
             else:
@@ -163,7 +164,7 @@ class User_status(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        return Response({"email": request.user.email, "user": request.user.username, "is_validated": request.user.validated})
+        return Response({"email": request.user.email, "user": request.user.username, "is_validated": request.user.validated, 'receives_alerts': request.user.receives_alerts})
     
 
 class Resend_email(APIView):
@@ -221,3 +222,13 @@ class Password_reset(APIView):
             print("An error occurred:", e)
             # User not found
             return Response({"message": "Invalid link, password not updated"})
+
+
+class Alerts(APIView):
+    authentication_classes = [HttpOnlyTokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request):
+        request.user.receives_alerts = request.data['alerts']
+        request.user.save()
+        

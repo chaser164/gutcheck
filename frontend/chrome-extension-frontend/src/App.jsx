@@ -11,12 +11,19 @@ function App() {
   const [errorScreen, setErrorScreen] = useState('')
   const [hasCheckedUser, setHasCheckedUser] = useState(false)
   const [hasAllUrlsPermission, setHasAllUrlsPermission] = useState(false)
+  const [hasAlerts, setHasAlerts] = useState(true)
   
+  // Keep track of alert settings in storage
+  useEffect(() => {
+    chrome.storage.sync.set({ hasAlerts });
+}, [hasAlerts])
+
   // On initial render, test to see if there is currently a logged-in user. If so, set user state to this user
   useEffect(() => {
     async function checkActiveUser() {
       try {
           const response = await api.get(`users/status/`)
+          setHasAlerts(response.data['receives_alerts'])
           setUser(response.data.user)
       } 
       catch (err) {
@@ -48,6 +55,8 @@ function App() {
         errorScreen, 
         setErrorScreen,
         hasAllUrlsPermission,
+        hasAlerts,
+        setHasAlerts
     }}>
       {hasCheckedUser ?
         <>
@@ -67,5 +76,3 @@ function App() {
 }
 
 export default App
-
-

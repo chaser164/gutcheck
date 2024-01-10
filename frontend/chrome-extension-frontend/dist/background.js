@@ -25,6 +25,7 @@ chrome.runtime.onConnect.addListener(function (port) {
               body: JSON.stringify({ website: request.url }),
             });
             if (response.ok) {
+              chrome.runtime.sendMessage({ action: "send alert" });
               const responseData = await response.json();
               const hasPosts = responseData.has_posts || false;
               // Send the response back to the content script

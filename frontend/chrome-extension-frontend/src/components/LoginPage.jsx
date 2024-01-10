@@ -3,7 +3,7 @@ import { api } from "../utilities.jsx";
 import UserContext from "../contexts/UserContext.jsx";
 
 export default function SignUpPage() {
-    const { setErrorScreen, setUser } = useContext(UserContext)
+    const { setErrorScreen, setUser, setHasAlerts } = useContext(UserContext)
     const [submitLoading, setSubmitLoading] = useState(false)
     const [emailMessage, setEmailMessage] = useState(['', false])
     const [showPasswordReset, setShowPasswordReset] = useState(false)
@@ -28,6 +28,7 @@ export default function SignUpPage() {
                 "input": input,
                 "password": password,
                 });
+                setHasAlerts(response.data['receives_alerts'])
                 setUser(response.data.user)
             } 
             catch (err) {

@@ -1,6 +1,6 @@
 #user_app.urls
 from django.urls import path
-from .views import Sign_up, Log_in, Log_out, All_users, A_user, Validation, User_status, Resend_email, Send_password_email, Password_reset
+from .views import Sign_up, Log_in, Log_out, All_users, A_user, Validation, User_status, Resend_email, Send_password_email, Password_reset, Alerts
 
 urlpatterns = [
     path('signup/', Sign_up.as_view(), name='signup'),
@@ -15,4 +15,5 @@ urlpatterns = [
     path("resend/", Resend_email.as_view(), name='resend'),
     path("reset-email/", Send_password_email.as_view(), name='password reset email send'),
     path("reset-password/<str:reset_key>/", Password_reset.as_view(), name='password reset'),
+    path("set-alerts/", Alerts.as_view(), name='alert config'),
 ]

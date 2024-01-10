@@ -18,6 +18,7 @@ class User(AbstractUser):
     # Set datetime at 5 days before moment of creation as default (expired at the start for added safety layer...)
     token_timestamp = models.DateTimeField(default=timezone.now() - timedelta(days=5))
     # The related names for the upvoters and downvoters M2M fields (defined in Post model) are upvoted_posts and downvoted_posts, respectively
+    receives_alerts = models.BooleanField(default=True)
     USERNAME_FIELD="email"
     REQUIRED_FIELDS=[]
 

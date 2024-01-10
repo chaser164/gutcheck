@@ -476,3 +476,24 @@ a:hover {
     transform: rotate(360deg);
   }
 }
+
+/* Settings page style */
+
+.dangerzone-container {
+  padding-top: 25px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 15px;
+}
+
+.acc-delete:not([disabled]) {
+  transition: border-color 0.25s;
+  transition: background-color 0.25s;
+}
+
+.acc-delete:not([disabled]):hover {
+  border-color: red !important;
+  color: whitesmoke;
+  background-color: red;
+}
