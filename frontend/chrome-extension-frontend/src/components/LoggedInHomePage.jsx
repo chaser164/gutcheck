@@ -3,6 +3,7 @@ import { api } from "../utilities";
 import UserContext from "../contexts/UserContext.jsx";
 import PostCard from './PostCard.jsx'
 import AddPostPage from "./AddPostPage";
+import SettingsPage from "./SettingsPage.jsx";
 import FlagPage from "./FlagPage";
 import gear from "../assets/gear.png";
 
@@ -15,9 +16,10 @@ export default function LoggedOutHomePage() {
     const [upvotedIDs, setUpvotedIDs] = useState([])
     const [downvotedIDs, setDownvotedIDs] = useState([])
     const [showAddPostPage, setShowAddPostPage] = useState(false)
+    const [showSettingsPage, setShowSettingsPage] = useState(false);
     const [flaggedPostID, setFlaggedPostID] = useState(null)
-    const [deletedCount, setDeletedCount] = useState(0);
-    const [postidToEdit, setPostidToEdit] = useState(null);
+    const [deletedCount, setDeletedCount] = useState(0)
+    const [postidToEdit, setPostidToEdit] = useState(null)
     const { setUser, setErrorScreen } = useContext(UserContext)
 
     // When returning to main page, reset edit status
@@ -142,44 +144,54 @@ export default function LoggedOutHomePage() {
         logoutAPIPost();
     }
 
+    function openSettings() {
+        setShowSettingsPage(true)
+    }
+
     return (
         <>
-            { showAddPostPage ?
-                <AddPostPage setShowAddPostPage={setShowAddPostPage} url={url} content={findEditPost()} setPostidToEdit={setPostidToEdit}  />
-                :
-                <>
-                { flaggedPostID ?
-                    <FlagPage setFlaggedPostID={setFlaggedPostID} post_id={flaggedPostID} />
+            { showSettingsPage ? 
+            <SettingsPage setShowSettingPage={setShowSettingsPage} />
+            :
+            <>
+                { showAddPostPage ?
+                    <AddPostPage setShowAddPostPage={setShowAddPostPage} url={url} content={findEditPost()} setPostidToEdit={setPostidToEdit}  />
                     :
                     <>
-                        { hasLoaded &&
-                            <>
-                                <header className="header-container">
-                                    <div className="header-buttons-container">
-                                        <button onClick={logout} className="logout menu">log out</button>
-                                        <button onClick={logout} className="settings"><img className="cog" src={gear}/></button>
+                    { flaggedPostID ?
+                        <FlagPage setFlaggedPostID={setFlaggedPostID} post_id={flaggedPostID} />
+                        :
+                        <>
+                            { hasLoaded &&
+                                <>
+                                    <header className="header-container">
+                                        <div className="header-buttons-container">
+                                            <button onClick={logout} className="logout menu">log out</button>
+                                            <button onClick={openSettings} className="settings"><img className="cog" src={gear}/></button>
+                                        </div>
+                                        <div>
+                                            <h2>{posts.length} {posts.length == 1 ? "GutCheck" : "GutChecks"} for</h2>
+                                            <p className="url-container">{url}</p>
+                                        </div>
+                                    </header>
+                                    <br />
+                                    <div className="posts-container">
+                                        <button onClick={() => setShowAddPostPage(true)} disabled={hasPosted} title={hasPosted ? "You can only post once per website" : null} className="menu">Contribute +</button>
+                                        {posts.length > 0 ?
+                                        posts.map((post, i) => (
+                                            <div key={i}><PostCard post={post} upvotedIDs={upvotedIDs} downvotedIDs={downvotedIDs} setFlaggedPostID={setFlaggedPostID} setDeletedCount={setDeletedCount} setPostidToEdit={setPostidToEdit} /></div>
+                                        ))
+                                        :
+                                        <p>No one has posted here yet. Be the first!</p>
+                                        }
                                     </div>
-                                    <div>
-                                        <h2>{posts.length} {posts.length == 1 ? "GutCheck" : "GutChecks"} for</h2>
-                                        <p className="url-container">{url}</p>
-                                    </div>
-                                </header>
-                                <br />
-                                <div className="posts-container">
-                                    <button onClick={() => setShowAddPostPage(true)} disabled={hasPosted} title={hasPosted ? "You can only post once per website" : null} className="menu">Contribute +</button>
-                                    {posts.length > 0 ?
-                                    posts.map((post, i) => (
-                                        <div key={i}><PostCard post={post} upvotedIDs={upvotedIDs} downvotedIDs={downvotedIDs} setFlaggedPostID={setFlaggedPostID} setDeletedCount={setDeletedCount} setPostidToEdit={setPostidToEdit} /></div>
-                                    ))
-                                    :
-                                    <p>No one has posted here yet. Be the first!</p>
-                                    }
-                                </div>
-                            </>
-                        }
+                                </>
+                            }
+                        </>
+                    }
                     </>
                 }
-                </>
+            </>
             }
         </>
     )
