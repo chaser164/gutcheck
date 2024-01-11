@@ -1,12 +1,13 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 export default function App() {
 
+  const navigate = useNavigate();
+
   return (
     <>
-    <h1>GutCheck</h1>
+      <h1 className="title" onClick={() => navigate("/")}>GutCheck</h1>
       <Outlet />
-      {/* add 'context = ' as an attribute if you want... */}
     </>
   );
 }

@@ -51,3 +51,9 @@ body {
 .warning-text {
   color: rgb(255, 179, 0);
 }
+
+.title {
+  width: 200px;
+  margin: 0 auto;
+  cursor: pointer;
+}
