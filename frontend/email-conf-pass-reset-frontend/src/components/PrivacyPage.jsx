@@ -2,7 +2,7 @@ export default function PrivacyPage() {
 
     return (
       <>
-        <h3>Privacy Page</h3>
+        <h3>Privacy Page!!!</h3>
       </>
     );
   }
