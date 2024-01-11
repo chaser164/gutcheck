@@ -40,6 +40,9 @@ function allow() {
       <p>
         To get started, open up the GutCheck extension by clicking on the puzzle piece in the top-right corner.
       </p>
+      <br />
+      <br />
+      <a href={"https://gutcheck-extension.netlify.app/privacy"}>Privacy Policy</a>
     </div>
   )
 }

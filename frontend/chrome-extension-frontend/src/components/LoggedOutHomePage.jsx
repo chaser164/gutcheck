@@ -103,6 +103,8 @@ export default function LoggedOutHomePage() {
                             <button onClick={() => setShowSignUp(true)} className="menu">Sign Up</button>
                             <button onClick={() => setShowLogin(true)} className="menu">Login</button>
                         </div>
+                        <br />
+                        <a href={"https://gutcheck-extension.netlify.app/privacy"} target="_blank">Privacy Policy</a>
                     </>
                     )
                 }

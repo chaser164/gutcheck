@@ -164,7 +164,7 @@ export default function PostCard({post, upvotedIDs, downvotedIDs, setFlaggedPost
                             <>
                                 <br />
                                 <div className="footnote-text-container">
-                                    <a href = {post.footnote1}>{ post.footnote1 }</a>
+                                    <a href={post.footnote1} target="_blank">{ post.footnote1 }</a>
                                     <p className="footnote-post-text">{ post.explanation1 }</p>
                                 </div>
                             </>
