@@ -4,6 +4,7 @@ import HomePage from "./components/HomePage.jsx";
 import EmailActivationPage from "./components/EmailActivatePage.jsx";
 import PasswordResetPage from "./components/PasswordResetPage.jsx";
 import Error404Page from "./components/Error404Page.jsx";
+import PrivacyPage from "./components/PrivacyPage.jsx";
 
 
 const router = createBrowserRouter([
@@ -22,7 +23,11 @@ const router = createBrowserRouter([
       {
         path: "reset/:token",
         element: <PasswordResetPage />
-      }
+      },
+      {
+        path: "privacy",
+        element: <PasswordResetPage />
+      },
     ],
     errorElement: <Error404Page />,
   },
