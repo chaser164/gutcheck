@@ -51,8 +51,8 @@ export default function SettingsPage({ setShowSettingPage }) {
 
     return (
         <>
-            <header onClick={() => setShowSettingPage(false)} className="title-holder">
-                <button className="back menu" disabled={deletionLoading}>←</button>
+            <header className="title-holder">
+                <button onClick={() => setShowSettingPage(false)} className="back menu" disabled={deletionLoading}>←</button>
             </header>
             <h2>Settings</h2>
             <div className="checkbox-display">
