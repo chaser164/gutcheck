@@ -26,7 +26,7 @@ const router = createBrowserRouter([
       },
       {
         path: "privacy",
-        element: <PasswordResetPage />
+        element: <PrivacyPage />
       },
     ],
     errorElement: <Error404Page />,
