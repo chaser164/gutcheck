@@ -27,10 +27,10 @@ class Sign_up(APIView):
     def post(self, request):
         # Permanently banned emails must not be allowed to sign up
         # Open the file in read mode
-        with open('banned_emails.txt', 'r') as file:
+        with open('user_app/banned_emails.txt', 'r') as file:
             # Read all lines from the file and store them in a list
             BANNED_EMAILS = file.readlines()
-        if request.data.email in BANNED_EMAILS:
+        if request.data['email'] in BANNED_EMAILS:
             return Response({"message": "Disallowed email"}, status=HTTP_400_BAD_REQUEST)
         # Attempt to create user
         try:
