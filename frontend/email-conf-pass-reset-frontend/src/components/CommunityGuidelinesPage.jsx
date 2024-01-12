@@ -7,6 +7,8 @@ export default function CommunityGuidelinesPage() {
         <div className="body-text">
             <i>Last updated January 12, 2024</i>
             <br />
+            <p>Questions or concerns about community guidelines? Send an email to <b>gutcheck.extension@gmail.com</b></p>
+            <br />
             <h3>Intended Use</h3>
             <p>
                 It is my (the creator of GutCheck's) hope that users who care about upholding the truth will contribute to a civil discourse on
@@ -38,10 +40,9 @@ export default function CommunityGuidelinesPage() {
             <p>
                 In addition to the post removal processes described above, if a user engages in 
                 hate speech, bullying, or malicious URL activity, all their account data will
-                be deleted. These 3 categories consistently stem from the direct goal to hurt others, 
+                be deleted, and the user's email will be banned permanently. These 3 categories consistently stem from the direct goal to hurt others, 
                 and that sort of behavior will not be tolerated on this platform.
             </p>
-            <br />
         </div>
       </>
     );

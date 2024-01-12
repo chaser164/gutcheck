@@ -9,6 +9,8 @@ export default function PrivacyPage() {
         <div className="body-text">
             <i>Last updated January 12, 2024</i>
             <br />
+            <p>Questions or concerns about privacy? Send an email to <b>gutcheck.extension@gmail.com</b></p>
+            <br />
             <h3>Introduction</h3>
             <p>
                 This privacy statement explains how the sole creator and proprietor
@@ -82,20 +84,26 @@ export default function PrivacyPage() {
                 and so I must inform you that you provide the extension with your data at your own risk. 
 
             </p>
+            <br />
             <h3>How long is your data stored?</h3>
             <p>
                 Except for the server logs which I will never voluntarily disclose to anyone,
-                you have control over your data's longevity. Users may choose to delete posts or their account as a whole. 
+                users that follow <Link to={'/community'} >community guidelines</Link> have control over their data's longevity. Users may choose to delete posts or their account as a whole. 
                 Deleting posts removes all information associated with the post (body text, footnotes/footnote explanations, and flags).
                 Deleting an account removes all information associated with the account (username, email, password, all posts and post contents,
                 all flags made by the user).
                 <br />
                 <br />
                 server logs will be stored indefinitely in the database.
+                <br />
+                <br />
+                If you fail to follow <Link to={'/community'} >community guidelines</Link>, your post may be deleted, or your entire
+                account may be deleted in more extreme cases (see <Link to={'/community'} >community guidelines</Link> for details).
+                As outlined in the guidelines, an account deletion would also result in a permanent email ban, meaning I will indefinitely
+                append your email to a list of emails barred from signup.
             </p>
             <br />
-            <br />
-            <br />
+            <h3>Note:</h3>
             <p>
                 The use of your data will adhere to the Chrome Web Store User Data Policy, including the Limited Use requirements.
             </p>
