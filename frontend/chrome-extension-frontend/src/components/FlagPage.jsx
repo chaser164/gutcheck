@@ -9,8 +9,9 @@ export default function AddPostPage({ setFlaggedPostID, post_id }) {
     const [flagErrorMessage, setFlagErrorMessage] = useState('')
     const [reason, setReason] = useState('')
     const [inaccurate, setInaccurate] = useState(false)
+    const [vulgarity, setVulgarity] = useState(false)
     const [hateSpeech, setHateSpeech] = useState(false)
-    const [explicitContent, setExplicitContent] = useState(false)
+    const [bullying, setBullying] = useState(false)
     const [maliciousURL, setMaliciousURL] = useState(false)
     
 
@@ -29,12 +30,12 @@ export default function AddPostPage({ setFlaggedPostID, post_id }) {
 
             setFlagErrorMessage('')
             try {
-                console.log(inaccurate)
                 const body = {
                     "reason": reason,
                     "inaccurate": inaccurate,
+                    "vulgarity": vulgarity,
                     "hate_speech": hateSpeech,
-                    "explicit_content": explicitContent,
+                    "bullying": bullying,
                     "maliciousURL": maliciousURL,
                     "post": post_id,
                 }
@@ -74,12 +75,16 @@ export default function AddPostPage({ setFlaggedPostID, post_id }) {
                             <p>Inaccurate</p>
                         </div>
                         <div className="checkbox-display">
+                            <input type="checkbox" onChange={(e) => setVulgarity(e.target.checked)} />
+                            <p>Vulgarity</p>
+                        </div>
+                        <div className="checkbox-display">
                             <input type="checkbox" onChange={(e) => setHateSpeech(e.target.checked)} />
                             <p>Hate Speech</p>
                         </div>
                         <div className="checkbox-display">
-                            <input type="checkbox" onChange={(e) => setExplicitContent(e.target.checked)} />
-                            <p>Explicit Content</p>
+                            <input type="checkbox" onChange={(e) => setBullying(e.target.checked)} />
+                            <p>Bullying</p>
                         </div>
                         <div className="checkbox-display">
                             <input type="checkbox" onChange={(e) => setMaliciousURL(e.target.checked)} />

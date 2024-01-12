@@ -6,8 +6,9 @@ from user_app.models import User
 
 class Flag(models.Model):
     inaccurate = models.BooleanField()
+    vulgarity = models.BooleanField()
     hate_speech = models.BooleanField()
-    explicit_content = models.BooleanField()
+    bullying = models.BooleanField()
     maliciousURL = models.BooleanField()
     reason = models.CharField(max_length=150, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='flags')

@@ -57,3 +57,12 @@ body {
   margin: 0 auto;
   cursor: pointer;
 }
+
+.body-text {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  min-width: 400px;
+  margin: 0 auto;
+}

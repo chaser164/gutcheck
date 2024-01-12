@@ -42,6 +42,8 @@ function allow() {
       </p>
       <br />
       <br />
+      <a href={"https://gutcheck-extension.netlify.app/community"}>Community Guidelines</a>
+      <br />
       <a href={"https://gutcheck-extension.netlify.app/privacy"}>Privacy Policy</a>
     </div>
   )

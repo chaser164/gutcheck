@@ -5,6 +5,7 @@ import EmailActivationPage from "./components/EmailActivatePage.jsx";
 import PasswordResetPage from "./components/PasswordResetPage.jsx";
 import Error404Page from "./components/Error404Page.jsx";
 import PrivacyPage from "./components/PrivacyPage.jsx";
+import CommunityGuidelinesPage from "./components/CommunityGuidelinesPage.jsx";
 
 
 const router = createBrowserRouter([
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: "privacy",
         element: <PrivacyPage />
+      },
+      {
+        path: "community",
+        element: <CommunityGuidelinesPage />
       },
     ],
     errorElement: <Error404Page />,

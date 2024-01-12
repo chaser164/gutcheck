@@ -28,11 +28,11 @@ class Flags(APIView):
                 return Response({"message": "exceeded 150-character limit"}, status=HTTP_400_BAD_REQUEST)
             else:
                 # Create the flag
-                Flag.objects.create(reason=request.data['reason'], inaccurate=request.data['inaccurate'], hate_speech=request.data['hate_speech'], explicit_content=request.data['explicit_content'], maliciousURL=request.data['maliciousURL'], user=request.user, post=post)
+                Flag.objects.create(reason=request.data['reason'], inaccurate=request.data['inaccurate'], hate_speech=request.data['hate_speech'], bullying=request.data['bullying'], vulgarity=request.data['vulgarity'], maliciousURL=request.data['maliciousURL'], user=request.user, post=post)
                 return Response(status=HTTP_201_CREATED)
         else:
             # Create the reasonless flag
-            Flag.objects.create(inaccurate=request.data['inaccurate'], hate_speech=request.data['hate_speech'], explicit_content=request.data['explicit_content'], maliciousURL=request.data['maliciousURL'], user=request.user, post=post)
+            Flag.objects.create(inaccurate=request.data['inaccurate'], hate_speech=request.data['hate_speech'], bullying=request.data['bullying'], vulgarity=request.data['vulgarity'], maliciousURL=request.data['maliciousURL'], user=request.user, post=post)
             return Response(status=HTTP_201_CREATED)
 
             
