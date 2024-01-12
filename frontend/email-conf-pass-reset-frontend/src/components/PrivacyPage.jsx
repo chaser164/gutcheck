@@ -66,7 +66,7 @@ export default function PrivacyPage() {
                 <br />
                 <br />
                 Only the data intended for public engagement will be voluntarily disclosed to the public. Specifically, your 
-                username and all post contents will be shared with all GutCheck users as they encounter your
+                username and all post contents will be shared with all GutCheck users as they encounter
                 your posts.
                 <br />
                 <br />
