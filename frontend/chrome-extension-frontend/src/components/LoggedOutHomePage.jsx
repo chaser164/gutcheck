@@ -18,6 +18,10 @@ export default function LoggedOutHomePage() {
     // Based on error screen, set the visibility of the resend email button / resend message
     // If not a network error or email-related message, try to log out upon error!
     useEffect(() => {
+        if (errorScreen === 'deleted') {
+            reset();
+            return;
+        }
         if ((errorScreen === 'Check email to activate account!' || errorScreen === 'Unvalidated Email')) {
             setDisplayEmailButton(true)
         }

@@ -34,6 +34,9 @@ export default function SettingsPage({ setShowSettingsPage, verified }) {
                 const response = await api.delete(`users/self-delete/`);
                 setUser(null)
                 setHasAlerts(false)
+                // Use the error screen to communicate deletion and hard reset
+                setErrorScreen('deleted')
+                setShowSettingsPage(false)
             } 
             catch (err) {
                 setDeletionLoading(false)
