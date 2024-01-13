@@ -155,7 +155,7 @@ export default function LoggedInHomePage() {
     return (
         <>
             { showSettingsPage ? 
-            <SettingsPage setShowSettingPage={setShowSettingsPage} />
+            <SettingsPage setShowSettingsPage={setShowSettingsPage} verified={true} />
             :
             <>
                 { showAddPostPage ?

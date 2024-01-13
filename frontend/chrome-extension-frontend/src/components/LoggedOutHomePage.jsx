@@ -2,6 +2,8 @@ import { useState, useEffect, useContext } from "react";
 import SignUpPage from "./SignUpPage";
 import LoginPage from "./LoginPage";
 import UserContext from "../contexts/UserContext";
+import SettingsPage from "./SettingsPage";
+import gear from "../assets/gear.png";
 import { api } from "../utilities";
 
 export default function LoggedOutHomePage() {
@@ -10,9 +12,8 @@ export default function LoggedOutHomePage() {
     const [displayEmailButton, setDisplayEmailButton] = useState(false)
     const [resendMessage, setResendMessage] = useState('')
     const [emailSendButtonLoading, setEmailSendButtonLoading] = useState(false)
+    const [showSettingsPage, setShowSettingsPage] = useState(false)
     const { errorScreen, setErrorScreen, user, setUser, hasAllUrlsPermission } = useContext(UserContext)
-    
-
 
     // Based on error screen, set the visibility of the resend email button / resend message
     // If not a network error or email-related message, try to log out upon error!
@@ -86,56 +87,74 @@ export default function LoggedOutHomePage() {
         setErrorScreen('')
     }
 
+    function openSettings() {
+        setShowSettingsPage(true)
+    }
+
     return (
         <>
-            {/* Back button to get back to the initial state of 2 buttons (sign up/login) */}
-            {/* Don't allow any back button clicking upon network error */}
-            <header className="title-holder">
-                {((showSignUp || showLogin || errorScreen) && !errorScreen.includes('Network Error')) && <button onClick={reset} className="back menu">←</button>}
-            </header>
-            { !errorScreen ? 
+        {showSettingsPage ? 
+            <SettingsPage setShowSettingsPage={setShowSettingsPage} verified={false} />
+            :
             <>
-                {/* If either button is clicked, show that page and hide the buttons */}
-                { !(showSignUp || showLogin) && (
+                {/* Back button to get back to the initial state of 2 buttons (sign up/login) */}
+                {/* Don't allow any back button clicking upon network error */}
+                <header className="header-container">
+                    {((showSignUp || showLogin || errorScreen) && !errorScreen.includes('Network Error')) && 
+                    <div className="header-buttons-container">
+                        <button onClick={reset} className="back menu">←</button>
+                        { user &&
+                            <button onClick={openSettings} className="settings"><img className="cog" src={gear}/></button>
+                        }
+                    </div>
+                    }
+
+                </header>
+                { !errorScreen ? 
+                <>
+                    {/* If either button is clicked, show that page and hide the buttons */}
+                    { !(showSignUp || showLogin) && (
+                        <>
+                            <h1>GutCheck</h1>
+                            <div className="spacer">
+                                <button onClick={() => setShowSignUp(true)} className="menu">Sign Up</button>
+                                <button onClick={() => setShowLogin(true)} className="menu">Login</button>
+                            </div>
+                            <br />
+                            <a href={"https://gutcheck-extension.netlify.app/community"} target="_blank">Community Guidelines</a>
+                            <br />
+                            <a href={"https://gutcheck-extension.netlify.app/privacy"} target="_blank">Privacy Policy</a>
+                        </>
+                        )
+                    }
                     <>
-                        <h1>GutCheck</h1>
-                        <div className="spacer">
-                            <button onClick={() => setShowSignUp(true)} className="menu">Sign Up</button>
-                            <button onClick={() => setShowLogin(true)} className="menu">Login</button>
-                        </div>
-                        <br />
-                        <a href={"https://gutcheck-extension.netlify.app/community"} target="_blank">Community Guidelines</a>
-                        <br />
-                        <a href={"https://gutcheck-extension.netlify.app/privacy"} target="_blank">Privacy Policy</a>
-                    </>
-                    )
-                }
-                <>
-                    { showSignUp && <SignUpPage /> }
-                    { showLogin && <LoginPage /> }
-                </> 
-            </> :
-            <> 
-                {hasAllUrlsPermission ? 
-                    <p>{errorScreen}</p> 
-                :(
-                    <p>
-                        You still need to
-                        <br />
-                        <button className="manip-button" onClick={allow}>
-                        Allow access to all websites
-                        </button>
-                    </p>
-                )}
-            </>
-            }
-            { displayEmailButton && 
-                <>
-                    <button onClick={resendEmailValidation} disabled={emailSendButtonLoading} className="menu">Resend validation email</button>
-                    { resendMessage !== '' && <p>{resendMessage}</p>}
+                        { showSignUp && <SignUpPage /> }
+                        { showLogin && <LoginPage /> }
+                    </> 
+                </> :
+                <> 
+                    {hasAllUrlsPermission ? 
+                        <p>{errorScreen}</p> 
+                    :(
+                        <p>
+                            You still need to
+                            <br />
+                            <button className="manip-button" onClick={allow}>
+                            Allow access to all websites
+                            </button>
+                        </p>
+                    )}
                 </>
-                
-            }
+                }
+                { displayEmailButton && 
+                    <>
+                        <button onClick={resendEmailValidation} disabled={emailSendButtonLoading} className="menu">Resend validation email</button>
+                        { resendMessage !== '' && <p>{resendMessage}</p>}
+                    </>
+                    
+                }
+            </>
+        }
         </>
     )
 }

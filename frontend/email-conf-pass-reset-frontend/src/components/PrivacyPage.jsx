@@ -31,9 +31,11 @@ export default function PrivacyPage() {
                 as a public identifier, and email and password are used purely to aid the login process.
                 I require your username as a public identifier. I require an email to verify
                 your account with a confirmation email to limit users with bad intentions creating spam accounts. 
-                Your email is also used in password recovery scenarios. Outside of these scenarios you will not 
-                receive emails from the GutCheck extension. I require your password to verify login attempts.
+                Your email is also used in password recovery scenarios. I require your password to verify login attempts.
                 An encryption of your password is stored in the database.
+                <br />
+                <br />
+                You will only receive emails concerning login, safety-related concerns, or as a respons to any questions or concerns you may have.
             </p>
             <i>Post Contents</i>
             <p>

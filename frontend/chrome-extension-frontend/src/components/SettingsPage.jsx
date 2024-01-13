@@ -3,7 +3,7 @@ import { api } from "../utilities";
 import UserContext from "../contexts/UserContext.jsx";
 
 // In the future this page will be like the home page for logged in users. Keep in mind that setting the errorScreen to something non-empty 
-export default function SettingsPage({ setShowSettingPage }) {
+export default function SettingsPage({ setShowSettingsPage, verified }) {
     const { setErrorScreen, setHasAlerts, hasAlerts, setUser } = useContext(UserContext)
     const [dangerZone, setDangerZone] = useState(false)
     const [deletionLoading, setDeletionLoading] = useState(false)
@@ -52,16 +52,18 @@ export default function SettingsPage({ setShowSettingPage }) {
     return (
         <>
             <header className="title-holder">
-                <button onClick={() => setShowSettingPage(false)} className="back menu" disabled={deletionLoading}>←</button>
+                <button onClick={() => setShowSettingsPage(false)} className="back menu" disabled={deletionLoading}>←</button>
             </header>
             <h2>Settings</h2>
-            <div className="checkbox-display">
-                <input type="checkbox" 
-                    defaultChecked={hasAlerts}
-                    onChange={(e) => changeAlertConfig(e.target.checked)} 
-                />
-                <p>Receive alerts whenever a website has associated posts</p>
-            </div>
+            {verified &&
+                <div className="checkbox-display">
+                    <input type="checkbox" 
+                        defaultChecked={hasAlerts}
+                        onChange={(e) => changeAlertConfig(e.target.checked)} 
+                    />
+                    <p>Receive alerts whenever a website has associated posts</p>
+                </div>
+            }
             <div className="dangerzone-container">
                 { !dangerZone ? 
                     <button className="menu" onClick={() => setDangerZone(true)}>Delete account</button>
