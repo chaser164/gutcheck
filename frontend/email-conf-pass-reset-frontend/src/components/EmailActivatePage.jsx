@@ -25,7 +25,7 @@ export default function EmailActivationPage() {
         <>
         <h3>{message}</h3>
         {message === "Account activated" &&
-            <h5>Close and relaunch extension to continue</h5>
+            <h5>Close and reopen extension popup to continue</h5>
         }      
         </>
     );
