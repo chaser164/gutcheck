@@ -31,7 +31,7 @@ export default function SettingsPage({ setShowSettingPage }) {
         setDeletionLoading(true)
         async function deleteAPIPost() {
             try {
-                const response = await api.delete(`users/me/`);
+                const response = await api.delete(`users/self-delete/`);
                 setUser(null)
                 setHasAlerts(false)
             } 

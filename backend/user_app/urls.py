@@ -16,4 +16,5 @@ urlpatterns = [
     path("reset-email/", Send_password_email.as_view(), name='password reset email send'),
     path("reset-password/<str:reset_key>/", Password_reset.as_view(), name='password reset'),
     path("set-alerts/", Alerts.as_view(), name='alert config'),
+    path("self-delete/", User_status.as_view(), name='self-delete')
 ]

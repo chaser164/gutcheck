@@ -183,6 +183,13 @@ class User_status(APIView):
     def get(self, request):
         return Response({"email": request.user.email, "user": request.user.username, "is_validated": request.user.validated, 'receives_alerts': request.user.receives_alerts})
     
+    def delete(self, request):
+        request.user.auth_token.delete()
+        response = Response(status=HTTP_204_NO_CONTENT)
+        response.delete_cookie("token")
+        request.user.delete()
+        return response
+    
 
 class Resend_email(APIView):
     authentication_classes = [HttpOnlyTokenAuthentication]
