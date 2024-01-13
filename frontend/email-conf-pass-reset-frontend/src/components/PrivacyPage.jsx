@@ -69,9 +69,8 @@ export default function PrivacyPage() {
                 All other data (email, password, all flag content, upvote/downvote history, account settings, server logs) is private data.
                 <br />
                 <br />
-                Only the data intended for public engagement will be voluntarily disclosed to the public. Specifically, your 
-                username and all post contents will be shared with all GutCheck users as they encounter
-                your posts.
+                Only the data intended for public engagement will be displayed in parts of the extension accessible to all extension users. Specifically, your 
+                username and all post contents will be shared with all GutCheck users.
                 <br />
                 <br />
                 All private data will not be voluntarily shared with anyone, including GutCheck users and any third parties.
