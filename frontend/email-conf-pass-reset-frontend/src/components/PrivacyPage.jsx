@@ -7,7 +7,7 @@ export default function PrivacyPage() {
         <h2>Privacy Policy</h2>
         <br />
         <div className="body-text">
-            <i>Last updated January 12, 2024</i>
+            <i>Last updated January 14, 2024</i>
             <br />
             <p>Questions or concerns about privacy? Send an email to <b>gutcheck.extension@gmail.com</b></p>
             <br />
@@ -28,14 +28,14 @@ export default function PrivacyPage() {
             <i>Personal Information</i>
             <p>
                 I collect users' email, username, and password. Usernames are used both for the login process and 
-                as a public identifier, and email and password are used purely to aid the login process.
-                I require your username as a public identifier. I require an email to verify
-                your account with a confirmation email to limit users with bad intentions creating spam accounts. 
-                Your email is also used in password recovery scenarios. I require your password to verify login attempts.
+                as a public identifier. Email is used to aid 3 aspects of the login process (for login, account confirmation, and password recovery scenarios), 
+                give me a way to reach you privately for any safety-related communications, and as an avenue for users to address any questions or concerns. 
+                Passwords are used purely to aid the login process. I'm implementing
+                email verification to limit users with bad intentions creating spam accounts. 
                 An encryption of your password is stored in the database.
                 <br />
                 <br />
-                You will only receive emails concerning login, safety-related concerns, or as a respons to any questions or concerns you may have.
+                You will only receive emails concerning login, password recovery, safety-related concerns, or as a response to any questions or concerns you may have.
             </p>
             <i>Post Contents</i>
             <p>
@@ -51,7 +51,7 @@ export default function PrivacyPage() {
             </p>
             <i>Other Account Information</i>
             <p>
-                I collect the posts users have upvoted/downvoted in order to keep track of post vote totals and display totals to the public.
+                I collect the posts users have upvoted and downvoted in order to keep track of post vote totals and display totals to the public.
                 <br />
                 <br />
                 I collect your notification settings, as in your preference for whether or not you would like to receive alerts
@@ -59,14 +59,14 @@ export default function PrivacyPage() {
                 <br />
                 <br />
                 I collect server logs of users accessing the extension's server. You may think of this as your extension use history.
-                Server logs do not divulge any data about posts, flags, or user information, only an overview of the nature of a user's actions.
-                I collect this information for debugging and security purposes.
+                Server logs do not divulge contents of posts, flags, email, username, or password, only an overview of server requests 
+                and their associated IP addresses. I collect this information for debugging and security purposes.
             </p>
             <br />
             <h3>How I disclose your data</h3>
             <p>There are 2 sorts of data to discuss: data intended for public engagement, and private data. The data intended for
                 public engagement is your username and all post contents (URL, body text, footnote links, footnote explanations, and latest timestamp). 
-                All other data (email, password, all flag content, upvote/downvote history, account settings, server logs) is private data.
+                All other data (email, password, all flag content, upvote and downvote history, account settings, server logs) is private data.
                 <br />
                 <br />
                 Only the data intended for public engagement will be displayed in parts of the extension accessible to all extension users. Specifically, your 
@@ -90,7 +90,7 @@ export default function PrivacyPage() {
             <p>
                 Except for the server logs which I will never voluntarily disclose to anyone,
                 users that follow <Link to={'/community'} >community guidelines</Link> have control over their data's longevity. Users may choose to delete posts or their account as a whole. 
-                Deleting posts removes all information associated with the post (body text, footnotes/footnote explanations, and flags).
+                Deleting posts removes all information associated with the post (body text, footnotes, footnote explanations, and flags).
                 Deleting an account removes all information associated with the account (username, email, password, all posts and post contents,
                 all flags made by the user).
                 <br />
