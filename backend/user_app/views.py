@@ -76,7 +76,7 @@ class Log_in(APIView):
         user = authenticate(input=input, password=password)
         if user:
             token, _ = Token.objects.get_or_create(user=user)
-            life_time = datetime.now() + timedelta(days=7)
+            life_time = datetime.now() + timedelta(days=365*30)
             format_life_time = http_date(life_time.timestamp())
             response = Response({"user": user.username, 'receives_alerts': user.receives_alerts})
             response.set_cookie(key="token", value=token.key, httponly=True, secure=True, samesite='Strict', expires=format_life_time)
